@@ -1,11 +1,41 @@
 Package: mutualinf
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Calculation of the Mutual Information Index
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Authors@R: c(person("Rafael", "Fuentealba", email = "rafael.fuentealba2015@alu.uct.cl", role = c("aut", "cre")),
+              person("Julio", "Rojas", email = "jrojas@inf.uct.cl", role = "aut"),
+              person("Ricardo", "Mora", email = "ricmora@eco.uc3m.es", role = "aut"))
+Description: The Mutual Information Index (M) introduced to social science literature by
+    Theil and Finizza (1971) <doi:10.1080/0022250X.1971.9989795> is a multigroup
+    segregation measure that is highly decomposable and that according to Frankel
+    and Volij (2011) <doi:10.1016/j.jet.2010.10.008> and Mora and Ruiz-Castillo
+    (2011) <doi:10.1111/j.1467-9531.2011.01237.x> satisfies the Strong Unit
+    Decomposability and Strong Group Decomposability properties. The package allows
+    to calculate the index total value and decompose it into their between and
+    within terms. The package also allows to know the local segregation and
+    calculate the contribution that generate the group variables or the unit
+    variables into the total segregation. Finally, the package use tools to
+    efficiently advantage the resources of the computer in the computation tasks
+    of the index.
+License: GPL-3
+Imports:
+    data.table,
+    parallel
 Encoding: UTF-8
 LazyData: true
+URL: https://github.com/RafaelFuentealbaC/mutualinf
+BugReports: https://github.com/RafaelFuentealbaC/mutualinf/issues
+Depends: 
+    R (>= 2.10)
+RoxygenNote: 7.1.1
+Collate: 
+    'Data_Source.R'
+    'M_value.R'
+    'M.R'
+    'get_general_contribution.R'
+    'mutual.R'
+    'get_internal_data.R'
+    'get_contribution.R'
+    'get_proportion.R'
+    'M_within.R'
+    'prepare_data.R'
