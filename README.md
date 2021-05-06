@@ -8,7 +8,7 @@
 <!-- badges: end -->
 
 An R package to calculate the Mutual Information Index (M) introduced to
-social science literature by Theil and Finizza (2011). The M index is a
+social science literature by Theil and Finizza (1971). The M index is a
 multigroup segregation measure that is highly decomposable that
 satisfies the Strong Unit Decomposability (SUD) and Strong Group
 Decomposability (SGD) properties (Frankel and Volij, 2011; Mora and
@@ -164,13 +164,13 @@ differences with the `system.time` function:
 system.time(mutual(data = DT_Seg_Ar, group = c("csep2", "etnia"), unit = c("school2", "comuna"), within = "etnia",
        contribution.from = "unit_vars", components = TRUE))
 #>    user  system elapsed 
-#>  13.358   0.019   6.858
+#>  14.835   0.024   7.643
 
 # In parallel, using two CPU cores:
 system.time(mutual(data = DT_Seg_Ar, group = c("csep2", "etnia"), unit = c("school2", "comuna"), within = "etnia",
        contribution.from = "unit_vars", components = TRUE, cores = 2))
 #>    user  system elapsed 
-#>   0.584   0.149   4.236
+#>   0.670   0.194   4.770
 ```
 
 ## References

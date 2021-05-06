@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-An R package to calculate the Mutual Information Index (M) introduced to social science literature by Theil and Finizza (2011). The M index is a multigroup segregation measure that is highly decomposable that satisfies the Strong Unit Decomposability (SUD) and Strong Group Decomposability (SGD) properties (Frankel and Volij, 2011; Mora and Ruiz-Castillo, 2011). 
+An R package to calculate the Mutual Information Index (M) introduced to social science literature by Theil and Finizza (1971). The M index is a multigroup segregation measure that is highly decomposable that satisfies the Strong Unit Decomposability (SUD) and Strong Group Decomposability (SGD) properties (Frankel and Volij, 2011; Mora and Ruiz-Castillo, 2011). 
 
 The package:
 
