@@ -157,20 +157,20 @@ mutual(data = DT_Seg_Ar, group = c("csep2", "etnia"), unit = c("school2", "comun
 The `cores` option allows use more than one CPU cores in the index
 compute. This avoids overloading the current work session by
 distributing calculation tasks in child processs. Compare the
-differences with the system.time function:
+differences with the `system.time` function:
 
 ``` r
-# Sequentially in one CPU core:
+# Sequentially, using one CPU core:
 system.time(mutual(data = DT_Seg_Ar, group = c("csep2", "etnia"), unit = c("school2", "comuna"), within = "etnia",
        contribution.from = "unit_vars", components = TRUE))
 #>    user  system elapsed 
-#>  15.186   0.016   7.791
+#>  13.358   0.019   6.858
 
-# Parallelized using two CPU cores:
+# In parallel, using two CPU cores:
 system.time(mutual(data = DT_Seg_Ar, group = c("csep2", "etnia"), unit = c("school2", "comuna"), within = "etnia",
        contribution.from = "unit_vars", components = TRUE, cores = 2))
 #>    user  system elapsed 
-#>   0.714   0.177   4.856
+#>   0.584   0.149   4.236
 ```
 
 ## References

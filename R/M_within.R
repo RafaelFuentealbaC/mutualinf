@@ -79,6 +79,8 @@ M_within <- function(data, group, unit, within, by = NULL, components = FALSE, c
         element <- 1
         repeat {
           res <- list()
+          DT_general[[element]] <- DT_general[[element]][, -1:-length(by)]
+          DT_within[[element]] <- DT_within[[element]][, -1:-length(by)]
           res[['Total']] <- DT_general[[element]]
           res[['W_Decomposition']] <- DT_within[[element]]
           result[[element]] <- res
@@ -193,6 +195,8 @@ M_within <- function(data, group, unit, within, by = NULL, components = FALSE, c
         element <- 1
         repeat {
           res <- list()
+          DT_general[[element]] <- DT_general[[element]][, -1:-length(by)]
+          DT_within[[element]] <- DT_within[[element]][, -1:-length(by)]
           res[['Total']] <- DT_general[[element]]
           res[['W_Decomposition']] <- DT_within[[element]]
           result[[element]] <- res
