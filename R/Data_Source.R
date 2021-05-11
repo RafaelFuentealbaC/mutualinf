@@ -1,14 +1,12 @@
 #' @title Segregation data of the Araucania region
 #' @description Contain information from estudents of the Araucania Region in Chile between year 2016 and 2018.
 #' The data was be obtain from ... ?
-#' @format A data.frame with 215745 observations and 12 variables:
+#' @format A data.frame with 215745 observations and 10 variables:
 #' \describe{
 #' \item{year}{school year.}
 #' \item{school}{establishment database role.}
-#' \item{school2}{a composite identifier of the variables school comuna rural and sch_type.}
 #' \item{comuna}{official code of commune in which the establishment is located.}
 #' \item{csep}{socio-economic criterion.}
-#' \item{csep2}{socio-economic standard criterion.}
 #' \item{etnia}{belongs to indigenous people.}
 #' \item{rural}{rural RBD.}
 #' \item{region}{region code where the establishment is located.}
@@ -22,14 +20,12 @@
 #' @title Segregation data of the Araucania region
 #' @description Contain information from estudents of the Araucania Region in Chile between year 2016 and 2018.
 #' The data was be obtain from ... ?
-#' @format A data.table with 29334 observations and 12 variables:
+#' @format A data.table with 20107 observations and 10 variables:
 #' \describe{
 #' \item{year}{school year.}
 #' \item{school}{establishment database role.}
-#' \item{school2}{a composite identifier of the variables school comuna rural and sch_type.}
 #' \item{comuna}{official code of commune in which the establishment is located.}
 #' \item{csep}{socio-economic criterion.}
-#' \item{csep2}{socio-economic standard criterion.}
 #' \item{etnia}{belongs to indigenous people.}
 #' \item{rural}{rural RBD.}
 #' \item{region}{region code where the establishment is located.}

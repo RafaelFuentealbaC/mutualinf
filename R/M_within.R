@@ -154,10 +154,6 @@ M_within <- function(data, group, unit, within, by = NULL, components = FALSE, c
     if (!is.null(by)) {
       result <- NULL
 
-      DT_p <- get_proportion(data = data, within = within, by = by)
-      data_tmp <- get_internal_data(data = data, vars = c(group, unit, by, within))
-      comp_within <- mutual(data = data_tmp, group = group, unit = unit, by = c(by, within))$M
-      DT_within <- cbind(DT_p, within = comp_within)
       data_tmp <- get_internal_data(data = data, vars = c(group, unit, by))
       index_total <- mutual(data = data_tmp, group = group, unit = unit, by = by)
 
@@ -171,6 +167,10 @@ M_within <- function(data, group, unit, within, by = NULL, components = FALSE, c
         unit <- unit[!unit %in% within]
       } else stop(paste("Variable(s)", within, "is required in group or unit elements"))
 
+      DT_p <- get_proportion(data = data, within = within, by = by)
+      data_tmp <- get_internal_data(data = data, vars = c(group, unit, by, within))
+      comp_within <- mutual(data = data_tmp, group = group, unit = unit, by = c(by, within))$M
+      DT_within <- cbind(DT_p, within = comp_within)
       index_within <- DT_within[, list(M_W = sum(p %*% within)), by = by]
       DT_general <- merge(x = index_total, y = index_between, by = by, sort = FALSE)
       setnames(x = DT_general, old = c("M.x", "M.y"), new = c("M", paste0("M_B_", within)))
@@ -212,10 +212,6 @@ M_within <- function(data, group, unit, within, by = NULL, components = FALSE, c
       }
       result
     } else {
-      DT_p <- get_proportion(data = data, within = within, total = total)
-      data_tmp <- get_internal_data(data = data, vars = c(group, unit, within))
-      comp_within <- mutual(data = data_tmp, group = group, unit = unit, by = within)$M
-      DT_within <- cbind(DT_p, within = comp_within)
       data_tmp <- get_internal_data(data = data, vars = c(group, unit))
       index_total <- as.numeric(mutual(data = data_tmp, group = group, unit = unit))
 
@@ -229,6 +225,10 @@ M_within <- function(data, group, unit, within, by = NULL, components = FALSE, c
         unit <- unit[!unit %in% within]
       } else stop(paste("Variable(s)", within, "is required in group or unit elements"))
 
+      DT_p <- get_proportion(data = data, within = within, total = total)
+      data_tmp <- get_internal_data(data = data, vars = c(group, unit, within))
+      comp_within <- mutual(data = data_tmp, group = group, unit = unit, by = within)$M
+      DT_within <- cbind(DT_p, within = comp_within)
       index_within <- sum(DT_within$p %*% DT_within$within)
       DT_general <- data.table(M = index_total, M_B = index_between)
       setnames(x = DT_general, old = "M_B", new = paste0("M_B_", within))

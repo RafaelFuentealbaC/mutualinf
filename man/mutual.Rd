@@ -32,7 +32,7 @@ dimensions within which segregation is computed. By default is NULL.}
 
 \item{by}{A categorical variable name or vector of categorical variables names contained in \code{data}, or also, a
 categorical variable number or vector of categorical variables numbers contained in \code{data}. Defines the
-dimensions for which segregation is computed. By default is NULL.}
+dimensions by which calculations are separated. By default is NULL.}
 
 \item{components}{A boolean value. If is TRUE and the \code{within} option is not null and the \code{by} option
 is null then returns a \code{list} where the first element is a \code{data.table} that contains a summary of the index
@@ -61,33 +61,33 @@ option is true and the \code{within} and \code{by} options are not null.
 \description{
 Function that delivery the index total value and the decompositions into the between term and the within
 term, either for all data, a particular variable, or multiple variables. Besides allows know the local segregation
-and calculate the contribution that generate the group variables or the unit variables into the total segregation.
-The decompositions of the within term and contributions can be show in the general form or in detail form.
+and calculate the exclusive contribution that generate the group variables or the unit variables into the total
+segregation. The decompositions of the within term and contributions can be show in the general form or in detail form.
 }
 \examples{
 \dontrun{
 # Get the total segregation.
-mutual(data = DT_Seg_Ar, group = c("csep2", "etnia"), unit = "school2")
+mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school")
 
 # Using the 'by' option to calculate the segregation by year or by another variable(s).
-mutual(data = DT_Seg_Ar, group = c("csep2", "etnia"), unit = "school2", by = "year")
+mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", by = "year")
 
 # Use the 'within' option to decompose the index total value into the between term and the within term.
-mutual(data = DT_Seg_Ar, group = c("csep2", "etnia"), unit = "school2", within = "etnia")
+mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", within = "etnia")
 
 # Use the 'components' option to get detail information. The result shows the proportions and the local segregation index
 # on the 'W_Decomposition' element. The weighted average between 'p' and 'within' is equal to the within term.
-mutual(data = DT_Seg_Ar, group = c("csep2", "etnia"), unit = "school2", within = "etnia", component = TRUE)
+mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", within = "etnia", component = TRUE)
 
-# Use the 'contribution.from' option to get contributions of the segregation sources into the total segregation.
+# Use the 'contribution.from' option to get exclusive contributions of the segregation sources into the total segregation.
 # Contribution from of all variables of 'group' elements:
-mutual(data = DT_Seg_Ar, group = c("csep2", "etnia"), unit = "school2", by = "year", contribution.from = "group_vars")
+mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", by = "year", contribution.from = "group_vars")
 
 # Contribution only from 'etnia' variable:
-mutual(data = DT_Seg_Ar, group = c("csep2", "etnia"), unit = "school2", by = "year", contribution.from = "etnia")
+mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", by = "year", contribution.from = "etnia")
 
 # Use the 'cores' option to increase the CPU cores into the index compute.
-mutual(data = DT_Seg_Ar, group = c("csep2", "etnia"), unit = "school2", by = "year", cores = 2)
+mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", by = "year", cores = 2)
 }
 }
 \references{

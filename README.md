@@ -7,26 +7,28 @@
 
 <!-- badges: end -->
 
-An R package to calculate the Mutual Information Index (M) introduced to
-social science literature by Theil and Finizza (1971). The M index is a
-multigroup segregation measure that is highly decomposable that
-satisfies the Strong Unit Decomposability (SUD) and Strong Group
+An R library to calculate and decompose the Mutual Information Index (M)
+introduced to social science literature by Theil and Finizza (1971). The
+M index is a multigroup segregation measure that is highly decomposable
+that satisfies the Strong Unit Decomposability (SUD) and Strong Group
 Decomposability (SGD) properties (Frankel and Volij, 2011; Mora and
 Ruiz-Castillo, 2011).
 
-The package:
+The library:
 
   - Allows calculate the total segregation.
   - Allows descompose the total segregation index into the between term
     and the within term.
-  - Allows calculate the value of the before terms for all data, a
-    particular variable or multiple variables.
-  - Allows calculate and know the contribution that generate the group
-    variables or the unit variables into the total segregation.
+  - Allows calculate and know the exclusive contribution that generate
+    the group variables or the unit variables into the total
+    segregation.
+  - Allows separate the calculations according to one or more
+    characteristics of the system.
   - Deliveries the decompositions information in the general form or in
     detail form. In this last case delivery information about the
     proportions and the local segregation index for all categorical
-    combinations of variables.
+    combinations of variables when there is a least one dimension for
+    the within parameter.
   - Is fast in the compute tasks because uses internally the
     [`data.table`](https://cran.r-project.org/web/packages/data.table/index.html)
     package.
@@ -83,26 +85,41 @@ The package provides two principal functions:
 
 ## Usage
 
-The package allow calculate the Mutual Information Index (M) in a simple
-way through the `mutual` function:
+The package allow calculate the Mutual Information Index (M) in his
+simplest form, i.e., over one group dimension and one unit dimension:
 
 ``` r
 library(mutualinf)
 
-mutual(data = DT_Seg_Ar, group = "etnia", unit = "school2")
-#>             M
-#> 1: 0.03607692
+mutual(data = DT_Seg_Ar, group = "csep", unit = "school")
+#>           M
+#> 1: 0.178708
 ```
 
-The `by` option allows calculate the segregation index for a particular
-variable or multiple variables:
+Also can be used multiple dimensions in the group and unit analysis:
 
 ``` r
-mutual(data = DT_Seg_Ar, group = "etnia", unit = "school2", by = "year")
-#>    year          M
-#> 1: 2016 0.04257812
-#> 2: 2017 0.03682014
-#> 3: 2018 0.03761050
+# over multiple group dimensions
+mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school")
+#>           M
+#> 1: 0.211074
+
+# over multiple unit dimensions
+mutual(data = DT_Seg_Ar, group = "csep", unit = c("school", "comuna"))
+#>            M
+#> 1: 0.1787091
+```
+
+The `by` option allows separate the calculations according to a
+particular variable or multiple
+variables:
+
+``` r
+mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", by = "year")
+#>    year         M
+#> 1: 2016 0.2155643
+#> 2: 2017 0.2271261
+#> 3: 2018 0.2228688
 ```
 
 The `within` option allows decompose the total segregation into their
@@ -110,48 +127,52 @@ between and within
 terms:
 
 ``` r
-mutual(data = DT_Seg_Ar, group = c("csep2", "etnia"), unit = c("school2", "comuna"), within = "etnia")
-#>            M  M_B_etnia M_W_etnia
-#> 1: 0.2110833 0.03607692 0.1750063
+# get the segregation that is socio-economic exclusively and then segregation that is ethnic exclusively
+# for all socio-economic categories
+mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", within = "csep")
+#>           M M_B_csep   M_W_csep
+#> 1: 0.211074 0.178708 0.03236594
+
+# get the segregation that is ethnic exclusively and then segregation that is socio-economic exclusively
+# for all ethnic categories
+mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", within = "etnia")
+#>           M  M_B_etnia M_W_etnia
+#> 1: 0.211074 0.03607188 0.1750021
+```
+
+The `contribution.from` option allows calculate the exclusive
+contribution of group variables or unit variables in the total
+segregation. It’s an inmediate way of jointly obtaining the relevant
+results of the two previous decompositions. The `ìnteraction` term
+refers to an amount of segregation that cannot be attributed to the
+exclusive segregating effect of characteristics that jointly define the
+group:
+
+``` r
+mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", contribution.from = "group_vars")
+#>           M    C_csep    C_etnia interaction
+#> 1: 0.211074 0.1750021 0.03236594 0.003705943
 ```
 
 The `components` option allows know the proportions and the local
-segregation index for all categories. The weighted average between `p`
-and `within` in the `$W_Decomposition` element is equal to the within
-term in the `$Total`
+segregation index for all categories of variables of the `within`
+parameter. The weighted average between `p` and `within` of the
+`$W_Decomposition` element is equal to the `M_W_csep` term of the
+`$Total`
 element:
 
 ``` r
-mutual(data = DT_Seg_Ar, group = c("csep2", "etnia"), unit = c("school2", "comuna"), within = "etnia",
+mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = c("school", "comuna"), within = "csep",
        components = TRUE)
 #> $Total
-#>            M  M_B_etnia M_W_etnia
-#> 1: 0.2110833 0.03607692 0.1750063
+#>            M  M_B_csep   M_W_csep
+#> 1: 0.2110761 0.1787091 0.03236703
 #> 
 #> $W_Decomposition
-#>    etnia         p    within
-#> 1:     0 0.7735436 0.1907459
-#> 2:     1 0.2264564 0.1212421
-```
-
-The `components.from` option allows calculate the contribution of the
-group variables or unit variables in the total segregation. The weighted
-average between `p` and each contributor variable of the
-`$W_Decomposition` element is equal to their corresponding variable in
-the `$Total`
-element:
-
-``` r
-mutual(data = DT_Seg_Ar, group = c("csep2", "etnia"), unit = c("school2", "comuna"), within = "etnia",
-       contribution.from = "unit_vars", components = TRUE)
-#> $Total
-#>            M  M_B_etnia C_school2 C_comuna interaction
-#> 1: 0.2110833 0.03607692 0.1194126        0  0.05559372
-#> 
-#> $W_Decomposition
-#>    etnia         p    within    school2 comuna interaction
-#> 1:     0 0.7735436 0.1907459 0.12995140      0  0.06079454
-#> 2:     1 0.2264564 0.1212421 0.08341366      0  0.03782843
+#>    csep         p     within
+#> 1:    2 0.2245430 0.02673616
+#> 2:    3 0.6521035 0.03465634
+#> 3:    1 0.1233536 0.03051467
 ```
 
 The `cores` option allows use more than one CPU cores in the index
@@ -161,17 +182,25 @@ differences with the `system.time` function:
 
 ``` r
 # Sequentially, using one CPU core:
-system.time(mutual(data = DT_Seg_Ar, group = c("csep2", "etnia"), unit = c("school2", "comuna"), within = "etnia",
+system.time(mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = c("school", "comuna"), within = "etnia",
        contribution.from = "unit_vars", components = TRUE))
 #>    user  system elapsed 
-#>  14.835   0.024   7.643
+#>  14.811   0.052   7.626
 
 # In parallel, using two CPU cores:
-system.time(mutual(data = DT_Seg_Ar, group = c("csep2", "etnia"), unit = c("school2", "comuna"), within = "etnia",
+system.time(mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = c("school", "comuna"), within = "csep",
        contribution.from = "unit_vars", components = TRUE, cores = 2))
 #>    user  system elapsed 
-#>   0.670   0.194   4.770
+#>   4.878   0.379   6.859
 ```
+
+## Citation
+
+If you use this library for your research, please cite:
+
+Fuentealba-Chaura, R., Mora, R., Rojas-Mora, J. (2021). mutualinf: a
+library to calculate and decompose the Mutual Information Index.
+<https://www.github.com/RafaelFuentealbaC/mutualinf>
 
 ## References
 

@@ -5,14 +5,12 @@
 \alias{DF_Seg_Ar}
 \title{Segregation data of the Araucania region}
 \format{
-A data.frame with 215745 observations and 12 variables:
+A data.frame with 215745 observations and 10 variables:
 \describe{
 \item{year}{school year.}
 \item{school}{establishment database role.}
-\item{school2}{a composite identifier of the variables school comuna rural and sch_type.}
 \item{comuna}{official code of commune in which the establishment is located.}
 \item{csep}{socio-economic criterion.}
-\item{csep2}{socio-economic standard criterion.}
 \item{etnia}{belongs to indigenous people.}
 \item{rural}{rural RBD.}
 \item{region}{region code where the establishment is located.}
