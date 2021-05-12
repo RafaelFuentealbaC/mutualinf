@@ -10,8 +10,8 @@ mutual(
   unit,
   within = NULL,
   by = NULL,
-  components = FALSE,
   contribution.from = NULL,
+  components = FALSE,
   cores = NULL
 )
 }
@@ -34,6 +34,12 @@ dimensions within which segregation is computed. By default is NULL.}
 categorical variable number or vector of categorical variables numbers contained in \code{data}. Defines the
 dimensions by which calculations are separated. By default is NULL.}
 
+\item{contribution.from}{A variable of character type that can be 'group_vars' or 'unit_vars', or also, a categorical
+variable name or vector of categorical variables names contained in the \code{group} parameter or \code{unit}
+parameter, or also, a categorical variable number or vector of categorical variables numbers contained in the
+\code{group} parameter or \code{unit} parameter. Defines the dimension over which wants to evaluate it's exclusive
+segregating effect into the total segregation. By default is NULL.}
+
 \item{components}{A boolean value. If is TRUE and the \code{within} option is not null and the \code{by} option
 is null then returns a \code{list} where the first element is a \code{data.table} that contains a summary of the index
 total value and decompositions while the second element is a \code{data.table} with more detail information of the
@@ -42,12 +48,6 @@ structure of \code{list of lists} type where each first element is a \code{data.
 the index total value and decompositions while each second element is a \code{data.table} with more detail information
 of the decomposition of the within term that displayed in each first element. The detailed information includes the
 proportions and local segregation. By default is FALSE.}
-
-\item{contribution.from}{A variable of character type that can be 'group_vars' or 'unit_vars', or also, a categorical
-variable name or vector of categorical variables names contained in the \code{group} parameter or \code{unit}
-parameter, or also, a categorical variable number or vector of categorical variables numbers contained in the
-\code{group} parameter or \code{unit} parameter. Defines the contributing dimension into the total segregation. By
-default is NULL.}
 
 \item{cores}{A positive integer. Defines the amount of CPU cores that is use to parallelization task into the
 index compute. If is NULL then the compute is carried out sequentially in only one core. This option is available
@@ -61,7 +61,7 @@ option is true and the \code{within} and \code{by} options are not null.
 \description{
 Function that delivery the index total value and the decompositions into the between term and the within
 term, either for all data, a particular variable, or multiple variables. Besides allows know the local segregation
-and calculate the exclusive contribution that generate the group variables or the unit variables into the total
+and evaluate the exclusive segregating effect that generate the group variables or the unit variables into the total
 segregation. The decompositions of the within term and contributions can be show in the general form or in detail form.
 }
 \examples{
@@ -79,7 +79,7 @@ mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", within = "
 # on the 'W_Decomposition' element. The weighted average between 'p' and 'within' is equal to the within term.
 mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", within = "etnia", component = TRUE)
 
-# Use the 'contribution.from' option to get exclusive contributions of the segregation sources into the total segregation.
+# Use the 'contribution.from' option to evaluate the exclusive segregating effect of certain characteristics into the total segregation.
 # Contribution from of all variables of 'group' elements:
 mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", by = "year", contribution.from = "group_vars")
 

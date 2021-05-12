@@ -4,7 +4,7 @@ NULL
 #' @title Calculates the mutual information index
 #' @description Function that delivery the index total value and the decompositions into the between term and the within
 #' term, either for all data, a particular variable, or multiple variables. Besides allows know the local segregation
-#' and calculate the exclusive contribution that generate the group variables or the unit variables into the total
+#' and evaluate the exclusive segregating effect that generate the group variables or the unit variables into the total
 #' segregation. The decompositions of the within term and contributions can be show in the general form or in detail form.
 #' @param data A data.table.
 #' @param group A categorical variable name or vector of categorical variables names contained in \code{data}, or also,
@@ -19,6 +19,11 @@ NULL
 #' @param by A categorical variable name or vector of categorical variables names contained in \code{data}, or also, a
 #' categorical variable number or vector of categorical variables numbers contained in \code{data}. Defines the
 #' dimensions by which calculations are separated. By default is NULL.
+#' @param contribution.from A variable of character type that can be 'group_vars' or 'unit_vars', or also, a categorical
+#' variable name or vector of categorical variables names contained in the \code{group} parameter or \code{unit}
+#' parameter, or also, a categorical variable number or vector of categorical variables numbers contained in the
+#' \code{group} parameter or \code{unit} parameter. Defines the dimension over which wants to evaluate it's exclusive
+#' segregating effect into the total segregation. By default is NULL.
 #' @param components A boolean value. If is TRUE and the \code{within} option is not null and the \code{by} option
 #' is null then returns a \code{list} where the first element is a \code{data.table} that contains a summary of the index
 #' total value and decompositions while the second element is a \code{data.table} with more detail information of the
@@ -27,11 +32,6 @@ NULL
 #' the index total value and decompositions while each second element is a \code{data.table} with more detail information
 #' of the decomposition of the within term that displayed in each first element. The detailed information includes the
 #' proportions and local segregation. By default is FALSE.
-#' @param contribution.from A variable of character type that can be 'group_vars' or 'unit_vars', or also, a categorical
-#' variable name or vector of categorical variables names contained in the \code{group} parameter or \code{unit}
-#' parameter, or also, a categorical variable number or vector of categorical variables numbers contained in the
-#' \code{group} parameter or \code{unit} parameter. Defines the contributing dimension into the total segregation. By
-#' default is NULL.
 #' @param cores A positive integer. Defines the amount of CPU cores that is use to parallelization task into the
 #' index compute. If is NULL then the compute is carried out sequentially in only one core. This option is available
 #' to Mac, Linux, Unix, and BSD systems but is not available to Windows sytems. By default is NULL.
@@ -69,7 +69,7 @@ NULL
 #' # on the 'W_Decomposition' element. The weighted average between 'p' and 'within' is equal to the within term.
 #' mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", within = "etnia", component = TRUE)
 #'
-#' # Use the 'contribution.from' option to get exclusive contributions of the segregation sources into the total segregation.
+#' # Use the 'contribution.from' option to evaluate the exclusive segregating effect of certain characteristics into the total segregation.
 #' # Contribution from of all variables of 'group' elements:
 #' mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", by = "year", contribution.from = "group_vars")
 #'
@@ -81,7 +81,7 @@ NULL
 #' }
 #' @import data.table
 #' @export
-mutual <- function(data, group, unit, within = NULL, by = NULL, components = FALSE, contribution.from = NULL, cores = NULL) {
+mutual <- function(data, group, unit, within = NULL, by = NULL, contribution.from = NULL, components = FALSE, cores = NULL) {
   if (!is.null(cores) & isTRUE(Sys.info()["sysname"] == "windows")) stop("The 'cores' option is not available for windows system. Consider the default option")
 
   vars <- c(group, unit, within, by)
@@ -130,7 +130,7 @@ mutual <- function(data, group, unit, within = NULL, by = NULL, components = FAL
   if (length(contribution_no_group_no_unit) > 0) stop(paste("Variable(s)", paste(contribution_no_group_no_unit, collapse = ", "), "is required in group or unit elements"))
 
   if (!is.null(within)) {
-    M_within(data = data, group = group, unit = unit, within = within, by = by, components = components, contribution.from = contribution.from, cores = cores)
+    M_within(data = data, group = group, unit = unit, within = within, by = by, contribution.from = contribution.from, components = components, cores = cores)
   } else {
     M(data = data, group = group, unit = unit, by = by, contribution.from = contribution.from, cores = cores)
   }

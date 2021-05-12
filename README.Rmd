@@ -24,7 +24,7 @@ The library:
 
 - Allows calculate the total segregation.
 - Allows descompose the total segregation index into the between term and the within term.
-- Allows calculate and know the exclusive contribution that generate the group variables or the unit variables into the total segregation.
+- Allows calculate and know the exclusive segregating effect that generate the group variables or the unit variables into the total segregation.
 - Allows separate the calculations according to one or more characteristics of the system.
 - Deliveries the decompositions information in the general form or in detail form. In this last case delivery information about the proportions and the local segregation index for all categorical combinations of variables when there is a least one dimension for the within parameter.
 - Is fast in the compute tasks because uses internally the [`data.table`](https://cran.r-project.org/web/packages/data.table/index.html) package.
@@ -92,7 +92,7 @@ mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", within = "
 mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", within = "etnia")
 ```
 
-The `contribution.from` option allows calculate the exclusive contribution of group variables or unit variables in the total segregation. It's an inmediate way of jointly obtaining the relevant results of the two previous decompositions. The `ìnteraction` term refers to an amount of segregation that cannot be attributed to the exclusive segregating effect of characteristics that jointly define the group:
+The `contribution.from` option allows evaluate the exclusive segregating effect of group variables or unit variables into the total segregation. It's an inmediate way of jointly obtaining the relevant results of the two previous decompositions. The `ìnteraction` term refers to an amount of segregation that cannot be attributed to the exclusive segregating effect of characteristics that jointly define the group:
 ```{r}
 mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", contribution.from = "group_vars")
 ```

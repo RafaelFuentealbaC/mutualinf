@@ -19,8 +19,8 @@ The library:
   - Allows calculate the total segregation.
   - Allows descompose the total segregation index into the between term
     and the within term.
-  - Allows calculate and know the exclusive contribution that generate
-    the group variables or the unit variables into the total
+  - Allows calculate and know the exclusive segregating effect that
+    generate the group variables or the unit variables into the total
     segregation.
   - Allows separate the calculations according to one or more
     characteristics of the system.
@@ -140,12 +140,12 @@ mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", within = "
 #> 1: 0.211074 0.03607188 0.1750021
 ```
 
-The `contribution.from` option allows calculate the exclusive
-contribution of group variables or unit variables in the total
-segregation. It’s an inmediate way of jointly obtaining the relevant
-results of the two previous decompositions. The `ìnteraction` term
-refers to an amount of segregation that cannot be attributed to the
-exclusive segregating effect of characteristics that jointly define the
+The `contribution.from` option allows evaluate the exclusive segregating
+effect of group variables or unit variables into the total segregation.
+It’s an inmediate way of jointly obtaining the relevant results of the
+two previous decompositions. The `ìnteraction` term refers to an amount
+of segregation that cannot be attributed to the exclusive segregating
+effect of characteristics that jointly define the
 group:
 
 ``` r
@@ -185,13 +185,13 @@ differences with the `system.time` function:
 system.time(mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = c("school", "comuna"), within = "etnia",
        contribution.from = "unit_vars", components = TRUE))
 #>    user  system elapsed 
-#>  14.811   0.052   7.626
+#>  14.279   0.040   7.350
 
 # In parallel, using two CPU cores:
 system.time(mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = c("school", "comuna"), within = "csep",
        contribution.from = "unit_vars", components = TRUE, cores = 2))
 #>    user  system elapsed 
-#>   4.878   0.379   6.859
+#>   5.074   0.352   6.987
 ```
 
 ## Citation

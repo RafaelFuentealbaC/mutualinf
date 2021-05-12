@@ -6,7 +6,7 @@
 NULL
 #' @import data.table
 #' @import parallel
-M_within <- function(data, group, unit, within, by = NULL, components = FALSE, contribution.from = NULL, cores = NULL) {
+M_within <- function(data, group, unit, within, by = NULL, contribution.from = NULL, components = FALSE, cores = NULL) {
   total <- sum(data[, fw])
   contribution <- NULL
 
