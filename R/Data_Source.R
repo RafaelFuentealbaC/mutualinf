@@ -1,37 +1,56 @@
-#' @title Segregation data of the Araucania region
-#' @description Contain information from estudents of the Araucania Region in Chile between year 2016 and 2018.
-#' The data was be obtain from ... ?
-#' @format A data.frame with 215745 observations and 10 variables:
+#' @title Segregation data of the south zone of Chile
+#' @description Contains information related to students and educational system characteristics of the south zone of Chile
+#' between year 2016 and 2018. The data was be obtain from the DatosAbiertos platform of the Study Center of the Ministry of
+#' Education <http://datosabiertos.mineduc.cl/> and SIMCE data of the Education Quality Agency
+#' <http://www.agenciaeducacion.cl/>.
+#' @format A data.frame with 682172 observations and 10 variables:
 #' \describe{
-#' \item{year}{school year.}
+#' \item{year}{school year. Can be 2016, 2017 or 2018.}
 #' \item{school}{establishment database role.}
 #' \item{comuna}{official code of commune in which the establishment is located.}
-#' \item{csep}{socio-economic criterion.}
-#' \item{etnia}{belongs to indigenous people.}
-#' \item{rural}{rural RBD.}
-#' \item{region}{region code where the establishment is located.}
-#' \item{sch_type}{dependence code of the establishment.}
-#' \item{gender}{sex of student.}
+#' \item{csep}{socio-economic criterion. Organizated students in Non-Vulnerables (1), Preferents (2), Prioritaries (3).}
+#' \item{etnia}{ethnicity criterion. Students does not belongs to indigenous people (0) or students does belong to
+#' indigenous people (1).}
+#' \item{rural}{rurality criterion. The establishment is located in urban zone (0) or is located in rural zone (1).}
+#' \item{region}{region code where the establishment is located. Organizated in Bio-Bío region (8), Araucanía region (9) and
+#' Los Ríos region (14).}
+#' \item{sch_type}{dependency code. Dependency of the establishment can be municipal (1), subsidized private (2) or paid
+#' private (3).}
+#' \item{gender}{sex of student. Students can be female (1) or male (2).}
 #' \item{nobs}{number of students.}
 #' }
 #' @source <https://github.com/RafaelFuentealbaC/mutualinf>
-"DF_Seg_Ar"
+#'
+#' <http://datosabiertos.mineduc.cl/>
+#'
+#' <http://www.agenciaeducacion.cl/>
+"DF_Seg_Chile"
 
-#' @title Segregation data of the Araucania region
-#' @description Contain information from estudents of the Araucania Region in Chile between year 2016 and 2018.
-#' The data was be obtain from ... ?
-#' @format A data.table with 20107 observations and 10 variables:
+
+#' @title Segregation data of the south zone of Chile
+#' @description Contains information related to students and educational system characteristics of the south zone of Chile
+#' between year 2016 and 2018. The data was be obtain from the DatosAbiertos platform of the Study Center of the Ministry of
+#' Education <http://datosabiertos.mineduc.cl/> and SIMCE data of the Education Quality Agency
+#' <http://www.agenciaeducacion.cl/>.
+#' @format A data.table with 53202 observations and 10 variables:
 #' \describe{
-#' \item{year}{school year.}
+#' \item{year}{school year. Can be 2016, 2017 or 2018.}
 #' \item{school}{establishment database role.}
 #' \item{comuna}{official code of commune in which the establishment is located.}
-#' \item{csep}{socio-economic criterion.}
-#' \item{etnia}{belongs to indigenous people.}
-#' \item{rural}{rural RBD.}
-#' \item{region}{region code where the establishment is located.}
-#' \item{sch_type}{dependence code of the establishment.}
-#' \item{gender}{sex of student.}
+#' \item{csep}{socio-economic criterion. Organizated students in Non-Vulnerables (1), Preferents (2), Prioritaries (3).}
+#' \item{etnia}{ethnicity criterion. Students does not belongs to indigenous people (0) or students does belong to
+#' indigenous people (1).}
+#' \item{rural}{rurality criterion. The establishment is located in urban zone (0) or is located in rural zone (1).}
+#' \item{region}{region code where the establishment is located. Organizated in Bio-Bío region (8), Araucanía region (9) and
+#' Los Ríos region (14).}
+#' \item{sch_type}{dependency code. Dependency of the establishment can be municipal (1), subsidized private (2) or paid
+#' private (3).}
+#' \item{gender}{sex of student. Students can be female (1) or male (2).}
 #' \item{fw}{number of students.}
 #' }
 #' @source <https://github.com/RafaelFuentealbaC/mutualinf>
-"DT_Seg_Ar"
+#'
+#' <http://datosabiertos.mineduc.cl/>
+#'
+#' <http://www.agenciaeducacion.cl/>
+"DT_Seg_Chile"

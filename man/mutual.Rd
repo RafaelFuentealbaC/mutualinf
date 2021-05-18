@@ -2,7 +2,7 @@
 % Please edit documentation in R/mutual.R
 \name{mutual}
 \alias{mutual}
-\title{Calculates the mutual information index}
+\title{Calculate and decompose the mutual information index}
 \usage{
 mutual(
   data,
@@ -67,43 +67,43 @@ segregation. The decompositions of the within term and contributions can be show
 \examples{
 \dontrun{
 # Get the total segregation.
-mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school")
+mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school")
 
-# Using the 'by' option to calculate the segregation by year or by another variable(s).
-mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", by = "year")
+# Using the 'by' option to separate the calculations according to particular dimension or multiple dimensions.
+mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", by = "region")
 
 # Use the 'within' option to decompose the index total value into the between term and the within term.
-mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", within = "etnia")
+mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", within = "etnia")
 
 # Use the 'components' option to get detail information. The result shows the proportions and the local segregation index
 # on the 'W_Decomposition' element. The weighted average between 'p' and 'within' is equal to the within term.
-mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", within = "etnia", component = TRUE)
+mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", within = "etnia", component = TRUE)
 
 # Use the 'contribution.from' option to evaluate the exclusive segregating effect of certain characteristics into the total segregation.
 # Contribution from of all variables of 'group' elements:
-mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", by = "year", contribution.from = "group_vars")
+mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", by = "region", contribution.from = "group_vars")
 
 # Contribution only from 'etnia' variable:
-mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", by = "year", contribution.from = "etnia")
+mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", by = "region", contribution.from = "etnia")
 
 # Use the 'cores' option to increase the CPU cores into the index compute.
-mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", by = "year", cores = 2)
+mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", by = "region", cores = 2)
 }
 }
 \references{
-Frankel, D. & Volij, O. (2011). Measuring school segregation. Journal of Economic Theory. 146(1):1-38. DOI:
+Frankel, D. and Volij, O. (2011). Measuring school segregation. Journal of Economic Theory. 146(1):1-38. DOI:
 10.1016/j.jet.2010.10.008.
 
-Mora, R. & Guinea-Martin, D. (2021). Computing decomposable multigroup indexes of segregation. UC3M Working
+Mora, R. and Guinea-Martin, D. (2021). Computing decomposable multigroup indexes of segregation. UC3M Working
 papers. Economics 31803, Universidad Carlos III de Madrid. Departamento de Economía.
 
-Mora, R. & Ruiz-Castillo, J. (2003). Additively decomposable segregation indexes. The case of gender segregation by
+Mora, R. and Ruiz-Castillo, J. (2003). Additively decomposable segregation indexes. The case of gender segregation by
 occupations and human capital levels in spain. Journal of Economic Inequality. 1(2):147-179.
 DOI: 10.1023/A:1026198429377.
 
-Mora, R. & Ruiz-Castillo, J. (2011). Entropy-based segregation indices. Sociological Methodology. 41(1):159-194.
+Mora, R. and Ruiz-Castillo, J. (2011). Entropy-based segregation indices. Sociological Methodology. 41(1):159-194.
 DOI: 10.1111/j.1467-9531.2011.01237.x.
 
-Theil, H. & Finizza, Anthony J. (1971). A note on the measurement of racial integration of schools by means of
+Theil, H. and Finizza, Anthony J. (1971). A note on the measurement of racial integration of schools by means of
 informational concepts. The Journal of Mathematical Sociology. 1(2):187-193. DOI: 10.1080/0022250X.1971.9989795.
 }

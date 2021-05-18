@@ -1,6 +1,6 @@
 Package: mutualinf
 Type: Package
-Title: Calculation of the Mutual Information Index
+Title: Calculation and decomposition of the Mutual Information Index
 Version: 0.1.0
 Authors@R: c(person("Rafael", "Fuentealba-Chaura", email = "rafael.fuentealba2015@alu.uct.cl", role = c("aut", "cre")),
               person("Ricardo", "Mora", email = "ricmora@eco.uc3m.es", role = "aut"),
@@ -13,8 +13,8 @@ Description: The Mutual Information Index (M) introduced to social science liter
     Decomposability and Strong Group Decomposability properties. The package allows
     to calculate the index total value and decompose it into their between and
     within terms. The package also allows to know the local segregation and
-    calculate the exclusive contribution that generate the group variables or the
-    unit variables into the total segregation. Finally, the package use tools to
+    evaluate the exclusive segregating effect that generate the group variables or
+    the unit variables into the total segregation. Finally, the package use tools to
     efficiently advantage the resources of the computer in the computation tasks
     of the index.
 License: GPL-3

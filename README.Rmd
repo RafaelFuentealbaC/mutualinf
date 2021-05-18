@@ -54,7 +54,7 @@ The package provides two principal functions:
 - This function allows prepare the dataset that later will be use to computation index and generate the decompositions. For more details see the help. 
 
 ```r
-?M_total
+?mutual
 ```
 - This function provides all values related with computation of the index and decompositions. For more details consult see the help.
 
@@ -64,53 +64,52 @@ The package allow calculate the Mutual Information Index (M) in his simplest for
 ```{r}
 library(mutualinf)
 
-mutual(data = DT_Seg_Ar, group = "csep", unit = "school")
+mutual(data = DT_Seg_Chile, group = "csep", unit = "school")
 ```
 
 Also can be used multiple dimensions in the group and unit analysis:
 ```{r}
 # over multiple group dimensions
-mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school")
+mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school")
 
 # over multiple unit dimensions
-mutual(data = DT_Seg_Ar, group = "csep", unit = c("school", "comuna"))
+mutual(data = DT_Seg_Chile, group = "csep", unit = c("school", "sch_type"))
 ```
 
-The `by` option allows separate the calculations according to a particular variable or multiple variables:
+The `by` option allows separate the calculations according to particular dimension or multiple dimensions:
 ```{r}
-mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", by = "year")
+mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", by = "region")
 ```
 
 The `within` option allows decompose the total segregation into their between and within terms:
 ```{r}
 # get the segregation that is socio-economic exclusively and then segregation that is ethnic exclusively
 # for all socio-economic categories
-mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", within = "csep")
+mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", within = "csep")
 
 # get the segregation that is ethnic exclusively and then segregation that is socio-economic exclusively
 # for all ethnic categories
-mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", within = "etnia")
+mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", within = "etnia")
 ```
 
-The `contribution.from` option allows evaluate the exclusive segregating effect of group variables or unit variables into the total segregation. It's an inmediate way of jointly obtaining the relevant results of the two previous decompositions. The `ìnteraction` term refers to an amount of segregation that cannot be attributed to the exclusive segregating effect of characteristics that jointly define the group:
+The `contribution.from` option allows evaluate the exclusive segregating effect of group variables or unit variables into the total segregation. It's an inmediate way of jointly obtaining the relevant results of the two previous decompositions. The `ìnteraction` term refers to an amount of segregation that cannot be attributed to the exclusive segregating effect of characteristics that jointly define the groups (in this case):
 ```{r}
-mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = "school", contribution.from = "group_vars")
+mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", contribution.from = "group_vars")
 ```
 
 The `components` option allows know the proportions and the local segregation index for all categories of variables of the `within` parameter. The weighted average between `p` and `within` of the `$W_Decomposition` element is equal to the `M_W_csep` term of the `$Total` element:
 ```{r}
-mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = c("school", "comuna"), within = "csep",
-       components = TRUE)
+mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", within = "csep", components = TRUE)
 ```
 
 The `cores` option allows use more than one CPU cores in the index compute. This avoids overloading the current work session by distributing calculation tasks in child processs. Compare the differences with the `system.time` function:
 ```{r}
 # Sequentially, using one CPU core:
-system.time(mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = c("school", "comuna"), within = "etnia",
+system.time(mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = c("school", "sch_type"), within = "csep",
        contribution.from = "unit_vars", components = TRUE))
 
 # In parallel, using two CPU cores:
-system.time(mutual(data = DT_Seg_Ar, group = c("csep", "etnia"), unit = c("school", "comuna"), within = "csep",
+system.time(mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = c("school", "sch_type"), within = "csep",
        contribution.from = "unit_vars", components = TRUE, cores = 2))
 
 ```
@@ -127,14 +126,14 @@ Fuentealba-Chaura, R., Mora, R., Rojas-Mora, J. (2021). mutualinf: a library to 
 
 Elbers, B. (2021). A Method for Studying Differences in Segregation Across Time and Space. Sociological Methods & Research. https://doi.org/10.1177/0049124121986204.
 
-Frankel, D. & Volij, O. (2011). Measuring school segregation. Journal of EconomicTheory. 146(1):1-38. https://doi.org/10.1016/j.jet.2010.10.008.
+Frankel, D. and Volij, O. (2011). Measuring school segregation. Journal of EconomicTheory. 146(1):1-38. https://doi.org/10.1016/j.jet.2010.10.008.
 
 Kullback, S. (1959).Information Theory and Statistics. Wiley Publication in Mathematical Statistics.
 
-Mora, R. & Guinea-Martin, D. (2021). Computing decomposable multigroup indexesof segregation. UC3M Working papers. Economics 31803, Universidad Carlos III de Madrid. Departamento de Economía.
+Mora, R. and Guinea-Martin, D. (2021). Computing decomposable multigroup indexesof segregation. UC3M Working papers. Economics 31803, Universidad Carlos III de Madrid. Departamento de Economía.
 
-Mora, R. & Ruiz-Castillo, J. (2003). Additively decomposable segregation indexes. The case of gender segregation by occupations and human capital levels in Spain. Journal of Economic Inequality. 1(2):147-179. https://doi.org/10.1023/A:1026198429377.
+Mora, R. and Ruiz-Castillo, J. (2003). Additively decomposable segregation indexes. The case of gender segregation by occupations and human capital levels in Spain. Journal of Economic Inequality. 1(2):147-179. https://doi.org/10.1023/A:1026198429377.
 
-Mora, R. & Ruiz-Castillo, J. (2011). Entropy-based segregation indices. Sociological Methodology. 41(1):159-194. https://doi.org/10.1111/j.1467-9531.2011.01237.x.
+Mora, R. and Ruiz-Castillo, J. (2011). Entropy-based segregation indices. Sociological Methodology. 41(1):159-194. https://doi.org/10.1111/j.1467-9531.2011.01237.x.
 
-Theil, H. & Finizza, Anthony J. (1971). A note on the measurement of racial integration of schools by means of informational concepts. The Journal of Mathematical Sociology. 1(2):187-193. https://doi.org/10.1080/0022250X.1971.9989795.
+Theil, H. and Finizza, Anthony J. (1971). A note on the measurement of racial integration of schools by means of informational concepts. The Journal of Mathematical Sociology. 1(2):187-193. https://doi.org/10.1080/0022250X.1971.9989795.

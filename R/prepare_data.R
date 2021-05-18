@@ -7,29 +7,40 @@
 #' variable combinations of the dataset. If this variable exists then the function will change his original name
 #' to \code{fw}. If this variable no exists then the function will compute the frecuency weight given the
 #' variable combinations of \code{vars} and will create a new variable called \code{fw}. By default is NULL.
+#' @param col.order A variable name or vector of variables names contained in \code{vars}, or also, a variable
+#' number or vector of variables numbers contained in \code{vars}. Defines the columns that will use to order
+#' the dataset.
 #' @return Returns a data.table.
 #' @examples
 #' \dontrun{
 #' # Considering the variable names of 'data' and that exists a variable to 'fw'.
-#' prepare_data(data = DF_Seg_Ar, vars = c("csep2", "etnia", "school2", "comuna"), fw = "nobs")
+#' my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "etnia", "school", "comuna"), fw = "nobs")
 #'
 #' # Considering the variable numbers of 'data' and that exists a variable to 'fw'.
-#' prepare_data(data = DF_Seg_Ar, vars = c(6, 7, 3, 4), fw = 12)
+#' my_data <- prepare_data(data = DF_Seg_Chile, vars = c(4, 5, 2, 3), fw = 10)
 #'
 #' # Considering the variable names of 'data' and that no exists a variable to 'fw'.
-#' prepare_data(data = DF_Seg_Ar, vars = c("csep2", "etnia", "school2", "comuna"))
+#' my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "etnia", "school", "comuna"))
 #'
-#' # The class of the resultant object must be "data.table" "data.frame".
-#' class(object)
+#' # Using the 'col.order' option to order data according to 'csep' column.
+#' my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "etnia", "school", "comuna"), fw = "nobs", col.order = "csep")
+#'
+#' # The class of the resultant object in all cases must be "data.table" "data.frame".
+#' class(my_data)
 #' }
 #' @import data.table
 #' @export
-prepare_data <- function(data, vars, fw = NULL) {
+prepare_data <- function(data, vars, fw = NULL, col.order = NULL) {
   if ("data.frame" %in% class(data)) {
     if (nrow(data) == 0) stop("data.frame is empty")
 
     vars_exists <- c(vars, fw)
     if (is.numeric(vars_exists)) {
+      if (!is.null(col.order)) {
+        col_order_no_exists <- col.order[!col.order %in% vars_exists]
+        if (length(col_order_no_exists) > 0) stop(paste("Variable(s)", col_order_no_exists, "not in data.frame"))
+      }
+
       if (max(vars_exists) > ncol(data) | min(vars_exists) < 1) stop("One or more selected columns are outside of the data.frame")
       vars_exists <- names(data[, vars_exists])
     }
@@ -44,6 +55,7 @@ prepare_data <- function(data, vars, fw = NULL) {
   }
 
   data <- as.data.table(data)
+
   if (is.numeric(vars)) vars <- names(data[, ..vars])
 
   if (!is.null(fw)) {
@@ -54,6 +66,12 @@ prepare_data <- function(data, vars, fw = NULL) {
   }
 
   data <- data[fw > 0, list(fw = sum(fw)), by = vars]
+
+  if (!is.null(col.order)) {
+    if (is.numeric(col.order)) col.order <- data[, colnames(.SD), .SDcols = col.order]
+    setorderv(x = data, cols = col.order)
+  }
+
   setattr(data, "vars", vars)
   setkey(data, NULL)
   data

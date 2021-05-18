@@ -4,7 +4,7 @@
 \alias{prepare_data}
 \title{Prepare the data to use}
 \usage{
-prepare_data(data, vars, fw = NULL)
+prepare_data(data, vars, fw = NULL, col.order = NULL)
 }
 \arguments{
 \item{data}{A data.frame.}
@@ -15,6 +15,10 @@ prepare_data(data, vars, fw = NULL)
 variable combinations of the dataset. If this variable exists then the function will change his original name
 to \code{fw}. If this variable no exists then the function will compute the frecuency weight given the
 variable combinations of \code{vars} and will create a new variable called \code{fw}. By default is NULL.}
+
+\item{col.order}{A variable name or vector of variables names contained in \code{vars}, or also, a variable
+number or vector of variables numbers contained in \code{vars}. Defines the columns that will use to order
+the dataset.}
 }
 \value{
 Returns a data.table.
@@ -26,15 +30,18 @@ decompositions. Generates a \code{data.table} with the specificate entry variabl
 \examples{
 \dontrun{
 # Considering the variable names of 'data' and that exists a variable to 'fw'.
-prepare_data(data = DF_Seg_Ar, vars = c("csep2", "etnia", "school2", "comuna"), fw = "nobs")
+my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "etnia", "school", "comuna"), fw = "nobs")
 
 # Considering the variable numbers of 'data' and that exists a variable to 'fw'.
-prepare_data(data = DF_Seg_Ar, vars = c(6, 7, 3, 4), fw = 12)
+my_data <- prepare_data(data = DF_Seg_Chile, vars = c(4, 5, 2, 3), fw = 10)
 
 # Considering the variable names of 'data' and that no exists a variable to 'fw'.
-prepare_data(data = DF_Seg_Ar, vars = c("csep2", "etnia", "school2", "comuna"))
+my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "etnia", "school", "comuna"))
 
-# The class of the resultant object must be "data.table" "data.frame".
-class(object)
+# Using the 'col.order' option to order data according to 'csep' column.
+my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "etnia", "school", "comuna"), fw = "nobs", col.order = "csep")
+
+# The class of the resultant object in all cases must be "data.table" "data.frame".
+class(my_data)
 }
 }
