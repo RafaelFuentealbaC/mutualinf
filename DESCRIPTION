@@ -1,6 +1,6 @@
 Package: mutualinf
 Type: Package
-Title: Calculation and decomposition of the Mutual Information Index
+Title: Calculation and Decomposition of the Mutual Information Index
 Version: 0.1.0
 Authors@R: c(person("Rafael", "Fuentealba-Chaura", email = "rafael.fuentealba2015@alu.uct.cl", role = c("aut", "cre")),
               person("Ricardo", "Mora", email = "ricmora@eco.uc3m.es", role = "aut"),
@@ -10,17 +10,18 @@ Description: The Mutual Information Index (M) introduced to social science liter
     segregation measure that is highly decomposable and that according to Frankel
     and Volij (2011) <doi:10.1016/j.jet.2010.10.008> and Mora and Ruiz-Castillo
     (2011) <doi:10.1111/j.1467-9531.2011.01237.x> satisfies the Strong Unit
-    Decomposability and Strong Group Decomposability properties. The package allows
-    to calculate the index total value and decompose it into their between and
-    within terms. The package also allows to know the local segregation and
-    evaluate the exclusive segregating effect that generate the group variables or
-    the unit variables into the total segregation. Finally, the package use tools to
-    efficiently advantage the resources of the computer in the computation tasks
-    of the index.
+    Decomposability and Strong Group Decomposability properties. This package allows
+    calculating and decomposing the total index value into its "between" and "within"
+    terms. These last terms can also be decomposed into their contributions, either
+    by group or unit characteristics (contributions). The factors that produce each
+    "within" term can also be displayed at the user's request (components).
+    The results can be calculated considering a variable or sets of variables that
+    define separate clusters.
 License: GPL-3
 Imports:
     data.table,
-    parallel
+    parallel,
+    stats
 Encoding: UTF-8
 LazyData: true
 URL: https://github.com/RafaelFuentealbaC/mutualinf
@@ -38,4 +39,5 @@ Collate:
     'get_contribution.R'
     'get_proportion.R'
     'M_within.R'
+    'globals.R'
     'prepare_data.R'
