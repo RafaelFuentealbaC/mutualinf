@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # mutualinf 
 
 <!-- badges: start -->
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 <!-- badges: end -->
 
 An R library to calculate and decompose the Mutual Information Index (M) introduced to social science literature by Theil and Finizza (1971). The M index is a multigroup segregation measure that is highly decomposable that satisfies the Strong Unit Decomposability (SUD) and Strong Group Decomposability (SGD) properties (Frankel and Volij, 2011; Mora and Ruiz-Castillo, 2011). 
@@ -27,7 +28,7 @@ The library:
 - Allows calculate and know the exclusive segregating effect that generate the group variables or the unit variables into the total segregation.
 - Allows separate the calculations according to one or more characteristics of the system.
 - Deliveries the decompositions information in the general form or in detail form. In this last case delivery information about the proportions and the local segregation index for all categorical combinations of variables when there is a least one dimension for the within parameter.
-- Is fast in the compute tasks because uses internally the [`data.table`](https://cran.r-project.org/web/packages/data.table/index.html) package.
+- Is fast in the compute tasks because uses internally the [`data.table`](https://CRAN.R-project.org/package=data.table) package.
 - Uses parallelization methods of the [`parallel`](https://stat.ethz.ch/R-manual/R-devel/library/parallel/doc/parallel.pdf) library to help calculate the index and decompositions. This option allows use more than one CPU cores of the computer to efficiently advantage the resources in the calculation. However this option is available only to Mac, Linux, Unix, and BSD systems but is not available to Windows sytems because the package uses internally the function [`mclapply`](https://www.rdocumentation.org/packages/parallel/versions/3.4.1/topics/mclapply) that is based on the bifurcation. In the Windows case, the calculation is carried out sequentially through [`lapply`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/lapply) function.
 
 ## Installation
@@ -105,12 +106,12 @@ mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", within 
 The `cores` option allows use more than one CPU cores in the index compute. This avoids overloading the current work session by distributing calculation tasks in child processs. Compare the differences with the `system.time` function:
 ```{r}
 # Sequentially, using one CPU core:
-system.time(mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = c("school", "sch_type"), within = "csep",
-       contribution.from = "unit_vars", components = TRUE))
+system.time(mutual(data = DT_Seg_Chile, group = c("csep", "etnia", "gender"), unit = c("school", "sch_type", "rural"),
+                   within = c("csep", "gender"), contribution.from = "unit_vars", components = TRUE))
 
 # In parallel, using two CPU cores:
-system.time(mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = c("school", "sch_type"), within = "csep",
-       contribution.from = "unit_vars", components = TRUE, cores = 2))
+system.time(mutual(data = DT_Seg_Chile, group = c("csep", "etnia", "gender"), unit = c("school", "sch_type", "rural"),
+                   within = c("csep", "gender"), contribution.from = "unit_vars", components = TRUE, cores = 2))
 
 ```
 

@@ -14,7 +14,8 @@
 #' @examples
 #' \dontrun{
 #' # Considering the variable names of 'data' and that exists a variable to 'fw'.
-#' my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "etnia", "school", "comuna"), fw = "nobs")
+#' my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "etnia", "school", "comuna"),
+#' fw = "nobs")
 #'
 #' # Considering the variable numbers of 'data' and that exists a variable to 'fw'.
 #' my_data <- prepare_data(data = DF_Seg_Chile, vars = c(4, 5, 2, 3), fw = 10)
@@ -23,7 +24,8 @@
 #' my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "etnia", "school", "comuna"))
 #'
 #' # Using the 'col.order' option to order data according to 'csep' column.
-#' my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "etnia", "school", "comuna"), fw = "nobs", col.order = "csep")
+#' my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "etnia", "school", "comuna"),
+#' fw = "nobs", col.order = "csep")
 #'
 #' # The class of the resultant object in all cases must be "data.table" "data.frame".
 #' class(my_data)

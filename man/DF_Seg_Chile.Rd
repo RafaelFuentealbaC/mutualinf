@@ -7,7 +7,7 @@
 \format{
 A data.frame with 682172 observations and 10 variables:
 \describe{
-\item{year}{school year. Can be 2016, 2017 or 2018.}
+\item{year}{school year. It can be 2016, 2017 or 2018.}
 \item{school}{establishment database role.}
 \item{comuna}{official code of commune in which the establishment is located.}
 \item{csep}{socio-economic criterion. Organizated students in Non-Vulnerables (1), Preferents (2), Prioritaries (3).}

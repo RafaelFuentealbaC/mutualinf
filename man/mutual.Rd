@@ -69,25 +69,33 @@ segregation. The decompositions of the within term and contributions can be show
 # Get the total segregation.
 mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school")
 
-# Using the 'by' option to separate the calculations according to particular dimension or multiple dimensions.
+# Using the 'by' option to separate the calculations according to particular dimension or
+# multiple dimensions.
 mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", by = "region")
 
-# Use the 'within' option to decompose the index total value into the between term and the within term.
+# Use the 'within' option to decompose the index total value into the between term and the
+# within term.
 mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", within = "etnia")
 
-# Use the 'components' option to get detail information. The result shows the proportions and the local segregation index
-# on the 'W_Decomposition' element. The weighted average between 'p' and 'within' is equal to the within term.
-mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", within = "etnia", component = TRUE)
+# Use the 'components' option to get detail information. The result shows the proportions
+# and the local segregation index on the 'W_Decomposition' element. The weighted average
+# between 'p' and 'within' is equal to the within term.
+mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", within = "etnia",
+component = TRUE)
 
-# Use the 'contribution.from' option to evaluate the exclusive segregating effect of certain characteristics into the total segregation.
-# Contribution from of all variables of 'group' elements:
-mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", by = "region", contribution.from = "group_vars")
+# Use the 'contribution.from' option to evaluate the exclusive segregating effect of
+# certain characteristics into the total segregation.
+## Contribution from of all variables of 'group' elements:
+mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", by = "region",
+contribution.from = "group_vars")
 
-# Contribution only from 'etnia' variable:
-mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", by = "region", contribution.from = "etnia")
+## Contribution only from 'etnia' variable:
+mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", by = "region",
+contribution.from = "etnia")
 
 # Use the 'cores' option to increase the CPU cores into the index compute.
-mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", by = "region", cores = 2)
+mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", by = "region",
+cores = 2)
 }
 }
 \references{

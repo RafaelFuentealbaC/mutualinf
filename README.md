@@ -5,6 +5,8 @@
 
 <!-- badges: start -->
 
+[![License: GPL
+v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 <!-- badges: end -->
 
 An R library to calculate and decompose the Mutual Information Index (M)
@@ -30,7 +32,7 @@ The library:
     combinations of variables when there is a least one dimension for
     the within parameter.
   - Is fast in the compute tasks because uses internally the
-    [`data.table`](https://cran.r-project.org/web/packages/data.table/index.html)
+    [`data.table`](https://CRAN.R-project.org/package=data.table)
     package.
   - Uses parallelization methods of the
     [`parallel`](https://stat.ethz.ch/R-manual/R-devel/library/parallel/doc/parallel.pdf)
@@ -181,16 +183,16 @@ differences with the `system.time` function:
 
 ``` r
 # Sequentially, using one CPU core:
-system.time(mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = c("school", "sch_type"), within = "csep",
-       contribution.from = "unit_vars", components = TRUE))
+system.time(mutual(data = DT_Seg_Chile, group = c("csep", "etnia", "gender"), unit = c("school", "sch_type", "rural"),
+                   within = c("csep", "gender"), contribution.from = "unit_vars", components = TRUE))
 #>    user  system elapsed 
-#>  50.416   0.115  26.824
+#>  89.120   0.132  48.084
 
 # In parallel, using two CPU cores:
-system.time(mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = c("school", "sch_type"), within = "csep",
-       contribution.from = "unit_vars", components = TRUE, cores = 2))
+system.time(mutual(data = DT_Seg_Chile, group = c("csep", "etnia", "gender"), unit = c("school", "sch_type", "rural"),
+                   within = c("csep", "gender"), contribution.from = "unit_vars", components = TRUE, cores = 2))
 #>    user  system elapsed 
-#>  12.257   0.326  19.318
+#>  39.649   1.011  31.177
 ```
 
 ## Citation
