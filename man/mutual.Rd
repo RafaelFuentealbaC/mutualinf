@@ -16,42 +16,42 @@ mutual(
 )
 }
 \arguments{
-\item{data}{A data.table.}
+\item{data}{A data.table of class 'mutual.data'.}
 
 \item{group}{A categorical variable name or vector of categorical variables names contained in \code{data}, or also,
-a categorical variable number or vector of categorical variables numbers contained in \code{data}. Defines the first
-dimension over which segregation is computed.}
+a column number or vector of column numbers of \code{data}. Defines the first dimension over which segregation is
+computed.}
 
 \item{unit}{A categorical variable name or vector of categorical variables names contained in \code{data}, or also,
-a categorical variable number or vector of categorical variables numbers contained in \code{data}. Defines the second
-dimension over which segregation is computed.}
+a column number or vector of column numbers of \code{data}. Defines the second dimension over which segregation is
+computed.}
 
 \item{within}{A categorical variable name or vector of categorical variables names contained in \code{data}, or also,
-a categorical variable number or vector of categorical variables numbers contained in \code{data}. Defines the
-dimensions within which segregation is computed. By default is NULL.}
+a column number or vector of column numbers of \code{data}. Defines the dimensions within which segregation is
+computed. By default is NULL.}
 
-\item{by}{A categorical variable name or vector of categorical variables names contained in \code{data}, or also, a
-categorical variable number or vector of categorical variables numbers contained in \code{data}. Defines the
-dimensions by which calculations are separated. By default is NULL.}
+\item{by}{A categorical variable name or vector of categorical variables names contained in \code{data}, or also,
+a column number or vector of column numbers of \code{data}. Defines the dimensions by which calculations are
+separated. By default is NULL.}
 
 \item{contribution.from}{A variable of character type that can be 'group_vars' or 'unit_vars', or also, a categorical
 variable name or vector of categorical variables names contained in the \code{group} parameter or \code{unit}
-parameter, or also, a categorical variable number or vector of categorical variables numbers contained in the
-\code{group} parameter or \code{unit} parameter. Defines the dimension over which wants to evaluate it's exclusive
-segregating effect into the total segregation. By default is NULL.}
+parameter, or also, a column number or vector of column numbers in the \code{group} parameter or the \code{unit}
+parameter. Defines the dimension over which the exclusive segregation effect into the total segregation is wished
+to calculate. By default is NULL.}
 
-\item{components}{A boolean value. If is TRUE and the \code{within} option is not null and the \code{by} option
-is null then returns a \code{list} where the first element is a \code{data.table} that contains a summary of the index
-total value and decompositions while the second element is a \code{data.table} with more detail information of the
-decomposition of the within term. Besides if the \code{within} and \code{by} options are not null then returns a
-structure of \code{list of lists} type where each first element is a \code{data.table} that contains the summary of
-the index total value and decompositions while each second element is a \code{data.table} with more detail information
-of the decomposition of the within term that displayed in each first element. The detailed information includes the
-proportions and local segregation. By default is FALSE.}
+\item{components}{A boolean value. If TRUE and the \code{within} option is not NULL and the \code{by} option is NULL,
+then returns a list where the first element is a data.table that contains a summary of the index total value and
+decompositions while the second element is a data.table with more detail information of the decomposition of the
+within term. Besides, if the \code{within} and \code{by} options are not NULL, then the function returns a list of
+lists where each first element is a data.table that contains the summary of the index total value and decompositions,
+while each second element is a data.table with more detail information of the decomposition of the within term
+displayed in each first element. The detailed information about the elements needed for the linear combination that
+produces the within term. By default is FALSE.}
 
-\item{cores}{A positive integer. Defines the amount of CPU cores that is use to parallelization task into the
-index compute. If is NULL then the compute is carried out sequentially in only one core. This option is available
-to Mac, Linux, Unix, and BSD systems but is not available to Windows sytems. By default is NULL.}
+\item{cores}{A positive integer. Defines the amount of CPU cores to use in parallelization tasks. If NULL, then the
+compute is carried out sequentially in only one core. This option is available to Mac, Linux, Unix, and BSD systems
+but is not available to Windows sytems. By default is NULL.}
 }
 \value{
 A data.table if the \code{components} option is false; a list if the \code{components} option is true and
@@ -59,10 +59,13 @@ the \code{within} option is not null and the \code{by} option is null; or a list
 option is true and the \code{within} and \code{by} options are not null.
 }
 \description{
-Function that delivery the index total value and the decompositions into the between term and the within
-term, either for all data, a particular variable, or multiple variables. Besides allows know the local segregation
-and evaluate the exclusive segregating effect that generate the group variables or the unit variables into the total
-segregation. The decompositions of the within term and contributions can be show in the general form or in detail form.
+Calculating the mutual information index. It can be decomposed into its "between" and "within" terms. The
+"within" terms can also be decomposed into their contributions, either by group or unit characteristics. The factors
+that produce each "within" term can also be displayed at the user's request. The results can be calculated
+considering a variable or sets of variables that define separate clusters.
+}
+\details{
+Mixing \code{group} variables with \code{unit} variables in \code{contributions.from} will produce an error.
 }
 \examples{
 \dontrun{

@@ -2,42 +2,40 @@
 #' @include M.R
 NULL
 #' @title Calculate and decompose the mutual information index
-#' @description Calculating the mutual information index. It can be decomposed into its "between" and "within"
-#' terms. The "within" terms can also be decomposed into their contributions, either
-#' by group or unit characteristics. The factors that produce each
-#' "within" term can also be displayed at the user's request.
-#' The results can be calculated considering a variable or sets of variables that
-#' define separate clusters.
-#' @param data A 'data.table' of class 'mutual.data'.
+#' @description Calculating the mutual information index. It can be decomposed into its "between" and "within" terms. The
+#' "within" terms can also be decomposed into their contributions, either by group or unit characteristics. The factors
+#' that produce each "within" term can also be displayed at the user's request. The results can be calculated
+#' considering a variable or sets of variables that define separate clusters.
+#' @param data A data.table of class 'mutual.data'.
 #' @param group A categorical variable name or vector of categorical variables names contained in \code{data}, or also,
-#' a column number or vector of column numbers of \code{data}. Defines the first
-#' dimension over which segregation is computed.
+#' a column number or vector of column numbers of \code{data}. Defines the first dimension over which segregation is
+#' computed.
 #' @param unit A categorical variable name or vector of categorical variables names contained in \code{data}, or also,
-#' a column number or vector of column numbers of \code{data}. Defines the second
-#' dimension over which segregation is computed.
+#' a column number or vector of column numbers of \code{data}. Defines the second dimension over which segregation is
+#' computed.
 #' @param within A categorical variable name or vector of categorical variables names contained in \code{data}, or also,
-#' a column number or vector of column numbers of \code{data}. Defines the
-#' dimensions within which segregation is computed. By default is NULL.
+#' a column number or vector of column numbers of \code{data}. Defines the dimensions within which segregation is
+#' computed. By default is NULL.
 #' @param by A categorical variable name or vector of categorical variables names contained in \code{data}, or also,
-#' a column number or vector of column numbers of \code{data}. Defines the
-#' dimensions by which calculations are separated. By default is NULL.
+#' a column number or vector of column numbers of \code{data}. Defines the dimensions by which calculations are
+#' separated. By default is NULL.
 #' @param contribution.from A variable of character type that can be 'group_vars' or 'unit_vars', or also, a categorical
 #' variable name or vector of categorical variables names contained in the \code{group} parameter or \code{unit}
-#' parameter, or also, a column number or vector of column numbers in the
-#' \code{group} parameter or the \code{unit} parameter. Defines the dimension over which the exclusive segregation 
-#' effect into the total segregation is wished to calculate. By default is NULL.
-#' @param components A boolean value. If TRUE and the \code{within} option is not NULL and the \code{by} option
-#' is NULL, then returns a \code{list} where the first element is a \code{data.table} that contains a summary of the index
-#' total value and decompositions while the second element is a \code{data.table} with more detail information of the
-#' decomposition of the within term. Besides, if the \code{within} and \code{by} options are not NULL, then the function returns a
-#' list of lists where each first element is a \code{data.table} that contains the summary of
-#' the index total value and decompositions, while each second element is a \code{data.table} with more detail information
-#' of the decomposition of the within term displayed in each first element. The detailed information about the elements
-#' needed for the linear combination that produces the within term. By default is FALSE.
-#' @param cores A positive integer. Defines the amount of CPU cores to use in parallelization tasks.
-#' If NULL, then the compute is carried out sequentially in only one core. This option is available
-#' to Mac, Linux, Unix, and BSD systems but is not available to Windows sytems. By default is NULL.
-#' @details Mixing \code{group} variables with \code{unit} variables in \code{contributions.from} will produce an error. 
+#' parameter, or also, a column number or vector of column numbers in the \code{group} parameter or the \code{unit}
+#' parameter. Defines the dimension over which the exclusive segregation effect into the total segregation is wished
+#' to calculate. By default is NULL.
+#' @param components A boolean value. If TRUE and the \code{within} option is not NULL and the \code{by} option is NULL,
+#' then returns a list where the first element is a data.table that contains a summary of the index total value and
+#' decompositions while the second element is a data.table with more detail information of the decomposition of the
+#' within term. Besides, if the \code{within} and \code{by} options are not NULL, then the function returns a list of
+#' lists where each first element is a data.table that contains the summary of the index total value and decompositions,
+#' while each second element is a data.table with more detail information of the decomposition of the within term
+#' displayed in each first element. The detailed information about the elements needed for the linear combination that
+#' produces the within term. By default is FALSE.
+#' @param cores A positive integer. Defines the amount of CPU cores to use in parallelization tasks. If NULL, then the
+#' compute is carried out sequentially in only one core. This option is available to Mac, Linux, Unix, and BSD systems
+#' but is not available to Windows sytems. By default is NULL.
+#' @details Mixing \code{group} variables with \code{unit} variables in \code{contributions.from} will produce an error.
 #' @return A data.table if the \code{components} option is false; a list if the \code{components} option is true and
 #' the \code{within} option is not null and the \code{by} option is null; or a list of lists if the \code{components}
 #' option is true and the \code{within} and \code{by} options are not null.
