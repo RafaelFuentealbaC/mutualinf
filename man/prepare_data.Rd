@@ -2,48 +2,52 @@
 % Please edit documentation in R/prepare_data.R
 \name{prepare_data}
 \alias{prepare_data}
-\title{Prepare the data to use}
+\title{Prepare the data to be used by \code{mutual} function}
 \usage{
 prepare_data(data, vars, fw = NULL, col.order = NULL)
 }
 \arguments{
-\item{data}{A data.frame.}
+\item{data}{An object of class "data.frame". The data expected is microdata or frequency weight data
+for each combination of variables. The variables must be of "factor" class.}
 
 \item{vars}{A vector of variable names or vector of variable numbers contained in \code{data}.}
 
-\item{fw}{Variable name or variable number contained in \code{data} correspondent to frecuency weight in the
-variable combinations of the dataset. If this variable exists then the function will change his original name
-to \code{fw}. If this variable no exists then the function will compute the frecuency weight given the
-variable combinations of \code{vars} and will create a new variable called \code{fw}. By default is NULL.}
+\item{fw}{Variable name or variable number contained in \code{data} that contains frecuency weight for
+each combination of variables of the dataset. If this variable exists then the function will change its
+original name to \code{fw}. If this variable does not exist or is NULL, then the function will compute the
+frecuency weight given the combination of variables of \code{vars} and will create a new variable called
+\code{fw}. By default is NULL.}
 
 \item{col.order}{A variable name or vector of variables names contained in \code{vars}, or also, a variable
-number or vector of variables numbers contained in \code{vars}. Defines the columns that will use to order
+number or vector of variables numbers contained in \code{vars}. Defines the columns that will use to sort
 the dataset.}
 }
 \value{
-Returns a data.table.
+Returns a \code{data.table} of class "data.table" "data.frame" "mutual.data".
 }
 \description{
-Function that receive the data that later will be use to computes the index value and the
-decompositions. Generates a \code{data.table} with the specificate entry variables.
+Function that receives the data that later will be used to computes the index value and the
+decompositions. Generates a \code{data.table} with the entry variables.
 }
 \examples{
 \dontrun{
-# Considering the variable names of 'data' and that exists a variable to 'fw'.
-my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "etnia", "school", "comuna"),
+# Using some variable names in 'data' with explicit 'fw'.
+my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "ethnicity", "school", "commune"),
 fw = "nobs")
 
-# Considering the variable numbers of 'data' and that exists a variable to 'fw'.
-my_data <- prepare_data(data = DF_Seg_Chile, vars = c(4, 5, 2, 3), fw = 10)
+# Using some column numbers in 'data' and explicit 'fw' as another column number.
+my_data <- prepare_data(data = DF_Seg_Chile, vars = c(4, 5, 2, 3), fw = 11)
 
-# Considering the variable names of 'data' and that no exists a variable to 'fw'.
-my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "etnia", "school", "comuna"))
+# Using some variable names in 'data' and 'fw' does not exist (in this case, the new 'fw' will
+# be equal to 1 for all variable combinations as 'data' already has a frequency weights variable)
+my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "ethnicity", "school", "commune"))
 
-# Using the 'col.order' option to order data according to 'csep' column.
-my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "etnia", "school", "comuna"),
+# Using the 'col.order' option to sort data according to the 'csep' column.
+my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "ethnicity", "school", "commune"),
 fw = "nobs", col.order = "csep")
 
-# The class of the resultant object in all cases must be "data.table" "data.frame".
+# The class of the resultant object in all cases must be "data.table", "data.frame" and
+# "mutual.data".
 class(my_data)
 }
 }

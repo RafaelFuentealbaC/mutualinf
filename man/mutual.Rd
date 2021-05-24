@@ -16,7 +16,7 @@ mutual(
 )
 }
 \arguments{
-\item{data}{A data.table of class 'mutual.data'.}
+\item{data}{A data.table containing the class "data.table" and "mutual.data".}
 
 \item{group}{A categorical variable name or vector of categorical variables names contained in \code{data}, or also,
 a column number or vector of column numbers of \code{data}. Defines the first dimension over which segregation is
@@ -65,7 +65,7 @@ that produce each "within" term can also be displayed at the user's request. The
 considering a variable or sets of variables that define separate clusters.
 }
 \details{
-Mixing \code{group} variables with \code{unit} variables in \code{contributions.from} will produce an error.
+Mixing \code{group} variables with \code{unit} variables in \code{contribution.from} will produce an error.
 }
 \examples{
 \dontrun{
@@ -77,13 +77,14 @@ mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school")
 mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region")
 
 # Use the 'within' option to decompose the index value into its 'between' and 'within' terms.
-mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", within = "ethnicity")
+mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school",
+within = "ethnicity")
 
 # Use the 'components' option to get detailed information. The results show the proportions
 # and the local segregation index on the 'W_Decomposition' element. The weighted average
 # between 'p' and 'within' is equal to the index within term.
-mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", within = "ethnicity",
-components = TRUE)
+mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school",
+within = "ethnicity", components = TRUE)
 
 # Use the 'contribution.from' option to evaluate the exclusive segregation effect of specific
 # characteristics in the total segregation.

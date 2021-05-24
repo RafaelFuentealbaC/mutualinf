@@ -6,7 +6,7 @@ NULL
 #' "within" terms can also be decomposed into their contributions, either by group or unit characteristics. The factors
 #' that produce each "within" term can also be displayed at the user's request. The results can be calculated
 #' considering a variable or sets of variables that define separate clusters.
-#' @param data A data.table of class 'mutual.data'.
+#' @param data A data.table containing the class "data.table" and "mutual.data".
 #' @param group A categorical variable name or vector of categorical variables names contained in \code{data}, or also,
 #' a column number or vector of column numbers of \code{data}. Defines the first dimension over which segregation is
 #' computed.
@@ -35,7 +35,7 @@ NULL
 #' @param cores A positive integer. Defines the amount of CPU cores to use in parallelization tasks. If NULL, then the
 #' compute is carried out sequentially in only one core. This option is available to Mac, Linux, Unix, and BSD systems
 #' but is not available to Windows sytems. By default is NULL.
-#' @details Mixing \code{group} variables with \code{unit} variables in \code{contributions.from} will produce an error.
+#' @details Mixing \code{group} variables with \code{unit} variables in \code{contribution.from} will produce an error.
 #' @return A data.table if the \code{components} option is false; a list if the \code{components} option is true and
 #' the \code{within} option is not null and the \code{by} option is null; or a list of lists if the \code{components}
 #' option is true and the \code{within} and \code{by} options are not null.
@@ -65,13 +65,14 @@ NULL
 #' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region")
 #'
 #' # Use the 'within' option to decompose the index value into its 'between' and 'within' terms.
-#' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", within = "ethnicity")
+#' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school",
+#' within = "ethnicity")
 #'
 #' # Use the 'components' option to get detailed information. The results show the proportions
 #' # and the local segregation index on the 'W_Decomposition' element. The weighted average
 #' # between 'p' and 'within' is equal to the index within term.
-#' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", within = "ethnicity",
-#' components = TRUE)
+#' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school",
+#' within = "ethnicity", components = TRUE)
 #'
 #' # Use the 'contribution.from' option to evaluate the exclusive segregation effect of specific
 #' # characteristics in the total segregation.
@@ -91,6 +92,7 @@ NULL
 #' @export
 mutual <- function(data, group, unit, within = NULL, by = NULL, contribution.from = NULL, components = FALSE, cores = NULL) {
   if (!is.null(cores) & isTRUE(Sys.info()["sysname"] == "windows")) stop("The 'cores' option is not available for windows system. Consider the default option")
+  if ((!"data.table" %in% class(data)) & (!"mutual.data" %in% class(data))) stop("The 'data' object must contain at least the class 'data.table' and 'mutual.data'")
 
   vars <- c(group, unit, within, by)
   contribution_all <- contribution.from[contribution.from %in% c("group_vars", "unit_vars")]
