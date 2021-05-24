@@ -95,21 +95,21 @@ library(mutualinf)
 
 mutual(data = DT_Seg_Chile, group = "csep", unit = "school")
 #>            M
-#> 1: 0.1903672
+#> 1: 0.1995499
 ```
 
 Also can be used multiple dimensions in the group and unit analysis:
 
 ``` r
 # over multiple group dimensions
-mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school")
+mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school")
 #>            M
-#> 1: 0.2383004
+#> 1: 0.2610338
 
 # over multiple unit dimensions
 mutual(data = DT_Seg_Chile, group = "csep", unit = c("school", "sch_type"))
 #>            M
-#> 1: 0.1903881
+#> 1: 0.1995741
 ```
 
 The `by` option allows separate the calculations according to particular
@@ -117,11 +117,11 @@ dimension or multiple
 dimensions:
 
 ``` r
-mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", by = "region")
+mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region")
 #>    region         M
-#> 1:      8 0.2157225
-#> 2:      9 0.2110740
-#> 3:     14 0.1884667
+#> 1:      8 0.2311937
+#> 2:      9 0.2367407
+#> 3:     14 0.2123109
 ```
 
 The `within` option allows decompose the total segregation into their
@@ -131,15 +131,15 @@ terms:
 ``` r
 # get the segregation that is socio-economic exclusively and then segregation that is ethnic exclusively
 # for all socio-economic categories
-mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", within = "csep")
+mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", within = "csep")
 #>            M  M_B_csep   M_W_csep
-#> 1: 0.2383004 0.1903672 0.04793322
+#> 1: 0.2610338 0.1995499 0.06148383
 
 # get the segregation that is ethnic exclusively and then segregation that is socio-economic exclusively
 # for all ethnic categories
-mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", within = "etnia")
-#>            M  M_B_etnia M_W_etnia
-#> 1: 0.2383004 0.05028082 0.1880196
+mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", within = "ethnicity")
+#>            M M_B_ethnicity M_W_ethnicity
+#> 1: 0.2610338    0.06213906     0.1988947
 ```
 
 The `contribution.from` option allows evaluate the exclusive segregating
@@ -151,9 +151,9 @@ effect of characteristics that jointly define the groups (in this
 case):
 
 ``` r
-mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", contribution.from = "group_vars")
-#>            M    C_csep    C_etnia interaction
-#> 1: 0.2383004 0.1880196 0.04793322 0.002347604
+mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", contribution.from = "group_vars")
+#>            M    C_csep C_ethnicity interaction
+#> 1: 0.2610338 0.1988947  0.06148383 0.000655226
 ```
 
 The `components` option allows know the proportions and the local
@@ -164,16 +164,16 @@ parameter. The weighted average between `p` and `within` of the
 element:
 
 ``` r
-mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", within = "csep", components = TRUE)
+mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", within = "csep", components = TRUE)
 #> $Total
 #>            M  M_B_csep   M_W_csep
-#> 1: 0.2383004 0.1903672 0.04793322
+#> 1: 0.2610338 0.1995499 0.06148383
 #> 
 #> $W_Decomposition
 #>    csep         p     within
-#> 1:    3 0.5998678 0.05711080
-#> 2:    2 0.2496697 0.03956633
-#> 3:    1 0.1504626 0.02522739
+#> 1:    2 0.2668582 0.04905997
+#> 2:    3 0.5866331 0.07328276
+#> 3:    1 0.1465087 0.03686939
 ```
 
 The `cores` option allows use more than one CPU cores in the index
@@ -183,16 +183,16 @@ differences with the `system.time` function:
 
 ``` r
 # Sequentially, using one CPU core:
-system.time(mutual(data = DT_Seg_Chile, group = c("csep", "etnia", "gender"), unit = c("school", "sch_type", "rural"),
+system.time(mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity", "gender"), unit = c("school", "sch_type", "rural"),
                    within = c("csep", "gender"), contribution.from = "unit_vars", components = TRUE))
 #>    user  system elapsed 
-#>  89.120   0.132  48.084
+#>  76.728   0.116  41.478
 
 # In parallel, using two CPU cores:
-system.time(mutual(data = DT_Seg_Chile, group = c("csep", "etnia", "gender"), unit = c("school", "sch_type", "rural"),
+system.time(mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity", "gender"), unit = c("school", "sch_type", "rural"),
                    within = c("csep", "gender"), contribution.from = "unit_vars", components = TRUE, cores = 2))
 #>    user  system elapsed 
-#>  39.649   1.011  31.177
+#>  32.588   0.858  24.505
 ```
 
 ## Citation

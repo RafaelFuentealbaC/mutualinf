@@ -71,7 +71,7 @@ mutual(data = DT_Seg_Chile, group = "csep", unit = "school")
 Also can be used multiple dimensions in the group and unit analysis:
 ```{r}
 # over multiple group dimensions
-mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school")
+mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school")
 
 # over multiple unit dimensions
 mutual(data = DT_Seg_Chile, group = "csep", unit = c("school", "sch_type"))
@@ -79,38 +79,38 @@ mutual(data = DT_Seg_Chile, group = "csep", unit = c("school", "sch_type"))
 
 The `by` option allows separate the calculations according to particular dimension or multiple dimensions:
 ```{r}
-mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", by = "region")
+mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region")
 ```
 
 The `within` option allows decompose the total segregation into their between and within terms:
 ```{r}
 # get the segregation that is socio-economic exclusively and then segregation that is ethnic exclusively
 # for all socio-economic categories
-mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", within = "csep")
+mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", within = "csep")
 
 # get the segregation that is ethnic exclusively and then segregation that is socio-economic exclusively
 # for all ethnic categories
-mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", within = "etnia")
+mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", within = "ethnicity")
 ```
 
 The `contribution.from` option allows evaluate the exclusive segregating effect of group variables or unit variables into the total segregation. It's an inmediate way of jointly obtaining the relevant results of the two previous decompositions. The `ìnteraction` term refers to an amount of segregation that cannot be attributed to the exclusive segregating effect of characteristics that jointly define the groups (in this case):
 ```{r}
-mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", contribution.from = "group_vars")
+mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", contribution.from = "group_vars")
 ```
 
 The `components` option allows know the proportions and the local segregation index for all categories of variables of the `within` parameter. The weighted average between `p` and `within` of the `$W_Decomposition` element is equal to the `M_W_csep` term of the `$Total` element:
 ```{r}
-mutual(data = DT_Seg_Chile, group = c("csep", "etnia"), unit = "school", within = "csep", components = TRUE)
+mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", within = "csep", components = TRUE)
 ```
 
 The `cores` option allows use more than one CPU cores in the index compute. This avoids overloading the current work session by distributing calculation tasks in child processs. Compare the differences with the `system.time` function:
 ```{r}
 # Sequentially, using one CPU core:
-system.time(mutual(data = DT_Seg_Chile, group = c("csep", "etnia", "gender"), unit = c("school", "sch_type", "rural"),
+system.time(mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity", "gender"), unit = c("school", "sch_type", "rural"),
                    within = c("csep", "gender"), contribution.from = "unit_vars", components = TRUE))
 
 # In parallel, using two CPU cores:
-system.time(mutual(data = DT_Seg_Chile, group = c("csep", "etnia", "gender"), unit = c("school", "sch_type", "rural"),
+system.time(mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity", "gender"), unit = c("school", "sch_type", "rural"),
                    within = c("csep", "gender"), contribution.from = "unit_vars", components = TRUE, cores = 2))
 
 ```
