@@ -71,9 +71,9 @@ NULL
 #' # and the local segregation index on the 'W_Decomposition' element. The weighted average
 #' # between 'p' and 'within' is equal to the index within term.
 #' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", within = "ethnicity",
-#' component = TRUE)
+#' components = TRUE)
 #'
-#' # Use the 'contribution.from' option to evaluate the exclusive segregation effect of specific 
+#' # Use the 'contribution.from' option to evaluate the exclusive segregation effect of specific
 #' # characteristics in the total segregation.
 #' ## Contribution from of all variables of 'group' elements:
 #' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region",
@@ -81,7 +81,7 @@ NULL
 #'
 #' ## Contribution only from the 'ethnicity' variable:
 #' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region",
-#' contribution.from = "etnia")
+#' contribution.from = "ethnicity")
 #'
 #' # Use the 'cores' option to increase the CPU cores used in the index computation.
 #' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region",
