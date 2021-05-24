@@ -1,33 +1,35 @@
-#' @title Prepare the data to use
-#' @description Function that receive the data that later will be use to computes the index value and the
-#' decompositions. Generates a \code{data.table} with the specificate entry variables.
-#' @param data A data.frame.
+#' @title Prepare the data to be used by 'mutual'
+#' @description Function that receives the data that later will be used to computes the index value and the
+#' decompositions. Generates a \code{data.table} with the entry variables.
+#' @param data An object of class \code{data.frame}. The data expected is microdata or frequency weight data
+#' for each combination of variables. The variables must be of \code{factor} class.
 #' @param vars A vector of variable names or vector of variable numbers contained in \code{data}.
-#' @param fw Variable name or variable number contained in \code{data} correspondent to frecuency weight in the
-#' variable combinations of the dataset. If this variable exists then the function will change his original name
-#' to \code{fw}. If this variable no exists then the function will compute the frecuency weight given the
-#' variable combinations of \code{vars} and will create a new variable called \code{fw}. By default is NULL.
+#' @param fw Variable name or variable number contained in \code{data} that contains frecuency weight for 
+#' each combination of variables of the dataset. If this variable exists then the function will change its original name
+#' to \code{fw}. If this variable does not exist or is NULL, then the function will compute the frecuency weight given the
+#' combination of variables of \code{vars} and will create a new variable called \code{fw}. By default is NULL.
 #' @param col.order A variable name or vector of variables names contained in \code{vars}, or also, a variable
 #' number or vector of variables numbers contained in \code{vars}. Defines the columns that will use to order
 #' the dataset.
-#' @return Returns a data.table.
+#' @return Returns a \code{data.table}, also of class \code{mutual.data}.
 #' @examples
 #' \dontrun{
-#' # Considering the variable names of 'data' and that exists a variable to 'fw'.
-#' my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "etnia", "school", "comuna"),
+#' # Using some variable names in 'data' with explicit 'fw'.
+#' my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "ethnicity", "school", "commune"),
 #' fw = "nobs")
 #'
-#' # Considering the variable numbers of 'data' and that exists a variable to 'fw'.
+#' # Using some column numbers in 'data' and explicit 'fw' as another column number.
 #' my_data <- prepare_data(data = DF_Seg_Chile, vars = c(4, 5, 2, 3), fw = 10)
 #'
-#' # Considering the variable names of 'data' and that no exists a variable to 'fw'.
-#' my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "etnia", "school", "comuna"))
+#' # Using some variable names in 'data' and 'fw' does not exist (in this case, the new 'fw' will be equal to 1 for all
+#' # variable combinations as 'data' already has a frequency weights variable)
+#' my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "ethnicity", "school", "commune"))
 #'
-#' # Using the 'col.order' option to order data according to 'csep' column.
-#' my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "etnia", "school", "comuna"),
+#' # Using the 'col.order' option to sor data according to the 'csep' column.
+#' my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "ethnicity", "school", "commune"),
 #' fw = "nobs", col.order = "csep")
 #'
-#' # The class of the resultant object in all cases must be "data.table" "data.frame".
+#' # The class of the resultant object in all cases must be "data.table", "data.frame" and "mutual.data").
 #' class(my_data)
 #' }
 #' @import data.table
