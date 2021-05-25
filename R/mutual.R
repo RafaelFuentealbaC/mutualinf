@@ -103,8 +103,8 @@ mutual <- function(data, group, unit, within = NULL, by = NULL, contribution.fro
       contribution_exists <- suppressWarnings(as.numeric(contribution_from))
       contribution_exists <- contribution_exists[!contribution_exists %in% NA]
       contribution_no_exists <- contribution_from[!contribution_from %in% as.character(contribution_exists)]
-      if (length(contribution_no_exists) > 0) stop("Select variable names or variable numbers in the parameters")
-      if (length(contribution_all) > 0 & length(contribution_exists) > 0) stop("Select 'group_vars' or 'unit_vars' or failing that select variables numbers")
+      if (length(contribution_no_exists) > 0) stop("Select variable names or columns numbers of the dataset in the parameters")
+      if (length(contribution_all) > 0 & length(contribution_exists) > 0) stop("Select 'group_vars' or 'unit_vars' or failing that select columns numbers of the dataset")
       vars <- c(vars, contribution_exists)
     } else {
       vars <- c(vars, contribution_from)
