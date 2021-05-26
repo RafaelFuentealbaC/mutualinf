@@ -3,14 +3,14 @@
 #' decompositions. Generates a \code{data.table} with the entry variables.
 #' @param data An object of class "data.frame". The data expected is microdata or frequency weight data
 #' for each combination of variables. The variables must be of "factor" class.
-#' @param vars A vector of variable names or vector of variable numbers contained in \code{data}.
-#' @param fw Variable name or variable number contained in \code{data} that contains frecuency weight for
+#' @param vars A vector of variable names or vector of columns numbers contained in \code{data}.
+#' @param fw Variable name or column number contained in \code{data} that contains frecuency weight for
 #' each combination of variables of the dataset. If this variable exists then the function will change its
 #' original name to \code{fw}. If this variable does not exist or is NULL, then the function will compute the
 #' frecuency weight given the combination of variables of \code{vars} and will create a new variable called
 #' \code{fw}. By default is NULL.
-#' @param col.order A variable name or vector of variables names contained in \code{vars}, or also, a variable
-#' number or vector of variables numbers contained in \code{vars}. Defines the columns that will use to sort
+#' @param col.order A variable name or vector of variables names contained in \code{vars}, or also, a column
+#' number or vector of columns numbers contained in \code{vars}. Defines the columns that will use to sort
 #' the dataset.
 #' @return Returns a \code{data.table} of class "data.table" "data.frame" "mutual.data".
 #' @examples
