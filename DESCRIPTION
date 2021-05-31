@@ -13,10 +13,9 @@ Description: The Mutual Information Index (M) introduced to social science liter
     Decomposability and Strong Group Decomposability properties. This package allows
     calculating and decomposing the total index value into its "between" and "within"
     terms. These last terms can also be decomposed into their contributions, either
-    by group or unit characteristics (contributions). The factors that produce each
-    "within" term can also be displayed at the user's request (components).
-    The results can be calculated considering a variable or sets of variables that
-    define separate clusters.
+    by group or unit characteristics. The factors that produce each "within" term
+    can also be displayed at the user's request. The results can be calculated
+    considering a variable or sets of variables that define separate clusters.
 License: GPL-3
 Imports:
     data.table,

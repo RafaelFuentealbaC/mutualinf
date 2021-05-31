@@ -16,7 +16,7 @@ mutual(
 )
 }
 \arguments{
-\item{data}{A data.table containing the class "data.table" and "mutual.data".}
+\item{data}{An object from the "data.table" and "mutual.data" classes.}
 
 \item{group}{A categorical variable name or vector of categorical variables names contained in \code{data}, or also,
 a column number or vector of column numbers of \code{data}. Defines the first dimension over which segregation is

@@ -6,7 +6,7 @@ NULL
 #' "within" terms can also be decomposed into their contributions, either by group or unit characteristics. The factors
 #' that produce each "within" term can also be displayed at the user's request. The results can be calculated
 #' considering a variable or sets of variables that define separate clusters.
-#' @param data A data.table containing the class "data.table" and "mutual.data".
+#' @param data An object from the "data.table" and "mutual.data" classes.
 #' @param group A categorical variable name or vector of categorical variables names contained in \code{data}, or also,
 #' a column number or vector of column numbers of \code{data}. Defines the first dimension over which segregation is
 #' computed.
