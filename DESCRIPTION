@@ -2,7 +2,7 @@ Package: mutualinf
 Type: Package
 Title: Calculation and Decomposition of the Mutual Information Index
 Version: 0.1.0
-Authors@R: c(person("Rafael", "Fuentealba-Chaura", email = "rafael.fuentealba2015@alu.uct.cl", role = c("aut", "cre")),
+Authors@R: c(person("Rafael", "Fuentealba-Chaura", email = "rfuentealba@inf.uct.cl", role = c("aut", "cre")),
               person("Ricardo", "Mora", email = "ricmora@eco.uc3m.es", role = "aut"),
               person("Julio", "Rojas-Mora", email = "jrojas@inf.uct.cl", role = "aut"))
 Description: The Mutual Information Index (M) introduced to social science literature by
