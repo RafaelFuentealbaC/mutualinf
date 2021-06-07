@@ -3,7 +3,8 @@
 #' decompositions. Generates a \code{data.table} with the entry variables.
 #' @param data An object of class "data.frame". The data expected is microdata or frequency weight data
 #' for each combination of variables. The variables must be of "factor" class.
-#' @param vars A vector of variable names or vector of columns numbers contained in \code{data}.
+#' @param vars A vector of variable names or vector of columns numbers contained in \code{data}. Also can be
+#' used "all_vars" to select all variables contained in \code{data}.
 #' @param fw Variable name or column number contained in \code{data} that contains frecuency weight for
 #' each combination of variables of the dataset. If this variable exists then the function will change its
 #' original name to \code{fw}. If this variable does not exist or is NULL, then the function will compute the
@@ -21,6 +22,9 @@
 #'
 #' # Using some column numbers in 'data' and explicit 'fw' as another column number.
 #' my_data <- prepare_data(data = DF_Seg_Chile, vars = c(4, 5, 2, 3), fw = 11)
+#'
+#' # Using all variables of 'data' with explicit 'fw'.
+#' my_data <- prepare_data(data = DF_Seg_Chile, vars = "all_vars", fw = "nobs")
 #'
 #' # Using some variable names in 'data' and 'fw' does not exist (in this case, the new 'fw' will
 #' # be equal to 1 for all variable combinations as 'data' already has a frequency weights variable)
@@ -40,13 +44,19 @@ prepare_data <- function(data, vars, fw = NULL, col.order = NULL) {
   if ("data.frame" %in% class(data)) {
     if (nrow(data) == 0) stop("data.frame is empty")
 
-    data[, vars] <- lapply(data[, vars], as.factor)
-    vars_exists <- c(vars, fw)
+    if ("all_vars" %in% vars) {
+      vars <- colnames(data)
+      if (!is.null(fw)) {
+        if (is.numeric(fw)) fw <- colnames(data)[fw]
+        vars <- colnames(data[, -which(colnames(data) == fw)])
+      }
+    }
 
+    vars_exists <- c(vars, fw)
     if (is.numeric(vars_exists)) {
       if (!is.null(col.order)) {
         col_order_no_exists <- col.order[!col.order %in% vars_exists]
-        if (length(col_order_no_exists) > 0) stop(paste("Variable(s)", col_order_no_exists, "not in data.frame"))
+        if (length(col_order_no_exists) > 0) stop(paste("Variable(s)", col_order_no_exists, "was not selected"))
       }
 
       if (max(vars_exists) > ncol(data) | min(vars_exists) < 1) stop("One or more selected columns are outside of the data.frame")
@@ -58,6 +68,9 @@ prepare_data <- function(data, vars, fw = NULL, col.order = NULL) {
       vars_no_exists <- paste(vars_no_exists, collapse = ", ")
       stop(paste("Variable(s)", vars_no_exists, "not in data.frame"))
     }
+
+    data[, vars] <- lapply(data[, vars], as.factor)
+
   } else {
     stop("Not a data.frame")
   }

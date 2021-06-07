@@ -21,6 +21,7 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
 
     if (!is.null(by)) {
       id_by <- unique(data[, .SD, .SDcols = by])
+      formated_id_by <- as.data.table(sapply(id_by, function(i) return(gsub(" ", "_", i))))
 
       repeat {
         if (w == 1) {
@@ -88,7 +89,7 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
           if (element == length(DT_general)) break
           element <- element + 1
         }
-        names_result <- as.data.table(do.call(cbind, Map(paste, names(id_by), id_by, sep = ".")))
+        names_result <- as.data.table(do.call(cbind, Map(paste, names(formated_id_by), formated_id_by, sep = ".")))
         names_result <- names_result[, list(list_name = do.call(paste, c(.SD, sep = ".")))]
         result <- setNames(object = result, nm = names_result$list_name)
       } else {
@@ -205,7 +206,8 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
           element <- element + 1
         }
         id_value <- unique(data[, .SD, .SDcols = by])
-        names_result <- as.data.table(do.call(cbind, Map(paste, names(id_value), id_value, sep = ".")))
+        formated_id_value <- as.data.table(sapply(id_value, function(i) return(gsub(" ", "_", i))))
+        names_result <- as.data.table(do.call(cbind, Map(paste, names(formated_id_value), formated_id_value, sep = ".")))
         names_result <- names_result[, list(list_name = do.call(paste, c(.SD, sep = ".")))]
         result <- setNames(object = result, nm = names_result$list_name)
       } else {

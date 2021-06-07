@@ -10,7 +10,8 @@ prepare_data(data, vars, fw = NULL, col.order = NULL)
 \item{data}{An object of class "data.frame". The data expected is microdata or frequency weight data
 for each combination of variables. The variables must be of "factor" class.}
 
-\item{vars}{A vector of variable names or vector of columns numbers contained in \code{data}.}
+\item{vars}{A vector of variable names or vector of columns numbers contained in \code{data}. Also can be
+used "all_vars" to select all variables contained in \code{data}.}
 
 \item{fw}{Variable name or column number contained in \code{data} that contains frecuency weight for
 each combination of variables of the dataset. If this variable exists then the function will change its
@@ -37,6 +38,9 @@ fw = "nobs")
 
 # Using some column numbers in 'data' and explicit 'fw' as another column number.
 my_data <- prepare_data(data = DF_Seg_Chile, vars = c(4, 5, 2, 3), fw = 11)
+
+# Using all variables of 'data' with explicit 'fw'.
+my_data <- prepare_data(data = DF_Seg_Chile, vars = "all_vars", fw = "nobs")
 
 # Using some variable names in 'data' and 'fw' does not exist (in this case, the new 'fw' will
 # be equal to 1 for all variable combinations as 'data' already has a frequency weights variable)

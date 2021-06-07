@@ -118,10 +118,10 @@ dimensions:
 
 ``` r
 mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region")
-#>    region         M
-#> 1:      8 0.2311937
-#> 2:      9 0.2367407
-#> 3:     14 0.2123109
+#>          region         M
+#> 1:       BioBio 0.2311937
+#> 2: La Araucania 0.2367407
+#> 3:     Los Rios 0.2123109
 ```
 
 The `within` option allows decompose the total segregation into their
@@ -170,10 +170,10 @@ mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", wit
 #> 1: 0.2610338 0.1995499 0.06148383
 #> 
 #> $W_Decomposition
-#>    csep         p     within
-#> 1:    2 0.2668582 0.04905997
-#> 2:    3 0.5866331 0.07328276
-#> 3:    1 0.1465087 0.03686939
+#>              csep         p     within
+#> 1:      preferent 0.2668582 0.04905997
+#> 2:       priority 0.5866331 0.07328276
+#> 3: non-vulnerable 0.1465087 0.03686939
 ```
 
 The `cores` option allows use more than one CPU cores in the index
@@ -184,15 +184,15 @@ differences with the `system.time` function:
 ``` r
 # Sequentially, using one CPU core:
 system.time(mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity", "gender"), unit = c("school", "sch_type", "rural"),
-                   within = c("csep", "gender"), contribution.from = "unit_vars", components = TRUE))
+                   within = c("ethnicity", "gender"), contribution.from = "unit_vars", components = TRUE))
 #>    user  system elapsed 
-#>  76.728   0.116  41.478
+#>  79.501   0.204  46.804
 
 # In parallel, using two CPU cores:
 system.time(mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity", "gender"), unit = c("school", "sch_type", "rural"),
-                   within = c("csep", "gender"), contribution.from = "unit_vars", components = TRUE, cores = 2))
+                   within = c("ethnicity", "gender"), contribution.from = "unit_vars", components = TRUE, cores = 2))
 #>    user  system elapsed 
-#>  32.588   0.858  24.505
+#>  29.914   0.791  29.897
 ```
 
 ## Citation

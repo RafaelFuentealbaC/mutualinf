@@ -9,24 +9,24 @@ M <- function(data, group, unit, by = NULL, contribution.from = NULL, cores = NU
 
   if (!is.null(by))  {
     data_by <- split(data, by = by)
-    id_by <- unique(data[, .SD, .SDcols = by])
 
     if (!is.null(cores)) {
       M_list <- mclapply(X = data_by, function(d) {
         data_tmp <- get_internal_data(data = d, vars = c(group, unit))
-        M_value(data = data_tmp, group = group, unit = unit)
+        cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = group, unit = unit))
       }, mc.cores = cores)
     } else {
       M_list <- lapply(X = data_by, function(d) {
         data_tmp <- get_internal_data(data = d, vars = c(group, unit))
-        M_value(data = data_tmp, group = group, unit = unit)
+        cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = group, unit = unit))
       })
     }
 
-    DT_general <- cbind(id_by, M = unlist(M_list, use.names = FALSE))
+    DT_general <- do.call(rbind, M_list)
+    DT_general <- na.omit(object = DT_general, cols = colnames(DT_general))
 
     if (!is.null(contribution)) {
-      comp_total <- unlist(M_list, use.names = FALSE)
+      comp_total <- do.call(rbind, M_list)$M
       DT_contribution <- get_contribution(data = data, group = group, unit = unit, by = by, contribution = contribution, component = comp_total, cores = cores)
       setnames(x = DT_contribution, old = colnames(DT_contribution[, -"interaction"]), new = paste0("C_", contribution))
       result <- cbind(DT_general, DT_contribution)
@@ -36,7 +36,8 @@ M <- function(data, group, unit, by = NULL, contribution.from = NULL, cores = NU
     result
   } else {
     if (!is.null(contribution)) {
-      index_total <- mutual(data = data, group = group, unit = unit)
+      data_tmp <- get_internal_data(data = data, vars = c(group, unit))
+      index_total <- mutual(data = data_tmp, group = group, unit = unit)
 
       if (!is.null(cores)) {
         M_contribution <- mclapply(X = contribution, function(c) {

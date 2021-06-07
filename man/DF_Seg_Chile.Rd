@@ -10,14 +10,14 @@ A data.frame with 191495 observations and 11 variables:
 \item{year}{Academic year. From 2016 to 2018.}
 \item{school}{School ID (RBD, Rol de Base de Datos).}
 \item{commune}{Official commune code of the school location.}
-\item{csep}{Socio-economic criterion. Students belong to either the non-vulnerable (1), the preferent (2), or the
-priority (3) group acording to the Act 20.248 of Preferencial Scholar Subsidy (SEP).}
-\item{ethnicity}{Ethnicity criterion. Students belong to mapuche ethnicity (1) or not (0).}
-\item{rural}{Rurality criterion. The school is located in a urban zone (0) or not (1).}
-\item{region}{Official region code of the school location. Schools can belong either Bio-Bío region (8), La Araucanía
-region (9) or Los Ríos region (14).}
-\item{sch_type}{Dependency code. School dependancy as municipal (1), private subsidized (2) or private paid (3).}
-\item{gender}{Binary student gender. Students can either be female (1) or male (2).}
+\item{csep}{Socio-economic criterion. Students belong to either the non-vulnerable, the preferent, or the priority
+group acording to the Act 20.248 of Preferencial Scholar Subsidy (SEP).}
+\item{ethnicity}{Ethnicity criterion. Students belong to mapuche ethnicity or not.}
+\item{rural}{Rurality criterion. The school is located in a urban zone or not.}
+\item{region}{Official region code of the school location. Schools can belong either BioBio region, La Araucania
+region or Los Rios region.}
+\item{sch_type}{Dependency code. School dependancy as public, charter or private.}
+\item{gender}{Binary student gender. Students can either be female or male.}
 \item{grade}{Student grade. Students can either belong to the 4th (4) or 8th (8) grade of basic school.}
 \item{nobs}{Number of students in a cell or combination of variables.}
 }
@@ -39,6 +39,6 @@ education (first eight years of formal education) who attended establishments of
 The second one is the Quality and Context of Education Questionnaire for Parents and Guardians, and the Student
 Questionnaire, both applied by the Education Quality Agency <http://www.agenciaeducacion.cl/> to all students in
 grades 4 and 8 of primary education. Both sources are limited to the period 2016-2018. Contains information related
-to students and educational system characteristics in southern Chile (Bio-Bio, La Araucanía and Los Ríos regions).
+to students and educational system characteristics in southern Chile (BioBio, La Araucania and Los Rios regions).
 }
 \keyword{datasets}
