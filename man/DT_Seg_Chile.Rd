@@ -14,7 +14,7 @@ A data.table with 55960 observations and 11 variables:
 group acording to the Act 20.248 of Preferencial Scholar Subsidy (SEP).}
 \item{ethnicity}{Ethnicity criterion. Students belong to mapuche ethnicity or not.}
 \item{rural}{Rurality criterion. The school is located in a urban zone or not.}
-\item{region}{Official region code of the school location. Schools can belong either BioBio region, La Araucania
+\item{region}{Official region code of the school location. Schools can belong either Biobio region, La Araucania
 region or Los Rios region.}
 \item{sch_type}{Dependency code. School dependancy as public, charter or private.}
 \item{gender}{Binary student gender. Students can either be female or male.}
@@ -39,6 +39,6 @@ education (first eight years of formal education) who attended establishments of
 The second one is the Quality and Context of Education Questionnaire for Parents and Guardians, and the Student
 Questionnaire, both applied by the Education Quality Agency <http://www.agenciaeducacion.cl/> to all students in
 grades 4 and 8 of primary education. Both sources are limited to the period 2016-2018. Contains information related
-to students and educational system characteristics in southern Chile (BioBio, La Araucania and Los Rios regions).
+to students and educational system characteristics in southern Chile (Biobio, La Araucania and Los Rios regions).
 }
 \keyword{datasets}

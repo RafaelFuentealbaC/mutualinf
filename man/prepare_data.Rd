@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare_data.R
 \name{prepare_data}
 \alias{prepare_data}
-\title{Prepare the data to be used by \code{mutual} function}
+\title{Prepare the data to be used by the \code{mutual} function}
 \usage{
 prepare_data(data, vars, fw = NULL, col.order = NULL)
 }
@@ -19,16 +19,16 @@ original name to \code{fw}. If this variable does not exist or is NULL, then the
 frecuency weight given the combination of variables of \code{vars} and will create a new variable called
 \code{fw}. By default is NULL.}
 
-\item{col.order}{A variable name or vector of variables names contained in \code{vars}, or also, a column
-number or vector of columns numbers contained in \code{vars}. Defines the columns that will use to sort
-the dataset.}
+\item{col.order}{A variable name or vector of variables names contained in \code{vars}, or a column
+number or vector of column numbers contained in \code{vars}. Selects the columns to sort the dataset. By
+default is NULL.}
 }
 \value{
 Returns a \code{data.table} of class "data.table" "data.frame" "mutual.data".
 }
 \description{
-Function that receives the data that later will be used to computes the index value and the
-decompositions. Generates a \code{data.table} with the entry variables.
+Receives the data that is later used in the \code{mutual} function.
+Generates a \code{data.table} with the entry variables.
 }
 \examples{
 \dontrun{
@@ -50,7 +50,7 @@ my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "ethnicity", "scho
 my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "ethnicity", "school", "commune"),
 fw = "nobs", col.order = "csep")
 
-# The class of the resultant object in all cases must be "data.table", "data.frame" and
+# The class of the resulting object in all cases must be "data.table", "data.frame" and
 # "mutual.data".
 class(my_data)
 }

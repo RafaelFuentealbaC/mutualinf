@@ -3,9 +3,9 @@
 NULL
 #' @title Calculates and decomposes the Mutual Information index
 #' @description Calculates and decomposes the Mutual Information index into "between" and "within" terms. The
-#' "within" terms can also be decomposed into "exclusive contributions" of segregation sources defined either by group or unit characteristics. 
-#' The mathematical components rquired to compute each "within" term can also be displayed at the user's request. 
-#' The results can be calculated over subsamples defined by the user.
+#' "within" terms can also be decomposed into "exclusive contributions" of segregation sources defined either by group
+#' or unit characteristics. The mathematical components rquired to compute each "within" term can also be displayed at
+#' the user's request. The results can be calculated over subsamples defined by the user.
 #' @param data An object from the "data.table" and "mutual.data" classes.
 #' @param group A categorical variable name or vector of categorical variables names contained in \code{data}, or also,
 #' a column number or vector of column numbers of \code{data}. Defines the first dimension over which segregation is
@@ -22,21 +22,21 @@ NULL
 #' @param contribution.from A variable of character type that can be 'group_vars' or 'unit_vars', or also, a categorical
 #' variable name or vector of categorical variables names contained in the \code{group} parameter or \code{unit}
 #' parameter, or also, a column number or vector of column numbers in the \code{group} parameter or the \code{unit}
-#' parameter. Defines the segregation sources whose exclusive contributions to the "within" terms and the overall index 
+#' parameter. Defines the segregation sources whose exclusive contributions to the "within" terms and the overall index
 #' are computed. By default is NULL.
 #' @param components A boolean value. If TRUE and the \code{within} option is not NULL and the \code{by} option is NULL,
 #' then it returns a list where the first element is a data.table that contains a summary of the index total value and
 #' its decompositions, while the second element is a data.table with more detailed information of the decomposition of the
-#' "within" term (the mathematical components required to compute the within terms). If the \code{within} and \code{by} 
-#' options are not NULL, then the function returns a list of
-#' lists where each first element is a data.table that contains the summary of the index total value and decompositions
-#' in a given subsample, while each second element is a data.table with more detailed information of the decomposition 
-#' of the within term displayed in each first element in the same subsample. By default is FALSE.
+#' "within" term (the mathematical components required to compute the within terms). If the \code{within} and \code{by}
+#' options are not NULL, then the function returns a list of lists where each first element is a data.table that contains
+#' the summary of the index total value and decompositions in a given subsample, while each second element is a data.table
+#' with more detailed information of the decomposition of the within term displayed in each first element in the same
+#' subsample. By default is FALSE.
 #' @param cores A positive integer. Defines the amount of CPU cores to use in parallelization tasks. If NULL, then the
 #' computation is carried out in only one core. This option is available to Mac, Linux, Unix, and BSD systems
 #' but is not available to Windows sytems. By default is NULL.
 #' @details Mixing \code{group} variables with \code{unit} variables in \code{contribution.from} will produce an error.
-#' @return A data.table if the \code{components} option is FALSE; a list if the \code{components} option is TRUE,  
+#' @return A data.table if the \code{components} option is FALSE; a list if the \code{components} option is TRUE,
 #' the \code{within} option is not NULL and the \code{by} option is NULL; or a list of lists if the \code{components}
 #' option is TRUE, and both \code{within} and \code{by} options are not NULL.
 #' @references Frankel, D. and Volij, O. (2011). Measuring school segregation. Journal of Economic Theory. 146(1):1-38. DOI:
@@ -45,7 +45,7 @@ NULL
 #' Mora, R. and Guinea-Martin, D. (2021). Computing decomposable multigroup indexes of segregation. UC3M Working
 #' papers. Economics 31803, Universidad Carlos III de Madrid. Departamento de Economía.
 #'
-#' Guinea-Martin, D., Mora, R., & Ruiz-Castillo, J. (2018). The evolution of gender segregation over the life course. 
+#' Guinea-Martin, D., Mora, R., & Ruiz-Castillo, J. (2018). The evolution of gender segregation over the life course.
 #' American Sociological Review, 83(5), 983-1019. DOI:10.1177/0003122418794503
 #'
 #' Mora, R. and Ruiz-Castillo, J. (2011). Entropy-based segregation indices. Sociological Methodology. 41(1):159-194.
@@ -59,27 +59,28 @@ NULL
 #' # To compute the overall measure of school segregation by socioeconomic and ethnic status.
 #' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school")
 #'
-#' # Using the 'by' option to compute measures of school segregation by socioeconomic and ethnic status 
-#' # by region.
+#' # Using the 'by' option to compute measures of school segregation by socioeconomic and ethnic
+#' # status by region.
 #' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region")
 #'
-#' # Use the 'within' option to decompose the overall measure of school segregation by socioeconomic and ethnic status
-#' into school segregation by ethnic status (the "between" term), and the weighted average of local indexes of school segregation
-#' by socioeconomic status within each ethnic group (the "within" term).
+#' # Use the 'within' option to decompose the overall measure of school segregation by
+#' # socioeconomic and ethnic status into school segregation by ethnic status (the "between" term),
+#' # and the weighted average of local indexes of school segregation
+#' # by socioeconomic status within each ethnic group (the "within" term).
 #' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school",
 #' within = "ethnicity")
 #'
-#' # Use the 'components' option to get detailed information related to the "within" term. The results show the weights
-#' # and the local indexes in the 'W_Decomposition' element. The weighted average
-#' # between 'p' and 'within' is equal to the index within term.
+#' # Use the 'components' option to get detailed information related to the "within" term. The
+#' # results show the weights and the local indexes in the 'W_Decomposition' element. The weighted
+#' # average between 'p' and 'within' is equal to the index within term.
 #' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school",
 #' within = "ethnicity", components = TRUE)
 #'
 #' # Use the 'contribution.from' option to evaluate the exclusive effect of specific segregation
 #' # sources on the overall measure and the "within" terms.
-#' ## The same decomposition as before, but decomposing the "within" term into the exclusive contribution
-#' ## of ethnic segregation, the exclusive contribution of socioeconomic status and a the overall contribution
-#' ## that cannot be attributed to any of them (the "interaction" term).
+#' ## The same decomposition as before, but decomposing the "within" term into the exclusive
+#' ## contribution of ethnic segregation, the exclusive contribution of socioeconomic status and
+#' ## a the overall contribution that cannot be attributed to any of them (the "interaction" term).
 #' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region",
 #' contribution.from = "group_vars")
 #'

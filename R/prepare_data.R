@@ -1,5 +1,5 @@
 #' @title Prepare the data to be used by the \code{mutual} function
-#' @description Receives the data that is later used in the \code{mutual} function. 
+#' @description Receives the data that is later used in the \code{mutual} function.
 #' Generates a \code{data.table} with the entry variables.
 #' @param data An object of class "data.frame". The data expected is microdata or frequency weight data
 #' for each combination of variables. The variables must be of "factor" class.
@@ -11,8 +11,8 @@
 #' frecuency weight given the combination of variables of \code{vars} and will create a new variable called
 #' \code{fw}. By default is NULL.
 #' @param col.order A variable name or vector of variables names contained in \code{vars}, or a column
-#' number or vector of column numbers contained in \code{vars}. Selects the columns to sort
-#' the dataset. By default is NULL.
+#' number or vector of column numbers contained in \code{vars}. Selects the columns to sort the dataset. By
+#' default is NULL.
 #' @return Returns a \code{data.table} of class "data.table" "data.frame" "mutual.data".
 #' @examples
 #' \dontrun{

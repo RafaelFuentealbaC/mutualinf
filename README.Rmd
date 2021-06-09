@@ -107,11 +107,11 @@ The `cores` option allows use more than one CPU cores in the index compute. This
 ```{r}
 # Sequentially, using one CPU core:
 system.time(mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity", "gender"), unit = c("school", "sch_type", "rural"),
-                   within = c("ethnicity", "gender"), contribution.from = "unit_vars", components = TRUE))
+                   within = c("ethnicity", "csep"), contribution.from = "unit_vars", components = TRUE))
 
 # In parallel, using two CPU cores:
 system.time(mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity", "gender"), unit = c("school", "sch_type", "rural"),
-                   within = c("ethnicity", "gender"), contribution.from = "unit_vars", components = TRUE, cores = 2))
+                   within = c("ethnicity", "csep"), contribution.from = "unit_vars", components = TRUE, cores = 2))
 
 ```
 
