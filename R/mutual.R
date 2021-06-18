@@ -4,7 +4,7 @@ NULL
 #' @title Calculates and decomposes the Mutual Information index
 #' @description Calculates and decomposes the Mutual Information index into "between" and "within" terms. The
 #' "within" terms can also be decomposed into "exclusive contributions" of segregation sources defined either by group
-#' or unit characteristics. The mathematical components rquired to compute each "within" term can also be displayed at
+#' or unit characteristics. The mathematical components required to compute each "within" term can also be displayed at
 #' the user's request. The results can be calculated over subsamples defined by the user.
 #' @param data An object from the "data.table" and "mutual.data" classes.
 #' @param group A categorical variable name or vector of categorical variables names contained in \code{data}, or also,
