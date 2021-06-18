@@ -1,4 +1,4 @@
-#' @title Prepare the data to be used by the \code{mutual} function
+#' @title Prepares the data to be used by the \code{mutual} function
 #' @description Receives the data that is later used in the \code{mutual} function.
 #' Generates a \code{data.table} with the entry variables.
 #' @param data An object of class "data.frame". The data expected is microdata or frequency weight data
