@@ -10,7 +10,7 @@ A data.table with 55960 observations and 11 variables:
 \item{year}{Academic year. From 2016 to 2018.}
 \item{school}{School ID (RBD, Rol de Base de Datos).}
 \item{commune}{Official commune code of the school location.}
-\item{csep}{Socio-economic criterion. Students belong to either the non-vulnerable, the preferent, or the priority
+\item{csep}{Socio-economic criterion. Students belong to either the non-vulnerable, the preferent, or the prioritized
 group acording to the Act 20.248 of Preferencial Scholar Subsidy (SEP).}
 \item{ethnicity}{Ethnicity criterion. Students belong to mapuche ethnicity or not.}
 \item{rural}{Rurality criterion. The school is located in a urban zone or not.}

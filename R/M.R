@@ -1,11 +1,11 @@
-#' @include M_value.R
-NULL
-#' @import data.table
-#' @import parallel
 M <- function(data, group, unit, by = NULL, contribution.from = NULL, cores = NULL) {
-  if ("group_vars" %in% contribution.from) contribution <- group
-  else if ("unit_vars" %in% contribution.from) contribution <- unit
-  else contribution <- contribution.from
+  contribution <- NULL
+  if (!is.null(contribution.from)) {
+    if ("group_vars" %in% contribution.from) contribution <- group
+    else contribution <- unit
+
+    if (length(contribution) < 2) stop("The length of the 'group'/'unit' vector must be greater than one")
+  }
 
   if (!is.null(by))  {
     data_by <- split(data, by = by)
@@ -23,7 +23,6 @@ M <- function(data, group, unit, by = NULL, contribution.from = NULL, cores = NU
     }
 
     DT_general <- do.call(rbind, M_list)
-    DT_general <- na.omit(object = DT_general, cols = colnames(DT_general))
 
     if (!is.null(contribution)) {
       comp_total <- do.call(rbind, M_list)$M
@@ -41,16 +40,22 @@ M <- function(data, group, unit, by = NULL, contribution.from = NULL, cores = NU
 
       if (!is.null(cores)) {
         M_contribution <- mclapply(X = contribution, function(c) {
-          data_tmp <- get_internal_data(data = data, vars = c(group, unit, c))
-          mutual(data = data_tmp, group = group, unit = unit, within = c)$M_W
+          if (c %in% group) c_tmp <- group[!group %in% c]
+          else c_tmp <- unit[!unit %in% c]
+          data_tmp <- get_internal_data(data = data, vars = c(group, unit, c_tmp))
+          DT_res <- rev(mutual(data = data_tmp, group = group, unit = unit, within = c_tmp))
+          DT_res[, 1]
         }, mc.cores = cores)
       } else {
         M_contribution <- lapply(X = contribution, function(c) {
-          data_tmp <- get_internal_data(data = data, vars = c(group, unit, c))
-          mutual(data = data_tmp, group = group, unit = unit, within = c)$M_W
+          if (c %in% group) c_tmp <- group[!group %in% c]
+          else c_tmp <- unit[!unit %in% c]
+          data_tmp <- get_internal_data(data = data, vars = c(group, unit, c_tmp))
+          DT_res <- rev(mutual(data = data_tmp, group = group, unit = unit, within = c_tmp))
+          DT_res[, 1]
         })
       }
-      DT_contribution <- as.data.table(rev(M_contribution))
+      DT_contribution <- do.call(cbind, M_contribution)
       names(DT_contribution) <- paste0("C_", contribution)
       DT_contribution <- cbind(index_total, DT_contribution, interaction = (index_total - sum(DT_contribution)))
       setnames(x = DT_contribution, old = "interaction.M", "interaction")

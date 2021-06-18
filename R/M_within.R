@@ -61,9 +61,12 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
       index_total <- DT_index_total[, list(M = rowSums(.SD)), .SDcols = names(DT_index_total)]
       DT_general <- cbind(id_by, index_total, index_between)
 
-      if ("group_vars" %in% contribution.from) contribution <- group
-      else if ("unit_vars" %in% contribution.from) contribution <- unit
-      else contribution <- contribution.from
+      if (!is.null(contribution.from)) {
+        if ("group_vars" %in% contribution.from) contribution <- group
+        else contribution <- unit
+
+        if (length(contribution) < 2) stop("The length of the 'group'/'unit' vector must be greater than one when the 'within' option includes some variables of him")
+      }
 
       if (!is.null(contribution)) {
         DT_within <- get_contribution(data = data, group = group, unit = unit, within = within, by = by, p = DT_p, component = comp_within, contribution = contribution, cores = cores)
@@ -132,9 +135,12 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
       index_total <- index_between + index_within
       DT_general <- data.table(M = index_total, rbind(list_index_between))
 
-      if ("group_vars" %in% contribution.from) contribution <- group
-      else if ("unit_vars" %in% contribution.from) contribution <- unit
-      else contribution <- contribution.from
+      if (!is.null(contribution.from)) {
+        if ("group_vars" %in% contribution.from) contribution <- group
+        else contribution <- unit
+
+        if (length(contribution) < 2) stop("The length of the 'group'/'unit' vector must be greater than one when the 'within' option includes some variables of him")
+      }
 
       if (!is.null(contribution)) {
         DT_within <- get_contribution(data = data, group = group, unit = unit, within = within, p = DT_p, component = comp_within, contribution = contribution, cores = cores)
@@ -177,9 +183,12 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
       DT_general <- merge(x = index_total, y = index_between, by = by, sort = FALSE)
       setnames(x = DT_general, old = c("M.x", "M.y"), new = c("M", paste0("M_B_", within)))
 
-      if ("group_vars" %in% contribution.from) contribution <- group
-      else if ("unit_vars" %in% contribution.from) contribution <- unit
-      else contribution <- contribution.from
+      if (!is.null(contribution.from)) {
+        if ("group_vars" %in% contribution.from) contribution <- group
+        else contribution <- unit
+
+        if (length(contribution) < 2) stop("The length of the 'group'/'unit' vector must be greater than one when the 'within' option includes some variables of him")
+      }
 
       if (!is.null(contribution)) {
         DT_within <- get_contribution(data = data, group = group, unit = unit, within = within, by = by, p = DT_p, component = comp_within, contribution = contribution, cores = cores)
@@ -236,9 +245,12 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
       DT_general <- data.table(M = index_total, M_B = index_between)
       setnames(x = DT_general, old = "M_B", new = paste0("M_B_", within))
 
-      if ("group_vars" %in% contribution.from) contribution <- group
-      else if ("unit_vars" %in% contribution.from) contribution <- unit
-      else contribution <- contribution.from
+      if (!is.null(contribution.from)) {
+        if ("group_vars" %in% contribution.from) contribution <- group
+        else contribution <- unit
+
+        if (length(contribution) < 2) stop("The length of the 'group'/'unit' vector must be greater than one when the 'within' option includes some variables of him")
+      }
 
       if (!is.null(contribution)) {
         DT_within <- get_contribution(data = data, group = group, unit = unit, within = within, p = DT_p, component = comp_within, contribution = contribution, cores = cores)

@@ -19,11 +19,8 @@ NULL
 #' @param by A categorical variable name or vector of categorical variables names contained in \code{data}, or also,
 #' a column number or vector of column numbers of \code{data}. Defines the subsamples over which indexes are computed.
 #' By default is NULL.
-#' @param contribution.from A variable of character type that can be 'group_vars' or 'unit_vars', or also, a categorical
-#' variable name or vector of categorical variables names contained in the \code{group} parameter or \code{unit}
-#' parameter, or also, a column number or vector of column numbers in the \code{group} parameter or the \code{unit}
-#' parameter. Defines the segregation sources whose exclusive contributions to the "within" terms and the overall index
-#' are computed. By default is NULL.
+#' @param contribution.from A variable of character type that can be 'group_vars' or 'unit_vars'. Defines the segregation
+#' sources whose exclusive contributions to the "within" terms and the overall index are computed. By default is NULL.
 #' @param components A boolean value. If TRUE and the \code{within} option is not NULL and the \code{by} option is NULL,
 #' then it returns a list where the first element is a data.table that contains a summary of the index total value and
 #' its decompositions, while the second element is a data.table with more detailed information of the decomposition of the
@@ -65,8 +62,8 @@ NULL
 #'
 #' # Use the 'within' option to decompose the overall measure of school segregation by
 #' # socioeconomic and ethnic status into school segregation by ethnic status (the "between" term),
-#' # and the weighted average of local indexes of school segregation
-#' # by socioeconomic status within each ethnic group (the "within" term).
+#' # and the weighted average of local indexes of school segregation by socioeconomic status
+#' # within each ethnic group (the "within" term).
 #' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school",
 #' within = "ethnicity")
 #'
@@ -78,16 +75,11 @@ NULL
 #'
 #' # Use the 'contribution.from' option to evaluate the exclusive effect of specific segregation
 #' # sources on the overall measure and the "within" terms.
-#' ## The same decomposition as before, but decomposing the "within" term into the exclusive
-#' ## contribution of ethnic segregation, the exclusive contribution of socioeconomic status and
-#' ## a the overall contribution that cannot be attributed to any of them (the "interaction" term).
+#' # The same decomposition as before, but decomposing the "within" term into the exclusive
+#' # contribution of ethnic segregation, the exclusive contribution of socioeconomic status and
+#' # a the overall contribution that cannot be attributed to any of them (the "interaction" term).
 #' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region",
 #' contribution.from = "group_vars")
-#'
-#' ## Contribution only from the 'ethnicity' variable: DUDA!!!! Es lo mismo que un within, pero cuál within? Debería
-#' ## ser equivalente a within="csep".
-#' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region",
-#' contribution.from = "ethnicity")
 #'
 #' # Use the 'cores' option to increase the CPU cores used in the index computation.
 #' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region",
@@ -100,20 +92,13 @@ mutual <- function(data, group, unit, within = NULL, by = NULL, contribution.fro
   if ((!"data.table" %in% class(data)) & (!"mutual.data" %in% class(data))) stop("The 'data' object must contain at least the class 'data.table' and 'mutual.data'")
 
   vars <- c(group, unit, within, by)
-  contribution_all <- contribution.from[contribution.from %in% c("group_vars", "unit_vars")]
-  contribution_from <- contribution.from[!contribution.from %in% c("group_vars", "unit_vars")]
 
   if (!is.null(contribution.from)) {
-    if ((is.numeric(group) | is.numeric(unit) | is.numeric(within) | is.numeric(by)) & is.character(contribution_from)) {
-      contribution_exists <- suppressWarnings(as.numeric(contribution_from))
-      contribution_exists <- contribution_exists[!contribution_exists %in% NA]
-      contribution_no_exists <- contribution_from[!contribution_from %in% as.character(contribution_exists)]
-      if (length(contribution_no_exists) > 0) stop("Select variable names or columns numbers of the dataset in the parameters")
-      if (length(contribution_all) > 0 & length(contribution_exists) > 0) stop("Select 'group_vars' or 'unit_vars' or failing that select columns numbers of the dataset")
-      vars <- c(vars, contribution_exists)
-    } else {
-      vars <- c(vars, contribution_from)
-    }
+    contribution_all <- contribution.from[contribution.from %in% c("group_vars", "unit_vars")]
+    contribution_from <- contribution.from[!contribution.from %in% c("group_vars", "unit_vars")]
+    if (((length(contribution_all) > 0) & (length(contribution_from) > 0)) | (length(contribution_from) > 0)) stop("Select 'group_vars' or 'unit_vars' as value in the 'contribution.from' option")
+    if (("group_vars" %in% contribution.from) & ("unit_vars" %in% contribution.from)) stop("Contribution in groups and units is not possible. Select one of them")
+    vars <- c(vars, contribution_from)
   }
 
   if (is.numeric(vars)) {
@@ -131,18 +116,6 @@ mutual <- function(data, group, unit, within = NULL, by = NULL, contribution.fro
   if (is.numeric(unit)) unit <- data[, colnames(.SD), .SDcols = unit]
   if (is.numeric(within)) within <- data[, colnames(.SD), .SDcols = within]
   if (is.numeric(by)) by <- data[, colnames(.SD), .SDcols = by]
-  if (is.numeric(contribution.from)) contribution.from <- data[, colnames(.SD), .SDcols = contribution.from]
-
-  contribution_group <- contribution.from[contribution.from %in% group]
-  contribution_unit <- contribution.from[contribution.from %in% unit]
-  contribution_no_group_no_unit <- contribution.from[!contribution.from %in% c("group_vars", "unit_vars", contribution_group, contribution_unit)]
-
-  if (("group_vars" %in% contribution.from) & ("unit_vars" %in% contribution.from)) stop("Contribution in groups and units is not possible. Select one of them")
-  if ((("group_vars" %in% contribution.from) & (length(contribution_group) > 0)) | (("group_vars" %in% contribution.from) & (length(contribution_unit) > 0))) stop("Consider the vector 'group_vars' or just some dimensions of it")
-  if ((("unit_vars" %in% contribution.from) & (length(contribution_unit) > 0)) | (("unit_vars" %in% contribution.from) & (length(contribution_group) > 0))) stop("Consider the vector 'unit_vars' or just some dimensions of it")
-  if ((length(contribution_group) > 0) & (length(contribution_unit) > 0)) stop("Contribution in groups and units is not possible. Select variables from groups or variables from units")
-  if ((length(contribution_all) > 0) & (length(contribution_from) > 0)) stop(paste("Variable(s)", paste(contribution_from, collapse = ", "), "is required in group or unit elements"))
-  if (length(contribution_no_group_no_unit) > 0) stop(paste("Variable(s)", paste(contribution_no_group_no_unit, collapse = ", "), "is required in group or unit elements"))
 
   if (!is.null(within)) {
     M_within(data = data, group = group, unit = unit, within = within, by = by, contribution.from = contribution.from, components = components, cores = cores)

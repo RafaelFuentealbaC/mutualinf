@@ -34,11 +34,8 @@ decompositions. By default is NULL.}
 a column number or vector of column numbers of \code{data}. Defines the subsamples over which indexes are computed.
 By default is NULL.}
 
-\item{contribution.from}{A variable of character type that can be 'group_vars' or 'unit_vars', or also, a categorical
-variable name or vector of categorical variables names contained in the \code{group} parameter or \code{unit}
-parameter, or also, a column number or vector of column numbers in the \code{group} parameter or the \code{unit}
-parameter. Defines the segregation sources whose exclusive contributions to the "within" terms and the overall index
-are computed. By default is NULL.}
+\item{contribution.from}{A variable of character type that can be 'group_vars' or 'unit_vars'. Defines the segregation
+sources whose exclusive contributions to the "within" terms and the overall index are computed. By default is NULL.}
 
 \item{components}{A boolean value. If TRUE and the \code{within} option is not NULL and the \code{by} option is NULL,
 then it returns a list where the first element is a data.table that contains a summary of the index total value and
@@ -78,8 +75,8 @@ mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by 
 
 # Use the 'within' option to decompose the overall measure of school segregation by
 # socioeconomic and ethnic status into school segregation by ethnic status (the "between" term),
-# and the weighted average of local indexes of school segregation
-# by socioeconomic status within each ethnic group (the "within" term).
+# and the weighted average of local indexes of school segregation by socioeconomic status
+# within each ethnic group (the "within" term).
 mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school",
 within = "ethnicity")
 
@@ -91,16 +88,11 @@ within = "ethnicity", components = TRUE)
 
 # Use the 'contribution.from' option to evaluate the exclusive effect of specific segregation
 # sources on the overall measure and the "within" terms.
-## The same decomposition as before, but decomposing the "within" term into the exclusive
-## contribution of ethnic segregation, the exclusive contribution of socioeconomic status and
-## a the overall contribution that cannot be attributed to any of them (the "interaction" term).
+# The same decomposition as before, but decomposing the "within" term into the exclusive
+# contribution of ethnic segregation, the exclusive contribution of socioeconomic status and
+# a the overall contribution that cannot be attributed to any of them (the "interaction" term).
 mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region",
 contribution.from = "group_vars")
-
-## Contribution only from the 'ethnicity' variable: DUDA!!!! Es lo mismo que un within, pero cuál within? Debería
-## ser equivalente a within="csep".
-mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region",
-contribution.from = "ethnicity")
 
 # Use the 'cores' option to increase the CPU cores used in the index computation.
 mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region",

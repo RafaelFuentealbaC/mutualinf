@@ -9,18 +9,24 @@ get_contribution <- function(data, group, unit, within = NULL, by = NULL, p = NU
   if (!is.null(cores)) {
     comp_d <- mclapply(X = data_contribution, function(d) {
       M_contribution <- mclapply(X = contribution, function(c) {
-        data_tmp <- get_internal_data(data = d, vars = c(group, unit, c))
-        mutual(data = data_tmp, group = group, unit = unit, within = c)$M_W
+        if (c %in% group) c_tmp <- group[!group %in% c]
+        else c_tmp <- unit[!unit %in% c]
+        data_tmp <- get_internal_data(data = d, vars = c(group, unit, c_tmp))
+        DT_res <- rev(mutual(data = data_tmp, group = group, unit = unit, within = c_tmp))
+        DT_res[, 1]
       }, mc.cores = cores)
-      rev(unlist(M_contribution, use.names = FALSE))
+      unlist(M_contribution, use.names = FALSE)
     }, mc.cores = cores)
   } else {
     comp_d <- lapply(X = data_contribution, function(d) {
       M_contribution <- lapply(X = contribution, function(c) {
-        data_tmp <- get_internal_data(data = d, vars = c(group, unit, c))
-        mutual(data = data_tmp, group = group, unit = unit, within = c)$M_W
+        if (c %in% group) c_tmp <- group[!group %in% c]
+        else c_tmp <- unit[!unit %in% c]
+        data_tmp <- get_internal_data(data = d, vars = c(group, unit, c_tmp))
+        DT_res <- rev(mutual(data = data_tmp, group = group, unit = unit, within = c_tmp))
+        DT_res[, 1]
       })
-      rev(unlist(M_contribution, use.names = FALSE))
+      unlist(M_contribution, use.names = FALSE)
     })
   }
   DT_comp_d <- transpose(as.data.table(comp_d), keep.names = NULL)

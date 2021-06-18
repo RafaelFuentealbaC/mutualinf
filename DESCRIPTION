@@ -31,8 +31,8 @@ Depends:
 RoxygenNote: 7.1.1
 Collate: 
     'Data_Source.R'
-    'M_value.R'
     'M.R'
+    'M_value.R'
     'get_general_contribution.R'
     'mutual.R'
     'get_internal_data.R'
