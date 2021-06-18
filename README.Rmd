@@ -19,27 +19,25 @@ knitr::opts_chunk$set(
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 <!-- badges: end -->
 
-An R library to calculate and decompose the Mutual Information Index (M) introduced to social science literature by Theil and Finizza (1971). The M index is a multigroup segregation measure that is highly decomposable that satisfies the Strong Unit Decomposability (SUD) and Strong Group Decomposability (SGD) properties (Frankel and Volij, 2011; Mora and Ruiz-Castillo, 2011). 
+An R library to calculate and decompose the Mutual Information Index (M) introduced to the social sciences by Theil and Finizza (1971). The M index is a multigroup segregation measure that is highly decomposable, satisfiying both the Strong Unit Decomposability (SUD) and the Strong Group Decomposability (SGD) properties (Frankel and Volij, 2011; Mora and Ruiz-Castillo, 2011). 
 
-The library:
+The library allows for:
 
-- Allows calculate the total segregation.
-- Allows descompose the total segregation index into the between term and the within term.
-- Allows calculate and know the exclusive segregating effect that generate the group variables or the unit variables into the total segregation.
-- Allows separate the calculations according to one or more characteristics of the system.
-- Deliveries the decompositions information in the general form or in detail form. In this last case delivery information about the proportions and the local segregation index for all categorical combinations of variables when there is a least one dimension for the within parameter.
-- Is fast in the compute tasks because uses internally the [`data.table`](https://CRAN.R-project.org/package=data.table) package.
-- Uses parallelization methods of the [`parallel`](https://stat.ethz.ch/R-manual/R-devel/library/parallel/doc/parallel.pdf) library to help calculate the index and decompositions. This option allows use more than one CPU cores of the computer to efficiently advantage the resources in the calculation. However this option is available only to Mac, Linux, Unix, and BSD systems but is not available to Windows sytems because the package uses internally the function [`mclapply`](https://www.rdocumentation.org/packages/parallel/versions/3.4.1/topics/mclapply) that is based on the bifurcation. In the Windows case, the calculation is carried out sequentially through [`lapply`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/lapply) function.
+- The computation of the M index, either overall or over subsamples defined by the user.
+- The descomposition of the M index into a "between" and a "within" term.
+- The identification of the "exclusive contributions" of segregation sources defined either by group or unit characteristics.
+- The computation of all the elements that conform the "within" term in the decomposition.
+- Fast computation employing more than one CPU core in Mac, Linux, Unix, and BSD systems. This option uses the [`data.table`](https://CRAN.R-project.org/package=data.table) and [`parallel`](https://stat.ethz.ch/R-manual/R-devel/library/parallel/doc/parallel.pdf) libraries (which Windows does not permit to run with more than one CPU core).
 
 ## Installation
 
-You can install the released version of mutualinf from [CRAN](https://CRAN.R-project.org) with:
+You can install the stable version of [`mutualinf`] from [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
 install.packages("mutualinf")
 ```
 
-And the development version from [GitHub](https://github.com/) with:
+and the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
@@ -47,21 +45,36 @@ devtools::install_github("RafaelFuentealbaC/mutualinf")
 ```
 
 ## Functions
-The package provides two principal functions:
+The package provides two functions:
 
 ```r
 ?prepare_data 
 ```
-- This function allows prepare the dataset that later will be use to computation index and generate the decompositions. For more details see the help. 
+- Which prepares the data to be used by the \code{mutual} function. For more details see `help(prepare_data)`. 
 
 ```r
 ?mutual
 ```
-- This function provides all values related with computation of the index and decompositions. For more details consult see the help.
+- Which computes the M index and its decompositions. For more details see `help(mutual)`.
 
 ## Usage
+The library computes the M Index. Suponga que tiene datos de frecuencias de estudiantes (`nobs`) por combinaciones de escuela (`school`), etnia  (`ethnicity`), nivel socio económico (`csep`) y sexo (`gender`) en un objeto de formato tabular (data.frame, data.table, tibble), que puede contener más columnas. El primer paso es cargar la librería y usar la función prepare_data para declarar la columna que incluye las frecuencias y para formatear los datos para la función `mutual`:
 
-The package allow calculate the Mutual Information Index (M) in his simplest form, i.e., over one group dimension and one unit dimension:
+```{r}
+library(mutualinf)
+
+DT_Seg_Chile<-prepare_data(data = Data_Chile, vars=c("school","ethnicity","csep","gender","sch_type","rural"), fw="nobs")
+```
+Por defecto, sin la opción `vars`, `prepare_data` utiliza todas las columnas de la tabla. Es útil usar la opción `vars` con tablas que tienen gran cantidad de columnas que no son necesarias en el análisis. 
+
+Si los datos vienen completamente desagregados, `prepare_data` calculará las frecuencias para todas las celdas de combinación de las variables especificadas:
+```{r}
+library(mutualinf)
+
+DT_Seg_Chile<-prepare_data(data = Data_Chile_microdata, vars=c("school","ethnicity","csep","gender","sch_type","rural"), vars=('school')
+```
+
+In its simplest form, i.e., over one group dimension and one unit dimension:
 ```{r}
 library(mutualinf)
 
