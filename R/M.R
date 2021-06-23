@@ -1,11 +1,14 @@
+#' @include get_internal_data.R
+#' @include M_value.R
+#' @include get_contribution.R
+NULL
+#' @import data.table
+#' @import parallel
+#' @import stats
 M <- function(data, group, unit, by = NULL, contribution.from = NULL, cores = NULL) {
-  contribution <- NULL
-  if (!is.null(contribution.from)) {
-    if ("group_vars" %in% contribution.from) contribution <- group
-    else contribution <- unit
-
-    if (length(contribution) < 2) stop("The length of the 'group'/'unit' vector must be greater than one")
-  }
+  if ("group_vars" %in% contribution.from) contribution <- group
+  else if ("unit_vars" %in% contribution.from) contribution <- unit
+  else contribution <- contribution.from
 
   if (!is.null(by))  {
     data_by <- split(data, by = by)
@@ -23,10 +26,11 @@ M <- function(data, group, unit, by = NULL, contribution.from = NULL, cores = NU
     }
 
     DT_general <- do.call(rbind, M_list)
+    DT_general <- na.omit(object = DT_general, cols = colnames(DT_general))
 
     if (!is.null(contribution)) {
-      comp_total <- do.call(rbind, M_list)$M
-      DT_contribution <- get_contribution(data = data, group = group, unit = unit, by = by, contribution = contribution, component = comp_total, cores = cores)
+      if (((isTRUE(contribution %in% group)) & (length(group) < 2)) | (isTRUE(contribution %in% unit)) & (length(unit) < 2)) stop("The length of the group/unit vector must be greater than one")
+      DT_contribution <- get_contribution(data = data, group = group, unit = unit, by = by, contribution = contribution, component = DT_general, cores = cores)
       setnames(x = DT_contribution, old = colnames(DT_contribution[, -"interaction"]), new = paste0("C_", contribution))
       result <- cbind(DT_general, DT_contribution)
     } else {
@@ -35,6 +39,7 @@ M <- function(data, group, unit, by = NULL, contribution.from = NULL, cores = NU
     result
   } else {
     if (!is.null(contribution)) {
+      if (((isTRUE(contribution %in% group)) & (length(group) < 2)) | (isTRUE(contribution %in% unit)) & (length(unit) < 2)) stop("The length of the group/unit vector must be greater than one")
       data_tmp <- get_internal_data(data = data, vars = c(group, unit))
       index_total <- mutual(data = data_tmp, group = group, unit = unit)
 

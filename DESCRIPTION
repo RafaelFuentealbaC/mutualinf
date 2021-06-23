@@ -31,13 +31,13 @@ Depends:
 RoxygenNote: 7.1.1
 Collate: 
     'Data_Source.R'
-    'M.R'
-    'M_value.R'
     'get_general_contribution.R'
-    'mutual.R'
-    'get_internal_data.R'
-    'get_contribution.R'
     'get_proportion.R'
+    'get_internal_data.R'
     'M_within.R'
+    'mutual.R'
+    'get_contribution.R'
+    'M_value.R'
+    'M.R'
     'globals.R'
     'prepare_data.R'

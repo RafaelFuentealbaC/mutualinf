@@ -34,8 +34,11 @@ decompositions. By default is NULL.}
 a column number or vector of column numbers of \code{data}. Defines the subsamples over which indexes are computed.
 By default is NULL.}
 
-\item{contribution.from}{A variable of character type that can be 'group_vars' or 'unit_vars'. Defines the segregation
-sources whose exclusive contributions to the "within" terms and the overall index are computed. By default is NULL.}
+\item{contribution.from}{A variable of character type that can be 'group_vars' or 'unit_vars', or also, a categorical
+variable name or vector of categorical variables names contained in the \code{group} parameter or \code{unit}
+parameter, or also, a column number or vector of column numbers in the \code{group} parameter or the \code{unit}
+parameter. Defines the segregation sources whose exclusive contributions to the "within" terms and the overall index
+are computed. By default is NULL.}
 
 \item{components}{A boolean value. If TRUE and the \code{within} option is not NULL and the \code{by} option is NULL,
 then it returns a list where the first element is a data.table that contains a summary of the index total value and
@@ -93,6 +96,12 @@ within = "ethnicity", components = TRUE)
 # a the overall contribution that cannot be attributed to any of them (the "interaction" term).
 mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region",
 contribution.from = "group_vars")
+
+# The 'contribution.from' option can be used with any subset of variables from the vectors
+# "group" and "unit", but only variables from one of the two vectors can be used. Furthermore,
+# the vector used -either "group" or "unit"- must have more than one variable.
+mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region",
+contribution.from = "ethnicity")
 
 # Use the 'cores' option to increase the CPU cores used in the index computation.
 mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region",

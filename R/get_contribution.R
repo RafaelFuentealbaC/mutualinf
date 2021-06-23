@@ -3,8 +3,11 @@
 NULL
 #' @import data.table
 #' @import parallel
-get_contribution <- function(data, group, unit, within = NULL, by = NULL, p = NULL, component = NULL, contribution, cores = NULL) {
+get_contribution <- function(data, group, unit, within = NULL, by = NULL, component = NULL, contribution, cores = NULL) {
   data_contribution <- split(data, by = c(by, within))
+  id_data_contribution <- names(data_contribution)
+  DT_id_data_contribution <- data.table(do.call(rbind, strsplit(x = id_data_contribution, split = "\\.")))
+  setnames(x = DT_id_data_contribution, old = colnames(DT_id_data_contribution), new = c(by, within))
 
   if (!is.null(cores)) {
     comp_d <- mclapply(X = data_contribution, function(d) {
@@ -31,17 +34,19 @@ get_contribution <- function(data, group, unit, within = NULL, by = NULL, p = NU
   }
   DT_comp_d <- transpose(as.data.table(comp_d), keep.names = NULL)
   names(DT_comp_d) <- contribution
+  DT_comp_d <- cbind(DT_id_data_contribution, DT_comp_d)
+  DT_general <- merge(x = component, y = DT_comp_d, by = c(by, within), sort = FALSE)
 
   if (is.null(within)) {
-    DT_contribution <- cbind(M = component, DT_comp_d)
-    DT_int <- DT_comp_d[, list(sum_d = rowSums(.SD)), .SDcols = names(DT_comp_d)]
+    DT_contribution <- data.table(M = DT_general$M, DT_general[, ..contribution])
+    DT_int <- DT_contribution[, list(sum_d = rowSums(.SD)), .SDcols = contribution]
     DT_int <- cbind(M = DT_contribution$M, DT_int)
     DT_int <- DT_int[, list(interaction = M - sum_d), by = list(row.names(DT_int))][, -1]
     DT_contribution <- cbind(DT_contribution[, -"M"], DT_int)
     DT_contribution
   } else {
-    DT_contribution <- cbind(p, within = component, DT_comp_d)
-    DT_int <- DT_comp_d[, list(sum_d = rowSums(.SD)), .SDcols = names(DT_comp_d)]
+    DT_contribution <- DT_general
+    DT_int <- DT_contribution[, list(sum_d = rowSums(.SD)), .SDcols = contribution]
     DT_int <- cbind(M = DT_contribution$within, DT_int)
     DT_int <- DT_int[, list(interaction = M - sum_d), by = list(row.names(DT_int))][, -1]
     DT_contribution <- cbind(DT_contribution, DT_int)

@@ -4,7 +4,7 @@ NULL
 #' @title Calculates and decomposes the Mutual Information index
 #' @description Calculates and decomposes the Mutual Information index into "between" and "within" terms. The
 #' "within" terms can also be decomposed into "exclusive contributions" of segregation sources defined either by group
-#' or unit characteristics. The mathematical components required to compute each "within" term can also be displayed at
+#' or unit characteristics. The mathematical components rquired to compute each "within" term can also be displayed at
 #' the user's request. The results can be calculated over subsamples defined by the user.
 #' @param data An object from the "data.table" and "mutual.data" classes.
 #' @param group A categorical variable name or vector of categorical variables names contained in \code{data}, or also,
@@ -19,8 +19,11 @@ NULL
 #' @param by A categorical variable name or vector of categorical variables names contained in \code{data}, or also,
 #' a column number or vector of column numbers of \code{data}. Defines the subsamples over which indexes are computed.
 #' By default is NULL.
-#' @param contribution.from A variable of character type that can be 'group_vars' or 'unit_vars'. Defines the segregation
-#' sources whose exclusive contributions to the "within" terms and the overall index are computed. By default is NULL.
+#' @param contribution.from A variable of character type that can be 'group_vars' or 'unit_vars', or also, a categorical
+#' variable name or vector of categorical variables names contained in the \code{group} parameter or \code{unit}
+#' parameter, or also, a column number or vector of column numbers in the \code{group} parameter or the \code{unit}
+#' parameter. Defines the segregation sources whose exclusive contributions to the "within" terms and the overall index
+#' are computed. By default is NULL.
 #' @param components A boolean value. If TRUE and the \code{within} option is not NULL and the \code{by} option is NULL,
 #' then it returns a list where the first element is a data.table that contains a summary of the index total value and
 #' its decompositions, while the second element is a data.table with more detailed information of the decomposition of the
@@ -81,6 +84,12 @@ NULL
 #' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region",
 #' contribution.from = "group_vars")
 #'
+#' # The 'contribution.from' option can be used with any subset of variables from the vectors
+#' # "group" and "unit", but only variables from one of the two vectors can be used. Furthermore,
+#' # the vector used -either "group" or "unit"- must have more than one variable.
+#' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region",
+#' contribution.from = "ethnicity")
+#'
 #' # Use the 'cores' option to increase the CPU cores used in the index computation.
 #' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region",
 #' cores = 2)
@@ -92,13 +101,20 @@ mutual <- function(data, group, unit, within = NULL, by = NULL, contribution.fro
   if ((!"data.table" %in% class(data)) & (!"mutual.data" %in% class(data))) stop("The 'data' object must contain at least the class 'data.table' and 'mutual.data'")
 
   vars <- c(group, unit, within, by)
+  contribution_all <- contribution.from[contribution.from %in% c("group_vars", "unit_vars")]
+  contribution_from <- contribution.from[!contribution.from %in% c("group_vars", "unit_vars")]
 
   if (!is.null(contribution.from)) {
-    contribution_all <- contribution.from[contribution.from %in% c("group_vars", "unit_vars")]
-    contribution_from <- contribution.from[!contribution.from %in% c("group_vars", "unit_vars")]
-    if (((length(contribution_all) > 0) & (length(contribution_from) > 0)) | (length(contribution_from) > 0)) stop("Select 'group_vars' or 'unit_vars' as value in the 'contribution.from' option")
-    if (("group_vars" %in% contribution.from) & ("unit_vars" %in% contribution.from)) stop("Contribution in groups and units is not possible. Select one of them")
-    vars <- c(vars, contribution_from)
+    if ((is.numeric(group) | is.numeric(unit) | is.numeric(within) | is.numeric(by)) & is.character(contribution_from)) {
+      contribution_exists <- suppressWarnings(as.numeric(contribution_from))
+      contribution_exists <- contribution_exists[!contribution_exists %in% NA]
+      contribution_no_exists <- contribution_from[!contribution_from %in% as.character(contribution_exists)]
+      if (length(contribution_no_exists) > 0) stop("Select variable names or columns numbers of the dataset in the parameters")
+      if (length(contribution_all) > 0 & length(contribution_exists) > 0) stop("Select 'group_vars' or 'unit_vars' or failing that select columns numbers of the dataset")
+      vars <- c(vars, contribution_exists)
+    } else {
+      vars <- c(vars, contribution_from)
+    }
   }
 
   if (is.numeric(vars)) {
@@ -116,6 +132,18 @@ mutual <- function(data, group, unit, within = NULL, by = NULL, contribution.fro
   if (is.numeric(unit)) unit <- data[, colnames(.SD), .SDcols = unit]
   if (is.numeric(within)) within <- data[, colnames(.SD), .SDcols = within]
   if (is.numeric(by)) by <- data[, colnames(.SD), .SDcols = by]
+  if (is.numeric(contribution.from)) contribution.from <- data[, colnames(.SD), .SDcols = contribution.from]
+
+  contribution_group <- contribution.from[contribution.from %in% group]
+  contribution_unit <- contribution.from[contribution.from %in% unit]
+  contribution_no_group_no_unit <- contribution.from[!contribution.from %in% c("group_vars", "unit_vars", contribution_group, contribution_unit)]
+
+  if (("group_vars" %in% contribution.from) & ("unit_vars" %in% contribution.from)) stop("Contribution in groups and units is not possible. Select one of them")
+  if ((("group_vars" %in% contribution.from) & (length(contribution_group) > 0)) | (("group_vars" %in% contribution.from) & (length(contribution_unit) > 0))) stop("Consider the vector 'group_vars' or just some dimensions of it")
+  if ((("unit_vars" %in% contribution.from) & (length(contribution_unit) > 0)) | (("unit_vars" %in% contribution.from) & (length(contribution_group) > 0))) stop("Consider the vector 'unit_vars' or just some dimensions of it")
+  if ((length(contribution_group) > 0) & (length(contribution_unit) > 0)) stop("Contribution in groups and units is not possible. Select variables from group vector or variables from unit vector")
+  if ((length(contribution_all) > 0) & (length(contribution_from) > 0)) stop("Select 'group_vars' or 'unit_vars' as value in the contribution.from option")
+  if (length(contribution_no_group_no_unit) > 0) stop(paste("Variable(s)", paste(contribution_no_group_no_unit, collapse = ", "), "is required in group or unit elements"))
 
   if (!is.null(within)) {
     M_within(data = data, group = group, unit = unit, within = within, by = by, contribution.from = contribution.from, components = components, cores = cores)

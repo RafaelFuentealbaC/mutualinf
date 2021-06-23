@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare_data.R
 \name{prepare_data}
 \alias{prepare_data}
-\title{Prepare the data to be used by the \code{mutual} function}
+\title{Prepares the data to be used by the \code{mutual} function}
 \usage{
 prepare_data(data, vars, fw = NULL, col.order = NULL)
 }
