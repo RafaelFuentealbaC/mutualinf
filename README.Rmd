@@ -105,22 +105,28 @@ Las variables que definen las unidades pueden no tener una relación jerárquica
 ```
 calcula la segregación en unidades definidas por las combinaciones de escuelas y tipos de escuelas, de grupos definidos por las combinaciones de nivel socioeconómico y étnia. En las unidades no existe una estructura jerárquica pues hay escuelas que cambián su dependencia administrativa en el período muestral.
 
-La opción \code{by} de la función \code{mutual} permite generar submuestras sobre las que se calcula el nivel de segregación. Los datos utilizados como ilustración incluyen las escuelas de formación primaria de las regiones chilenas del Biobio, La Araucania, y Los Rios. La opción \code{by} permite obtener el nivel de segregación por región en un solo comando:
-
+La opción \code{by} de la función \code{mutual} permite generar submuestras sobre las que se calcula el nivel de segregación. Los datos utilizados como ilustración incluyen las escuelas de formación primaria de las regiones chilenas del Biobio, La Araucania, y Los Rios. La opción \code{by} permite obtener el nivel de segregación para cada una de las tres regiones en un solo comando:
 ```{r}
- mutual(data = DT_Seg_Chile, group = "csep", unit = "school", by = "region")
-```
-El valor del índice reportado es exclusivamente socioeconómico y no considera diferencias por ninguna variable de unidad. El índice de información mutua es estrictamente mayor que cero y, por lo tanto, no puede analizarse sino en relación a otro resultado.
-
-
-En este caso, la función nos reporta el nombre de cada región acompañado de su respectivo índice, el cual corresponde a la segregación socioeconómica en las escuelas. Podemos ver que la segregación es mayor en la región del Biobio que en las regiones de La Araucania y Los Rios, y a su vez, es mayor que la segregación socioeconómica en las escuelas de las tres regiones conjuntas.
-
-En el siguiente caso se incorpora la pertenencia étnica de los estudiantes:
-```{r}
-mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region")
+ mutual(data = DT_Seg_Chile, group = c("csep","ethnicity"), unit = c("school", "sch_type"), by = "region")
 ```
 
-El resultado corresponde a la segregación socioeconómica y étnica en las escuelas de cada una de las regiones. Podemos ver que la segregación es mayor en la región de La Araucania que en las regiones del Biobio y Los Rios. Por otro lado, la segregación de cada región se mantiene por debajo de la segregación socioeconómica y étnica que resulta en el conjunto de las tres regiones.
+### REVISAR ESTO DE ACUERDO AL OUTPUT!!!
+En este caso, la función reporta el nombre de cada región acompañado de su respectivo índice. Podemos ver que la segregación es mayor en la región del Biobio que en las regiones de La Araucania y Los Rios, y a su vez, es mayor que la segregación socioeconómica en las escuelas de las tres regiones conjuntas. 
+
+La opción \code{within} de la función \code{mutual} permite descomponer el índice de segregación total en sus términos "between" y "within".
+
+```{r}
+mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = c("school", "sch_type"),
+        by = "region", within = "csep")
+```
+Obtenemos tres términos para cada región. El primero, \code{M}, coincide con los valores totales sin la opción \code{within}. El segundo, \code{M\_B\_csep}, conocido como término "between", es la segregación socioeconómica y étnica en las combinaciones de escuelas y tipos de escuelas. El tercero, \code{M\_W\_csep}, conocido como término "within", es la combinacion lineal de los niveles de segregacion étnica obtenidos dentro de cada nivel socioeconomico (con pesos iguales a la importancia demográfica de cada nivel). Este termino "within" se puede interpretar como la parte de la segregacion total derivada exclusivamente de diferencias etnicas. A partir de este punto nos referiremos a esta segregacion derivada exclusivamente de diferencias etnicas como "la contribucion de etnia".
+
+También es posible obtener la descomposición del índice en un término "between" etnia y un término "within" etnia"
+
+```{r}
+mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school",by = "region", within = "ethnicity")
+```
+
 
 ## Citation
 
