@@ -165,7 +165,7 @@ El análisis de las contribuciones se generaliza a situaciones en las que hay m�
 mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity", "gender"), unit = c("school","commune"),
         by = "region", contribution.from = "group.vars")
 ```
-presenta cinco t
+presenta cinco términos, la segregación total, las contribuciones de las tres fuentes de segregación por grupos, y el término de interacción. La única restricción de la opción \code{contribution.from} es que no se pueden calcular simultáneamente contribuciones de variables que definen los grupos y variables que definen las unidades, pues no existe una única forma de hacer esta descomposición. No obstante, la opción \code{components} permite recuperar todos los elementos de la combinación lineal del término "within" para computar la descomposición deseada por el usuario avanzado.
 
 ## Citation
 
