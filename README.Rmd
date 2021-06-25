@@ -119,13 +119,26 @@ La opción \code{within} de la función \code{mutual} permite descomponer el ín
 mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = c("school", "sch_type"),
         by = "region", within = "csep")
 ```
-Obtenemos tres términos para cada región. El primero, \code{M}, coincide con los valores totales sin la opción \code{within}. El segundo, \code{M\_B\_csep}, conocido como término "between", es la segregación socioeconómica y étnica en las combinaciones de escuelas y tipos de escuelas. El tercero, \code{M\_W\_csep}, conocido como término "within", es la combinacion lineal de los niveles de segregacion étnica obtenidos dentro de cada nivel socioeconomico (con pesos iguales a la importancia demográfica de cada nivel). Este termino "within" se puede interpretar como la parte de la segregacion total derivada exclusivamente de diferencias etnicas. A partir de este punto nos referiremos a esta segregacion derivada exclusivamente de diferencias etnicas como "la contribucion de etnia".
+Obtenemos tres términos para cada región. El primero, \code{M}, coincide con los valores totales sin la opción \code{within}. El segundo, \code{M\_B\_csep}, conocido como término "between", es la segregación socioeconómica en las combinaciones de escuelas y tipos de escuelas. El tercero, \code{M\_W\_csep}, conocido como término "within", es la combinacion lineal de los niveles de segregacion étnica obtenidos dentro de cada nivel socioeconomico (con pesos iguales a la importancia demográfica de cada nivel). Este termino "within" se puede interpretar como la parte de la segregacion total derivada exclusivamente de diferencias etnicas. A partir de este punto nos referiremos a esta última segregación como "la contribución", en este caso, de etnia.
 
 También es posible obtener la descomposición del índice en un término "between" etnia y un término "within" etnia"
 
 ```{r}
-mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school",by = "region", within = "ethnicity")
+mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = c("school","sch_type"), by = "region", within = "ethnicity")
 ```
+De nuevo tenemos tres términos para cada región. El primero, \code{M}, vuelve a coincidir con los valores totales sin la opción \code{within}. El segundo, \code{M\_B\_ethnicity}, es la segregación étnica en las combinaciones de escuelas y tipos de escuelas. El tercero, \code{M\_W\_csep}, es la contribución socioeconómica.
+
+La opción \code{contribution.from} permite computar de forma simultánea las dos contribuciones:
+
+```{r}
+mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = c("school","sch_type"),
+        by = "region", contribution.from = "group_vars")
+```
+
+Obtenemos cuatro términos para cada región: \code{M}, \code{C\_csep}, \code{C\_ethnicity}, \code{interaction}. El término \code{M} es la segregación total, como ya hemos visto. El término \code{C\_csep} es la contribución socioeconómica, y coincide con el término "within" etnia, \code{M\_W\_ethnicity}. El término \code{C\_ethnicity} es la contribución étnica, y coincide con el término "within" socioeconómico, \code{M\_W\_csep}. Por último, el término \code{interaction} es igual a \code{M} menos la suma de \code{C\_csep} y \code{C\_ethnicity}. Es la parte de la segregación total que no se puede atribuir al efecto segregador exclusivo de `etnicity` o de `csep`. 
+  ### COMPROBAR 
+Podemos ver que la segregación exclusivamente socioeconómica es mayor en la región del Biobio, mientras que la segregación exclusivamente étnica es mayor en la región de La Araucania.
+
 
 
 ## Citation
