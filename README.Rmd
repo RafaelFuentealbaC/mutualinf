@@ -58,7 +58,7 @@ The package provides two functions:
 - Which computes the M index and its decompositions. For more details see `help(mutual)`.
 
 ## Usage
-The library computes the M Index. Suponga que tiene datos chilenos para el período 2016-2018 de frecuencias de estudiantes (`nobs`) por combinaciones de, entre otras variables, escuela (`school`), distrito (`commune`), etnia  (`ethnicity`), nivel socio económico (`csep`) y sexo (`gender`) en un objeto de formato tabular (data.frame, data.table, tibble). El primer paso es cargar el paquete y usar la función prepare_data para declarar la columna que incluye las frecuencias y para formatear los datos para la función `mutual`:
+The library computes the M Index. Suponga que tiene datos chilenos para el período 2016-2018 de frecuencias de estudiantes (`nobs`) por combinaciones de, entre otras variables, escuela (`school`), distrito (`commune`), etnia  (`ethnicity`), y nivel socio económico (`csep`) en un objeto de formato tabular (data.frame, data.table, tibble). El primer paso es cargar el paquete y usar la función prepare_data para declarar la columna que incluye las frecuencias y para formatear los datos para la función `mutual`:
 
 ```{r}
 library(mutualinf)
@@ -99,7 +99,7 @@ mutual(data = DT_Seg_Chile, group = c("csep","ethnicity"), unit = c("school", "c
 ```
 calcula la segregación socioeconómica y étnica en las combinaciones de escuelas y distritos. Claramente, el resultado es un nivel de segregación idéntico al obtenido en el caso anterior, pues cada escuela sólo pertenece a un distrito (los distritos son una partición de las escuelas). 
 
-Las variables que definen las unidades pueden no tener una relación jerárquica entre ellas. Por ejemplo, si cambiamos los distritos por la dependencia administrativa de las escuelas (`sch_type`):
+Las variables que definen las unidades pueden no tener una relación jerárquica entre ellas. Por ejemplo, si cambiamos los distritos por la dependencia administrativa de las escuelas (`sch_type`, que puede ser privada, pública y subvencionada):
 ```{r}
  mutual(data = DT_Seg_Chile, group = c("csep","ethnicity"), unit = c("school", "sch_type"))
 ```
@@ -136,10 +136,36 @@ mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = c("school","s
 ```
 
 Obtenemos cuatro términos para cada región: \code{M}, \code{C\_csep}, \code{C\_ethnicity}, \code{interaction}. El término \code{M} es la segregación total, como ya hemos visto. El término \code{C\_csep} es la contribución socioeconómica, y coincide con el término "within" etnia, \code{M\_W\_ethnicity}. El término \code{C\_ethnicity} es la contribución étnica, y coincide con el término "within" socioeconómico, \code{M\_W\_csep}. Por último, el término \code{interaction} es igual a \code{M} menos la suma de \code{C\_csep} y \code{C\_ethnicity}. Es la parte de la segregación total que no se puede atribuir al efecto segregador exclusivo de `etnicity` o de `csep`. 
-  ### COMPROBAR 
+  ### COMPROBAR CON EL OUTPUT
 Podemos ver que la segregación exclusivamente socioeconómica es mayor en la región del Biobio, mientras que la segregación exclusivamente étnica es mayor en la región de La Araucania.
 
+La opción \code{contribution.from} permite obtener las contribuciones de un subconjunto de variables. Por ejemplo:
+```{r}
+mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = c("school","sch_type"),
+        by = "region", contribution.from = "csep")
+```
+devuelve únicamente \code{M}, \code{C\_csep}, e \code{interaction}, y omite la contribución de étnia.
 
+El análisis de contribuciones también se puede hacer para unidades organizativas. Por ejemplo:
+```{r}
+mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = c("school","sch_type"),
+        by = "region", contribution.from = "unit.vars")
+```
+El primero de los cuatro términos es la segregación total por región. El segundo término, \code{C\_school}, recoge la contribución de la segregación socioeconómica y étnica por escuelas. El tercer término, \code{C\_sch_type} captura la contribución de la segregación socioeconómica y étnica por dependencia administrativa. El cuarto término es la parte de la segregación que no puede ser atribuída exclusivamente ni a la segregación por escuelas ni a la segregación por dependencia administrativa.
+
+En el caso de particiones, el análisis de contribuciones se simplifica. Por ejemplo:
+```{r}
+mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = c("school","commune"),
+        by = "region", contribution.from = "unit.vars")
+```
+La contribución comunal (\code{C\_commune} es cero pues no hay segregación por distritos dentro de cada escuela. Intuitivamente toda segregación por distritos deviene en segregación por escuelas.
+
+El análisis de las contribuciones se generaliza a situaciones en las que hay más de dos fuentes de segregación por grupos o unidades. Por ejemplo, si consideramos tres fuentes de segregación en grupos (`ethnicity`, `csep`, y `gender`):
+```{r}
+mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity", "gender"), unit = c("school","commune"),
+        by = "region", contribution.from = "group.vars")
+```
+presenta cinco t
 
 ## Citation
 
