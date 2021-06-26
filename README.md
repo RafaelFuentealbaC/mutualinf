@@ -29,7 +29,7 @@ The package allows for:
   - Fast computation employing more than one CPU core in Mac, Linux,
     Unix, and BSD systems. This option uses the
     [`data.table`](https://CRAN.R-project.org/package=data.table) and
-    [`parallel`](https://stat.ethz.ch/R-manual/R-devel/package/parallel/doc/parallel.pdf)
+    [`parallel`](https://stat.ethz.ch/R-manual/R-devel/library/parallel/doc/parallel.pdf)
     libraries (which Windows does not permit to run with more than one
     CPU core).
 
