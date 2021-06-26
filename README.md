@@ -20,7 +20,7 @@ The library allows for:
 
   - The computation of the M index, either overall or over subsamples
     defined by the user.
-  - The descomposition of the M index into a “between” and a “within”
+  - The decomposition of the M index into a “between” and a “within”
     term.
   - The identification of the “exclusive contributions” of segregation
     sources defined either by group or unit characteristics.
