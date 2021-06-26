@@ -7,8 +7,9 @@
 prepare_data(data, vars, fw = NULL, col.order = NULL)
 }
 \arguments{
-\item{data}{An object of class "data.frame". The data expected is microdata or frequency weight data
-for each combination of variables. The variables must be of "factor" class.}
+\item{data}{A tabular format object (\code{data.frame}, \code{data.table}, \code{tibble}). The data
+expected is microdata or frequency weight data for each combination of variables. The variables must be
+of "factor" class.}
 
 \item{vars}{A vector of variable names or vector of columns numbers contained in \code{data}. Also can be
 used "all_vars" to select all variables contained in \code{data}.}

@@ -1,8 +1,9 @@
 #' @title Prepares the data to be used by the \code{mutual} function
 #' @description Receives the data that is later used in the \code{mutual} function.
 #' Generates a \code{data.table} with the entry variables.
-#' @param data An object of class "data.frame". The data expected is microdata or frequency weight data
-#' for each combination of variables. The variables must be of "factor" class.
+#' @param data A tabular format object (\code{data.frame}, \code{data.table}, \code{tibble}). The data
+#' expected is microdata or frequency weight data for each combination of variables. The variables must be
+#' of "factor" class.
 #' @param vars A vector of variable names or vector of columns numbers contained in \code{data}. Also can be
 #' used "all_vars" to select all variables contained in \code{data}.
 #' @param fw Variable name or column number contained in \code{data} that contains frecuency weight for
@@ -48,7 +49,7 @@ prepare_data <- function(data, vars, fw = NULL, col.order = NULL) {
       vars <- colnames(data)
       if (!is.null(fw)) {
         if (is.numeric(fw)) fw <- colnames(data)[fw]
-        vars <- colnames(data[, -which(colnames(data) == fw)])
+        ifelse ("data.table" %in% class(data), vars <- data[, colnames(.SD), .SDcols = !fw], vars <- colnames(data[, -which(colnames(data) == fw)]))
       }
     }
 
@@ -60,7 +61,7 @@ prepare_data <- function(data, vars, fw = NULL, col.order = NULL) {
       }
 
       if (max(vars_exists) > ncol(data) | min(vars_exists) < 1) stop("One or more selected columns are outside of the data.frame")
-      vars_exists <- names(data[, vars_exists])
+      ifelse ("data.table" %in% class(data), vars_exists <- names(data[, ..vars_exists]), vars_exists <- names(data[, vars_exists]))
     }
 
     vars_no_exists <- vars_exists[!vars_exists %in% names(data)]
@@ -69,7 +70,7 @@ prepare_data <- function(data, vars, fw = NULL, col.order = NULL) {
       stop(paste("Variable(s)", vars_no_exists, "not in data.frame"))
     }
 
-    data[, vars] <- lapply(data[, vars], as.factor)
+    ifelse ("data.table" %in% class(data), data[, vars] <- lapply(data[, ..vars], as.factor), data[, vars] <- lapply(data[, vars], as.factor))
 
   } else {
     stop("Not a data.frame")
