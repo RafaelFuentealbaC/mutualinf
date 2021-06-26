@@ -50,7 +50,7 @@ The package provides two functions:
 ```r
 ?prepare_data 
 ```
-- Which prepares the data to be used by the \code{mutual} function. For more details see `help(prepare_data)`. 
+- Which prepares the data to be used by the `mutual`function. For more details see `help(prepare_data)`. 
 
 ```r
 ?mutual
@@ -79,7 +79,7 @@ Si los datos vienen completamente desagregados, `prepare_data` calculará las fr
 DT_Seg_Chile_2 <- prepare_data(data = DF_Seg_Chile, vars = "all_vars")
 ```
 
-La función \code{mutual} permite calcular el índice M en su forma más simple, es decir, sobre una dimensión grupal de segregación con respecto a una unidad de análisis. Para calcular la segregración socioeconómica por escuelas:
+La función `mutual`permite calcular el índice M en su forma más simple, es decir, sobre una dimensión grupal de segregación con respecto a una unidad de análisis. Para calcular la segregración socioeconómica por escuelas:
 ```{r}
 mutual(data = DT_Seg_Chile, group = "csep", unit = "school")
 ```
@@ -87,7 +87,7 @@ Para calcular la segregación étnica por escuelas:
 ```{r}
 mutual(data = DT_Seg_Chile, group = "ethnicity", unit = "school")
 ```
-La función \code{mutual} también permite utilizar múltiples dimensiones grupales sobre las que se calcula la segregación, usando las combinaciones de las mismas sobre las unidades de análisis. Por ejemplo:
+La función `mutual`también permite utilizar múltiples dimensiones grupales sobre las que se calcula la segregación, usando las combinaciones de las mismas sobre las unidades de análisis. Por ejemplo:
 ```{r}
 mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school")
 ```
@@ -105,7 +105,7 @@ Las variables que definen las unidades pueden no tener una relación jerárquica
 ```
 calcula la segregación en unidades definidas por las combinaciones de escuelas y tipos de escuelas, de grupos definidos por las combinaciones de nivel socioeconómico y étnia. En las unidades no existe una estructura jerárquica pues hay escuelas que cambián su dependencia administrativa en el período muestral.
 
-La opción \code{by} de la función \code{mutual} permite generar submuestras sobre las que se calcula el nivel de segregación. Los datos utilizados como ilustración incluyen las escuelas de formación primaria de las regiones chilenas del Biobio, La Araucania, y Los Rios. La opción \code{by} permite obtener el nivel de segregación para cada una de las tres regiones en un solo comando:
+La opción `by`de la función `mutual`permite generar submuestras sobre las que se calcula el nivel de segregación. Los datos utilizados como ilustración incluyen las escuelas de formación primaria de las regiones chilenas del Biobio, La Araucania, y Los Rios. La opción `by`permite obtener el nivel de segregación para cada una de las tres regiones en un solo comando:
 ```{r}
  mutual(data = DT_Seg_Chile, group = c("csep","ethnicity"), unit = c("school", "sch_type"), by = "region")
 ```
@@ -113,59 +113,59 @@ La opción \code{by} de la función \code{mutual} permite generar submuestras so
 ### REVISAR ESTO DE ACUERDO AL OUTPUT!!!
 En este caso, la función reporta el nombre de cada región acompañado de su respectivo índice. Podemos ver que la segregación es mayor en la región del Biobio que en las regiones de La Araucania y Los Rios, y a su vez, es mayor que la segregación socioeconómica en las escuelas de las tres regiones conjuntas. 
 
-La opción \code{within} de la función \code{mutual} permite descomponer el índice de segregación total en sus términos "between" y "within".
+La opción `within`de la función `mutual`permite descomponer el índice de segregación total en sus términos "between" y "within".
 
 ```{r}
 mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = c("school", "sch_type"),
         by = "region", within = "csep")
 ```
-Obtenemos tres términos para cada región. El primero, \code{M}, coincide con los valores totales sin la opción \code{within}. El segundo, \code{M\_B\_csep}, conocido como término "between", es la segregación socioeconómica en las combinaciones de escuelas y tipos de escuelas. El tercero, \code{M\_W\_csep}, conocido como término "within", es la combinacion lineal de los niveles de segregacion étnica obtenidos dentro de cada nivel socioeconomico (con pesos iguales a la importancia demográfica de cada nivel). Este termino "within" se puede interpretar como la parte de la segregacion total derivada exclusivamente de diferencias etnicas. A partir de este punto nos referiremos a esta última segregación como "la contribución", en este caso, de etnia.
+Obtenemos tres términos para cada región. El primero, `M` coincide con los valores totales sin la opción `within` El segundo, `M\_B\_csep` conocido como término "between", es la segregación socioeconómica en las combinaciones de escuelas y tipos de escuelas. El tercero, `M\_W\_csep` conocido como término "within", es la combinacion lineal de los niveles de segregacion étnica obtenidos dentro de cada nivel socioeconomico (con pesos iguales a la importancia demográfica de cada nivel). Este termino "within" se puede interpretar como la parte de la segregacion total derivada exclusivamente de diferencias etnicas. A partir de este punto nos referiremos a esta última segregación como "la contribución", en este caso, de etnia.
 
 También es posible obtener la descomposición del índice en un término "between" etnia y un término "within" etnia"
 
 ```{r}
 mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = c("school","sch_type"), by = "region", within = "ethnicity")
 ```
-De nuevo tenemos tres términos para cada región. El primero, \code{M}, vuelve a coincidir con los valores totales sin la opción \code{within}. El segundo, \code{M\_B\_ethnicity}, es la segregación étnica en las combinaciones de escuelas y tipos de escuelas. El tercero, \code{M\_W\_csep}, es la contribución socioeconómica.
+De nuevo tenemos tres términos para cada región. El primero, `M` vuelve a coincidir con los valores totales sin la opción `within` El segundo, `M\_B\_ethnicity` es la segregación étnica en las combinaciones de escuelas y tipos de escuelas. El tercero, `M\_W\_csep` es la contribución socioeconómica.
 
-La opción \code{contribution.from} permite computar de forma simultánea las dos contribuciones:
+La opción `contribution.from`permite computar de forma simultánea las dos contribuciones:
 
 ```{r}
 mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = c("school","sch_type"),
         by = "region", contribution.from = "group_vars")
 ```
 
-Obtenemos cuatro términos para cada región: \code{M}, \code{C\_csep}, \code{C\_ethnicity}, \code{interaction}. El término \code{M} es la segregación total, como ya hemos visto. El término \code{C\_csep} es la contribución socioeconómica, y coincide con el término "within" etnia, \code{M\_W\_ethnicity}. El término \code{C\_ethnicity} es la contribución étnica, y coincide con el término "within" socioeconómico, \code{M\_W\_csep}. Por último, el término \code{interaction} es igual a \code{M} menos la suma de \code{C\_csep} y \code{C\_ethnicity}. Es la parte de la segregación total que no se puede atribuir al efecto segregador exclusivo de `etnicity` o de `csep`. 
+Obtenemos cuatro términos para cada región: `M` `C\_csep` `C\_ethnicity` `interaction` El término `M`es la segregación total, como ya hemos visto. El término `C\_csep`es la contribución socioeconómica, y coincide con el término "within" etnia, `M\_W\_ethnicity` El término `C\_ethnicity`es la contribución étnica, y coincide con el término "within" socioeconómico, `M\_W\_csep` Por último, el término `interaction`es igual a `M`menos la suma de `C\_csep`y `C\_ethnicity` Es la parte de la segregación total que no se puede atribuir al efecto segregador exclusivo de `etnicity` o de `csep`. 
   ### COMPROBAR CON EL OUTPUT
 Podemos ver que la segregación exclusivamente socioeconómica es mayor en la región del Biobio, mientras que la segregación exclusivamente étnica es mayor en la región de La Araucania.
 
-La opción \code{contribution.from} permite obtener las contribuciones de un subconjunto de variables. Por ejemplo:
+La opción `contribution.from`permite obtener las contribuciones de un subconjunto de variables. Por ejemplo:
 ```{r}
 mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = c("school","sch_type"),
         by = "region", contribution.from = "csep")
 ```
-devuelve únicamente \code{M}, \code{C\_csep}, e \code{interaction}, y omite la contribución de étnia.
+devuelve únicamente `M` `C\_csep` e `interaction` y omite la contribución de étnia.
 
 El análisis de contribuciones también se puede hacer para unidades organizativas. Por ejemplo:
 ```{r}
 mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = c("school","sch_type"),
-        by = "region", contribution.from = "unit.vars")
+        by = "region", contribution.from = "unit_vars")
 ```
-El primero de los cuatro términos es la segregación total por región. El segundo término, \code{C\_school}, recoge la contribución de la segregación socioeconómica y étnica por escuelas. El tercer término, \code{C\_sch_type} captura la contribución de la segregación socioeconómica y étnica por dependencia administrativa. El cuarto término es la parte de la segregación que no puede ser atribuída exclusivamente ni a la segregación por escuelas ni a la segregación por dependencia administrativa.
+El primero de los cuatro términos es la segregación total por región. El segundo término, `C\_school` recoge la contribución de la segregación socioeconómica y étnica por escuelas. El tercer término, `C\_sch_type`captura la contribución de la segregación socioeconómica y étnica por dependencia administrativa. El cuarto término es la parte de la segregación que no puede ser atribuída exclusivamente ni a la segregación por escuelas ni a la segregación por dependencia administrativa.
 
 En el caso de particiones, el análisis de contribuciones se simplifica. Por ejemplo:
 ```{r}
 mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = c("school","commune"),
-        by = "region", contribution.from = "unit.vars")
+        by = "region", contribution.from = "unit_vars")
 ```
-La contribución comunal (\code{C\_commune} es cero pues no hay segregación por distritos dentro de cada escuela. Intuitivamente toda segregación por distritos deviene en segregación por escuelas.
+La contribución comunal (`C\_commune`es cero pues no hay segregación por distritos dentro de cada escuela. Intuitivamente toda segregación por distritos deviene en segregación por escuelas.
 
 El análisis de las contribuciones se generaliza a situaciones en las que hay más de dos fuentes de segregación por grupos o unidades. Por ejemplo, si consideramos tres fuentes de segregación en grupos (`ethnicity`, `csep`, y `gender`):
 ```{r}
 mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity", "gender"), unit = c("school","commune"),
-        by = "region", contribution.from = "group.vars")
+        by = "region", contribution.from = "group_vars")
 ```
-presenta cinco términos, la segregación total, las contribuciones de las tres fuentes de segregación por grupos, y el término de interacción. La única restricción de la opción \code{contribution.from} es que no se pueden calcular simultáneamente contribuciones de variables que definen los grupos y variables que definen las unidades, pues no existe una única forma de hacer esta descomposición. No obstante, la opción \code{components} permite recuperar todos los elementos de la combinación lineal del término "within" para computar la descomposición deseada por el usuario avanzado.
+presenta cinco términos, la segregación total, las contribuciones de las tres fuentes de segregación por grupos, y el término de interacción. La única restricción de la opción `contribution.from`es que no se pueden calcular simultáneamente contribuciones de variables que definen los grupos y variables que definen las unidades, pues no existe una única forma de hacer esta descomposición. No obstante, la opción `components`permite recuperar todos los elementos de la combinación lineal del término "within" para computar la descomposición deseada por el usuario avanzado.
 
 ## Citation
 
