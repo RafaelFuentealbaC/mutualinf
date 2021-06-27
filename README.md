@@ -179,7 +179,7 @@ definen por todas las combinaciones de nivel socioeconómico y de
 pertenencia étnica de los estudiantes que se producen en la base de
 datos. Como podemos ver, la segregación obtenida considerando
 simultáneamente el nivel socioeconómico y la etnia es mayor que las
-obtenidas por separado.
+obtenidas por separado (`0.1995499` y `0.06213906`, respectivamente).
 
 De igual manera, se puede realizar el análisis de la segregación
 utilizando múltiples dimensiones unitarias y/o grupales. Por
@@ -232,10 +232,9 @@ comando:
 ```
 
 En este caso, la función reporta el nombre de cada región acompañado de
-su respectivo índice. Podemos ver que la segregación es mayor en la
-región de La Araucania que en las regiones del Biobio y Los Rios, y a
-su vez, es mayor que la segregación socioeconómica y étnica en las
-escuelas de las tres regiones conjuntas.
+su respectivo índice. Podemos ver que la segregación socioeconómica y
+étnica es mayor en la región de La Araucania que en las regiones del
+Biobio y Los Rios.
 
 La opción `within` de la función `mutual` permite descomponer el índice
 de segregación total en sus términos “between” y
@@ -341,9 +340,9 @@ El primero de los cuatro términos es la segregación socioeconómica y
 contribución de la segregación socioeconómica y étnica por escuelas. El
 tercer término, `C_sch_type` captura la contribución de la segregación
 socioeconómica y étnica por dependencia administrativa. El cuarto
-término es la parte de la segregación que no puede ser atribuída
-exclusivamente ni a la segregación por escuelas ni a la segregación por
-dependencia administrativa.
+término, `interaction` es la parte de la segregación que no puede ser
+atribuída exclusivamente ni a la segregación por escuelas ni a la
+segregación por dependencia administrativa.
 
 En el caso de particiones, el análisis de contribuciones se simplifica.
 Por
