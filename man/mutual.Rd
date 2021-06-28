@@ -28,40 +28,40 @@ computed.}
 
 \item{within}{A categorical variable name or vector of categorical variables names contained in \code{data}, or also,
 a column number or vector of column numbers of \code{data}. Defines the partitions to compute the between and within
-decompositions. By default is NULL.}
+decompositions. By default is \code{NULL}.}
 
 \item{by}{A categorical variable name or vector of categorical variables names contained in \code{data}, or also,
 a column number or vector of column numbers of \code{data}. Defines the subsamples over which indexes are computed.
-By default is NULL.}
+By default is \code{NULL}.}
 
 \item{contribution.from}{A variable of character type that can be 'group_vars' or 'unit_vars', or also, a categorical
 variable name or vector of categorical variables names contained in the \code{group} parameter or \code{unit}
 parameter, or also, a column number or vector of column numbers in the \code{group} parameter or the \code{unit}
 parameter. Defines the segregation sources whose exclusive contributions to the "within" terms and the overall index
-are computed. By default is NULL.}
+are computed. By default is \code{NULL}.}
 
-\item{components}{A boolean value. If TRUE and the \code{within} option is not NULL and the \code{by} option is NULL,
-then it returns a list where the first element is a data.table that contains a summary of the index total value and
-its decompositions, while the second element is a data.table with more detailed information of the decomposition of the
+\item{components}{A boolean value. If TRUE and the \code{within} option is not \code{NULL} and the \code{by} option is \code{NULL},
+then it returns a list where the first element is a \code{data.table} that contains a summary of the index total value and
+its decompositions, while the second element is a \code{data.table} with more detailed information of the decomposition of the
 "within" term (the mathematical components required to compute the within terms). If the \code{within} and \code{by}
-options are not NULL, then the function returns a list of lists where each first element is a data.table that contains
-the summary of the index total value and decompositions in a given subsample, while each second element is a data.table
+options are not \code{NULL}, then the function returns a list of lists where each first element is a \code{data.table} that contains
+the summary of the index total value and decompositions in a given subsample, while each second element is a \code{data.table}
 with more detailed information of the decomposition of the within term displayed in each first element in the same
 subsample. By default is FALSE.}
 
-\item{cores}{A positive integer. Defines the amount of CPU cores to use in parallelization tasks. If NULL, then the
+\item{cores}{A positive integer. Defines the amount of CPU cores to use in parallelization tasks. If \code{NULL}, then the
 computation is carried out in only one core. This option is available to Mac, Linux, Unix, and BSD systems
-but is not available to Windows sytems. By default is NULL.}
+but is not available to Windows sytems. By default is \code{NULL}.}
 }
 \value{
-A data.table if the \code{components} option is FALSE; a list if the \code{components} option is TRUE,
-the \code{within} option is not NULL and the \code{by} option is NULL; or a list of lists if the \code{components}
-option is TRUE, and both \code{within} and \code{by} options are not NULL.
+A \code{data.table} if the \code{components} option is \code{FALSE}; a list if the \code{components} option is \code{TRUE},
+the \code{within} option is not \code{NULL} and the \code{by} option is \code{NULL}; or a list of lists if the \code{components}
+option is \code{TRUE}, and both \code{within} and \code{by} options are not \code{NULL}.
 }
 \description{
 Calculates and decomposes the Mutual Information index into "between" and "within" terms. The
 "within" terms can also be decomposed into "exclusive contributions" of segregation sources defined either by group
-or unit characteristics. The mathematical components rquired to compute each "within" term can also be displayed at
+or unit characteristics. The mathematical components required to compute each "within" term can also be displayed at
 the user's request. The results can be calculated over subsamples defined by the user.
 }
 \details{
@@ -109,18 +109,18 @@ cores = 2)
 }
 }
 \references{
-Frankel, D. and Volij, O. (2011). Measuring school segregation. Journal of Economic Theory. 146(1):1-38. DOI:
-10.1016/j.jet.2010.10.008.
+Frankel, D. and Volij, O. (2011). Measuring school segregation. \emph{Journal of Economic Theory, 146}(1):1-38. DOI:
+\url{http://doi.org/10.1016/j.jet.2010.10.008}.
 
-Mora, R. and Guinea-Martin, D. (2021). Computing decomposable multigroup indexes of segregation. UC3M Working
-papers. Economics 31803, Universidad Carlos III de Madrid. Departamento de Economía.
+Mora, R. and Guinea-Martin, D. (2021). Computing decomposable multigroup indexes of segregation. \emph{UC3M Working
+papers, Economics 31803}. Universidad Carlos III de Madrid. Departamento de Economía.
 
 Guinea-Martin, D., Mora, R., & Ruiz-Castillo, J. (2018). The evolution of gender segregation over the life course.
-American Sociological Review, 83(5), 983-1019. DOI:10.1177/0003122418794503
+\emph{American Sociological Review, 83}(5), 983-1019. DOI: \url{http://doi.org/10.1177/0003122418794503}.
 
-Mora, R. and Ruiz-Castillo, J. (2011). Entropy-based segregation indices. Sociological Methodology. 41(1):159-194.
-DOI: 10.1111/j.1467-9531.2011.01237.x.
+Mora, R. and Ruiz-Castillo, J. (2011). Entropy-based segregation indices. \emph{Sociological Methodology, 41}(1):159-194.
+DOI: \url{http://doi.org/10.1111/j.1467-9531.2011.01237.x}.
 
 Theil, H. and Finizza, Anthony J. (1971). A note on the measurement of racial integration of schools by means of
-informational concepts. The Journal of Mathematical Sociology. 1(2):187-193. DOI: 10.1080/0022250X.1971.9989795.
+informational concepts. \emph{The Journal of Mathematical Sociology, 1}(2):187-193. DOI: \url{http://doi.org/10.1080/0022250X.1971.9989795}.
 }

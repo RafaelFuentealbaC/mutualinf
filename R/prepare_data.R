@@ -8,12 +8,12 @@
 #' used "all_vars" to select all variables contained in \code{data}.
 #' @param fw Variable name or column number contained in \code{data} that contains frecuency weight for
 #' each combination of variables of the dataset. If this variable exists then the function will change its
-#' original name to \code{fw}. If this variable does not exist or is NULL, then the function will compute the
+#' original name to \code{fw}. If this variable does not exist or is \code{NULL}, then the function will compute the
 #' frecuency weight given the combination of variables of \code{vars} and will create a new variable called
-#' \code{fw}. By default is NULL.
+#' \code{fw}. By default is \code{NULL}.
 #' @param col.order A variable name or vector of variables names contained in \code{vars}, or a column
 #' number or vector of column numbers contained in \code{vars}. Selects the columns to sort the dataset. By
-#' default is NULL.
+#' default is \code{NULL}.
 #' @return Returns a \code{data.table} of class "data.table" "data.frame" "mutual.data".
 #' @examples
 #' \dontrun{

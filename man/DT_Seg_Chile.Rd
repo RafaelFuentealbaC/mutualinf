@@ -5,7 +5,7 @@
 \alias{DT_Seg_Chile}
 \title{Segregation data in southern Chile}
 \format{
-A data.table with 55960 observations and 11 variables:
+A \code{data.table} with 55960 observations and 11 variables:
 \describe{
 \item{year}{Academic year. From 2016 to 2018.}
 \item{school}{School ID (RBD, Rol de Base de Datos).}
@@ -23,21 +23,19 @@ region or Los Rios region.}
 }
 }
 \source{
-<https://github.com/RafaelFuentealbaC/mutualinf>
+Ministry of Education (MINEDUC): \url{http://datosabiertos.mineduc.cl/}
 
-<http://datosabiertos.mineduc.cl/>
-
-<http://www.agenciaeducacion.cl/>
+Education Quality Agency: \url{http://www.agenciaeducacion.cl/}
 }
 \usage{
 DT_Seg_Chile
 }
 \description{
 The data set included in this package was build using two data sets. The first one is the student
-enrollment reported by the Ministry of Education (MINEDUC) <http://datosabiertos.mineduc.cl/> for students of primary
+enrollment reported by the Ministry of Education (MINEDUC, \url{http://datosabiertos.mineduc.cl/}) for students of primary
 education (first eight years of formal education) who attended establishments officially recognized by the State.
 The second one is the Quality and Context of Education Questionnaire for Parents and Guardians, and the Student
-Questionnaire, both applied by the Education Quality Agency <http://www.agenciaeducacion.cl/> to all students in
+Questionnaire, both applied by the Education Quality Agency (\url{http://www.agenciaeducacion.cl/}) to all students in
 grades 4 and 8 of primary education. Both sources are limited to the period 2016-2018. Contains information related
 to students and educational system characteristics in southern Chile (Biobio, La Araucania and Los Rios regions).
 }
