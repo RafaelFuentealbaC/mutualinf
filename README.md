@@ -388,7 +388,7 @@ If you use this package for your research, please cite:
 
 Fuentealba-Chaura, R., Mora, R., Rojas-Mora, J. (2021). mutualinf: an R
 package to calculate and decompose the Mutual Information Index.
-<https://www.github.com/RafaelFuentealbaC/mutualinf>
+<https://www.github.com/RafaelFuentealbaC/mutualinf/>
 
 ## References
 
@@ -396,8 +396,10 @@ Frankel, D. and Volij, O. (2011). Measuring school segregation.
 <em>Journal of Economic Theory, 146</em>(1):1-38.
 <https://doi.org/10.1016/j.jet.2010.10.008>.
 
-Kullback, S. (1959). <em>Information Theory and Statistics</em>. Wiley
-Publication in Mathematical Statistics.
+Guinea-Martin, D., Mora, R., & Ruiz-Castillo, J. (2018). The evolution
+of gender segregation over the life course. <em>American Sociological
+Review, 83</em>(5), 983-1019.
+<https://doi.org/10.1177/0003122418794503>.
 
 Mora, R. and Guinea-Martin, D. (2021). Computing decomposable multigroup
 indexes of segregation. <em>UC3M Working papers, Economics 31803</em>,
@@ -407,7 +409,7 @@ Mora, R. and Ruiz-Castillo, J. (2011). Entropy-based segregation
 indices. <em>Sociological Methodology, 41</em>(1):159-194.
 <https://doi.org/10.1111/j.1467-9531.2011.01237.x>.
 
-Theil, H. and Finizza, Anthony J. (1971). A note on the measurement of
-racial integration of schools by means of informational concepts.
-<em>The Journal of Mathematical Sociology, 1</em>(2):187-193.
+Theil, H. and Finizza, A. J. (1971). A note on the measurement of racial
+integration of schools by means of informational concepts. <em>The
+Journal of Mathematical Sociology, 1</em>(2):187-193.
 <https://doi.org/10.1080/0022250X.1971.9989795>.

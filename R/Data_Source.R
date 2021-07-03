@@ -1,9 +1,9 @@
 #' @title Segregation data in southern Chile
 #' @description The data set included in this package was build using two data sets. The first one is the student
-#' enrollment reported by the Ministry of Education (MINEDUC, \url{http://datosabiertos.mineduc.cl/}) for students of primary
+#' enrollment reported by the Ministry of Education (MINEDUC, \url{https://datosabiertos.mineduc.cl/}) for students of primary
 #' education (first eight years of formal education) who attended establishments officially recognized by the State.
 #' The second one is the Quality and Context of Education Questionnaire for Parents and Guardians, and the Student
-#' Questionnaire, both applied by the Education Quality Agency (\url{http://www.agenciaeducacion.cl/}) to all students in
+#' Questionnaire, both applied by the Education Quality Agency (\url{https://www.agenciaeducacion.cl/}) to all students in
 #' grades 4 and 8 of primary education. Both sources are limited to the period 2016-2018. Contains information related
 #' to students and educational system characteristics in southern Chile (Biobio, La Araucania and Los Rios regions).
 #' @format A \code{data.frame} with 191495 observations and 11 variables:
@@ -22,18 +22,18 @@
 #' \item{grade}{Student grade. Students can either belong to the 4th (4) or 8th (8) grade of basic school.}
 #' \item{nobs}{Number of students in a cell or combination of variables.}
 #' }
-#' @source Ministry of Education (MINEDUC): \url{http://datosabiertos.mineduc.cl/}
+#' @source Ministry of Education (MINEDUC): \url{https://datosabiertos.mineduc.cl/}
 #'
-#' Education Quality Agency: \url{http://www.agenciaeducacion.cl/}
+#' Education Quality Agency: \url{https://www.agenciaeducacion.cl/}
 "DF_Seg_Chile"
 
 
 #' @title Segregation data in southern Chile
 #' @description The data set included in this package was build using two data sets. The first one is the student
-#' enrollment reported by the Ministry of Education (MINEDUC, \url{http://datosabiertos.mineduc.cl/}) for students of primary
+#' enrollment reported by the Ministry of Education (MINEDUC, \url{https://datosabiertos.mineduc.cl/}) for students of primary
 #' education (first eight years of formal education) who attended establishments officially recognized by the State.
 #' The second one is the Quality and Context of Education Questionnaire for Parents and Guardians, and the Student
-#' Questionnaire, both applied by the Education Quality Agency (\url{http://www.agenciaeducacion.cl/}) to all students in
+#' Questionnaire, both applied by the Education Quality Agency (\url{https://www.agenciaeducacion.cl/}) to all students in
 #' grades 4 and 8 of primary education. Both sources are limited to the period 2016-2018. Contains information related
 #' to students and educational system characteristics in southern Chile (Biobio, La Araucania and Los Rios regions).
 #' @format A \code{data.table} with 55960 observations and 11 variables:
@@ -52,7 +52,7 @@
 #' \item{grade}{Student grade. Students can either belong to the 4th (4) or 8th (8) grade of basic school.}
 #' \item{fw}{Number of students in a cell or combination of variables.}
 #' }
-#' @source Ministry of Education (MINEDUC): \url{http://datosabiertos.mineduc.cl/}
+#' @source Ministry of Education (MINEDUC): \url{https://datosabiertos.mineduc.cl/}
 #'
-#' Education Quality Agency: \url{http://www.agenciaeducacion.cl/}
+#' Education Quality Agency: \url{https://www.agenciaeducacion.cl/}
 "DT_Seg_Chile"
