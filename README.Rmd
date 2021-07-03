@@ -62,18 +62,21 @@ The library computes the M Index. Suppose you have 2016-2018 primary school enro
 ```{r}
 library(mutualinf)
 
-DT_Seg_Chile_1 <- prepare_data(data = DF_Seg_Chile, 
-                               vars = "all_vars", fw = "nobs")
+DT_Seg_Chile_1 <- prepare_data(data = DF_Seg_Chile,
+                               vars = "all_vars",
+                               fw = "nobs")
+class(DT_Seg_Chile_1)
 ```
 If `vars =" all_vars "`, `prepare_data` uses all columns in the table. You may, nonetheless, use the `vars` option with tables that have a large number of columns that are not needed in the analysis. For example:
 ```{r}
 DT_Seg_Chile_1 <- prepare_data(data = DF_Seg_Chile, 
-                               vars = c("school","csep"), fw = "nobs")
+                               vars = c("school", "csep"),
+                               fw = "nobs")
 ```
 prepares the data to conduct, as we see below, an analysis of socioeconomic segregation by school. If you want to additionally study segregation by ethnicity in the schools, the data preparation should collect all the relevant variables:
 ```{r}
 DT_Seg_Chile_1 <- prepare_data(data = DF_Seg_Chile, 
-                               vars = c("school","csep","ethnicity"), 
+                               vars = c("school", "csep", "ethnicity"),
                                fw = "nobs")
 ```
 If the data is originally fully disaggregated (i.e., one record represents one student), `prepare_data` computes the cell frequencies of the specified variables:
@@ -83,7 +86,8 @@ DT_Seg_Chile_2 <- prepare_data(data = DF_Seg_Chile,
 ```
 The `mutual` function can calculate the index M in its simplest form, i.e., on a group dimension for a unit of analysis. For example, to compute socioeconomic segregation by schools:
 ```{r}
-mutual(data = DT_Seg_Chile, group = "csep", 
+mutual(data = DT_Seg_Chile,
+       group = "csep", 
        unit = "school")
 ```
 and to compute ethnic segregation by schools:
@@ -123,7 +127,7 @@ Option `by` computes the index for subsamples. The data used as an illustration 
         unit = c("school", "sch_type"), 
         by = "region")
 ```
-In this case, the function displays the index for each region. We see that socioeconomic and ethnic segregation is greater in La Araucania (`0.2367493`) than in Biobi (`0.2312423`) and Los Rios (`0.2125013`).
+In this case, the function displays the index for each region. We see that socioeconomic and ethnic segregation is greater in La Araucania (`0.2367493`) than in Biobio (`0.2312423`) and Los Rios (`0.2125013`).
 
 Option `within` additively decomposes the total segregation index into a "between" and a "within" term:
 ```{r}

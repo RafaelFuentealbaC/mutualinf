@@ -84,8 +84,11 @@ the data for the `mutual` function:
 ``` r
 library(mutualinf)
 
-DT_Seg_Chile_1 <- prepare_data(data = DF_Seg_Chile, 
-                               vars = "all_vars", fw = "nobs")
+DT_Seg_Chile_1 <- prepare_data(data = DF_Seg_Chile,
+                               vars = "all_vars",
+                               fw = "nobs")
+class(DT_Seg_Chile_1)
+#> [1] "data.table"  "data.frame"  "mutual.data"
 ```
 
 If `vars =" all_vars "`, `prepare_data` uses all columns in the table.
@@ -95,7 +98,8 @@ example:
 
 ``` r
 DT_Seg_Chile_1 <- prepare_data(data = DF_Seg_Chile, 
-                               vars = c("school","csep"), fw = "nobs")
+                               vars = c("school", "csep"),
+                               fw = "nobs")
 ```
 
 prepares the data to conduct, as we see below, an analysis of
@@ -105,7 +109,7 @@ collect all the relevant variables:
 
 ``` r
 DT_Seg_Chile_1 <- prepare_data(data = DF_Seg_Chile, 
-                               vars = c("school","csep","ethnicity"), 
+                               vars = c("school", "csep", "ethnicity"),
                                fw = "nobs")
 ```
 
@@ -123,7 +127,8 @@ i.e., on a group dimension for a unit of analysis. For example, to
 compute socioeconomic segregation by schools:
 
 ``` r
-mutual(data = DT_Seg_Chile, group = "csep", 
+mutual(data = DT_Seg_Chile,
+       group = "csep", 
        unit = "school")
 #>            M
 #> 1: 0.1995499
@@ -212,7 +217,7 @@ of segregation for each of the three regions in a single command:
 
 In this case, the function displays the index for each region. We see
 that socioeconomic and ethnic segregation is greater in La Araucania
-(`0.2367493`) than in Biobi (`0.2312423`) and Los Rios (`0.2125013`).
+(`0.2367493`) than in Biobio (`0.2312423`) and Los Rios (`0.2125013`).
 
 Option `within` additively decomposes the total segregation index into a
 “between” and a “within” term:
