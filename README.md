@@ -183,8 +183,8 @@ socioeconomic and ethnic segregation.
 
 Yet the variables that define the units may not have a hierarchical
 relationship between them. For example, if instead of district
-(`commune`) we use type of school (`sch_type`, either private not
-subsidized, private subsidized, or public):
+(`commune`) we use type of school (`sch_type`, either private, charter,
+or public):
 
 ``` r
  mutual(data = DT_Seg_Chile, 
@@ -281,7 +281,7 @@ mutual(data = DT_Seg_Chile,
 #> 3:     Los Rios 0.2125013 0.1792539  0.03505928 -0.001811897
 ```
 
-We get four terms for each region: `M`,`C_csep`, `C_ethnicity`, and
+We get four terms for each region: `M`, `C_csep`, `C_ethnicity`, and
 `interaction`. `M` is total segregation, as we have already seen.
 `C_csep` is the socioeconomic contribution and matches the “within”
 ethnicity term,`M_W_ethnicity`. `C_ethnicity` is the ethnic contribution
@@ -381,14 +381,6 @@ be simultaneously computed since there is no single way to do this
 decomposition. However, option `components` allows retrieving all the
 elements of the linear combination of the “within” terms to compute the
 decomposition desired by an advanced user.
-
-## Citation
-
-If you use this package for your research, please cite:
-
-Fuentealba-Chaura, R., Mora, R., Rojas-Mora, J. (2021). mutualinf: an R
-package to calculate and decompose the Mutual Information Index.
-<https://www.github.com/RafaelFuentealbaC/mutualinf/>
 
 ## References
 

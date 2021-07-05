@@ -112,7 +112,7 @@ mutual(data = DT_Seg_Chile,
 ```
 computes socioeconomic and ethnic segregation in combinations of schools and districts. Note that the result is identical to that obtained in the previous case, `0.2610338`. The reason is that each school only belongs to one district so that the combinations of schools and districts coincide with the set of schools. We can say that the districts are a partition of the schools and districts do not add a new source for socioeconomic and ethnic segregation.
 
-Yet the variables that define the units may not have a hierarchical relationship between them. For example, if instead of district (`commune`) we use type of school (`sch_type`, either private not subsidized, private subsidized, or public):
+Yet the variables that define the units may not have a hierarchical relationship between them. For example, if instead of district (`commune`) we use type of school (`sch_type`, either private, charter, or public):
 ```{r}
  mutual(data = DT_Seg_Chile, 
         group = c("csep", "ethnicity"), 
@@ -157,7 +157,7 @@ mutual(data = DT_Seg_Chile,
        by = "region", 
        contribution.from = "group_vars")
 ```
-We get four terms for each region: `M`,` C_csep`, `C_ethnicity`, and `interaction`. `M` is total segregation, as we have already seen. `C_csep` is the socioeconomic contribution and matches the "within" ethnicity term,` M_W_ethnicity`. `C_ethnicity` is the ethnic contribution and matches the "within" socioeconomic term,` M_W_csep`. Finally, `interaction` is equal to `M` minus the sum of `C_csep` and `C_ethnicity`. It is the part of the total segregation in the combinations of schools and school types that cannot be exclusively attributed to the segregation effect of either `ethnicity` or `csep`. We can see that the socioeconomic contribution is largest in Biobio (`0.2054156`), while the ethnicity contribution is largest in La Araucania (`0.04608521`).
+We get four terms for each region: `M`, ` C_csep`, `C_ethnicity`, and `interaction`. `M` is total segregation, as we have already seen. `C_csep` is the socioeconomic contribution and matches the "within" ethnicity term,` M_W_ethnicity`. `C_ethnicity` is the ethnic contribution and matches the "within" socioeconomic term,` M_W_csep`. Finally, `interaction` is equal to `M` minus the sum of `C_csep` and `C_ethnicity`. It is the part of the total segregation in the combinations of schools and school types that cannot be exclusively attributed to the segregation effect of either `ethnicity` or `csep`. We can see that the socioeconomic contribution is largest in Biobio (`0.2054156`), while the ethnicity contribution is largest in La Araucania (`0.04608521`).
 
 Option `contribution.from` may also display the contributions of a subset of variables. For example:
 ```{r}
@@ -201,14 +201,6 @@ displays five terms: total segregation, the contributions of the three sources o
 
 The only restriction of option `contribution.from` is that contributions of variables that define groups and variables that define units cannot be simultaneously computed since there is no single way to do this decomposition. However, option `components` allows retrieving all the elements of the linear combination of the "within" terms to compute the decomposition desired by an advanced user. 
  
-
-## Citation
-
-If you use this package for your research, please cite:
-
-Fuentealba-Chaura, R., Mora, R., Rojas-Mora, J. (2021). mutualinf: an R package to calculate and decompose the Mutual Information Index. https://www.github.com/RafaelFuentealbaC/mutualinf/
-
-
 ## References
 
 Frankel, D. and Volij, O. (2011). Measuring school segregation. <em>Journal of Economic Theory, 146</em>(1):1-38. https://doi.org/10.1016/j.jet.2010.10.008.
