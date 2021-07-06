@@ -68,7 +68,7 @@ the user's request. The results can be calculated over subsamples defined by the
 Mixing \code{group} variables with \code{unit} variables in \code{contribution.from} will produce an error.
 }
 \examples{
-\dontrun{
+\donttest{
 # To compute the overall measure of school segregation by socioeconomic and ethnic status.
 mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school")
 

@@ -53,9 +53,9 @@ NULL
 #'
 #' Theil, H. and Finizza, A. J. (1971). A note on the measurement of racial integration of schools by means of
 #' informational concepts. \emph{The Journal of Mathematical Sociology, 1}(2):187-193. \doi{10.1080/0022250X.1971.9989795}.
-
+#'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # To compute the overall measure of school segregation by socioeconomic and ethnic status.
 #' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school")
 #'
