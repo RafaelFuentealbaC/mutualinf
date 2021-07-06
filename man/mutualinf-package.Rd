@@ -10,9 +10,9 @@ The Mutual Information Index (M) introduced to the social sciences by Theil and 
 The package allows for:
 \itemize{
 \item The computation of the M index, either overall or over subsamples defined by the user.
-\item The decomposition of the M index into a “between” and a “within” term.
-\item The identification of the “exclusive contributions” of segregation sources defined either by group or unit characteristics.
-\item The computation of all the elements that conform the “within” term in the decomposition.
+\item The decomposition of the M index into a "between" and a "within" term.
+\item The identification of the "exclusive contributions" of segregation sources defined either by group or unit characteristics.
+\item The computation of all the elements that conform the "within" term in the decomposition.
 \item Fast computation employing more than one CPU core in Mac, Linux, Unix, and BSD systems. This option uses the data.table and parallel libraries (which Windows does not permit to run with more than one CPU core).
 }
 }
