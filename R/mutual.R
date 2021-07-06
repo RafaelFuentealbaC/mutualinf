@@ -55,7 +55,6 @@ NULL
 #' informational concepts. \emph{The Journal of Mathematical Sociology, 1}(2):187-193. \doi{10.1080/0022250X.1971.9989795}.
 #'
 #' @examples
-#' \donttest{
 #' # To compute the overall measure of school segregation by socioeconomic and ethnic status.
 #' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school")
 #'
@@ -63,34 +62,34 @@ NULL
 #' # status by region.
 #' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region")
 #'
-#' # Use the 'within' option to decompose the overall measure of school segregation by
+#' # Use option 'within' to decompose the overall measure of school segregation by
 #' # socioeconomic and ethnic status into school segregation by ethnic status (the "between" term),
 #' # and the weighted average of local indexes of school segregation by socioeconomic status
 #' # within each ethnic group (the "within" term).
 #' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school",
 #' within = "ethnicity")
 #'
-#' # Use the 'components' option to get detailed information related to the "within" term. The
+#' # Use option 'components' to get detailed information related to the "within" term. The
 #' # results show the weights and the local indexes in the 'W_Decomposition' element. The weighted
 #' # average between 'p' and 'within' is equal to the index within term.
 #' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school",
 #' within = "ethnicity", components = TRUE)
 #'
-#' # Use the 'contribution.from' option to evaluate the exclusive effect of specific segregation
-#' # sources on the overall measure and the "within" terms.
-#' # The same decomposition as before, but decomposing the "within" term into the exclusive
-#' # contribution of ethnic segregation, the exclusive contribution of socioeconomic status and
-#' # a the overall contribution that cannot be attributed to any of them (the "interaction" term).
+#' # Use option 'contribution.from' to evaluate the exclusive effect of specific segregation
+#' # sources on the overall measure, e.g., socioeconomic and ethnic contributions, and the
+#' # contribution that cannot be attributed to any of them (the "interaction" term).
 #' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region",
 #' contribution.from = "group_vars")
 #'
-#' # The 'contribution.from' option can be used with any subset of variables from the vectors
+#' # Option 'contribution.from' can be used with any subset of variables from the vectors
 #' # "group" and "unit", but only variables from one of the two vectors can be used. Furthermore,
 #' # the vector used -either "group" or "unit"- must have more than one variable.
 #' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region",
 #' contribution.from = "ethnicity")
 #'
-#' # Use the 'cores' option to increase the CPU cores used in the index computation.
+#' \dontrun{
+#' # Use the 'cores' option to increase the CPU cores used in the index computation (Windows does not
+#' # permit to run this function with more than one CPU core).
 #' mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region",
 #' cores = 2)
 #' }
