@@ -69,43 +69,16 @@ Mixing \code{group} variables with \code{unit} variables in \code{contribution.f
 }
 \examples{
 # To compute the overall measure of school segregation by socioeconomic and ethnic status.
-mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school")
+mutual(data = DT_test, group = c("csep", "ethnicity"), unit = "school")
 
-# Using the 'by' option to compute measures of school segregation by socioeconomic and ethnic
-# status by region.
-mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region")
-
-# Use option 'within' to decompose the overall measure of school segregation by
-# socioeconomic and ethnic status into school segregation by ethnic status (the "between" term),
-# and the weighted average of local indexes of school segregation by socioeconomic status
-# within each ethnic group (the "within" term).
-mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school",
-within = "ethnicity")
-
-# Use option 'components' to get detailed information related to the "within" term. The
-# results show the weights and the local indexes in the 'W_Decomposition' element. The weighted
-# average between 'p' and 'within' is equal to the index within term.
-mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school",
-within = "ethnicity", components = TRUE)
-
-# Use option 'contribution.from' to evaluate the exclusive effect of specific segregation
-# sources on the overall measure, e.g., socioeconomic and ethnic contributions, and the
-# contribution that cannot be attributed to any of them (the "interaction" term).
-mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region",
+# Computation of the exclusive effect of specific segregation sources on the overall measure, e.g.,
+# socioeconomic and ethnic contributions, and the contribution that cannot be attributed to any of
+# them (the "interaction" term).
+mutual(data = DT_test, group = c("csep", "ethnicity"), unit = "school", by = "region",
 contribution.from = "group_vars")
 
-# Option 'contribution.from' can be used with any subset of variables from the vectors
-# "group" and "unit", but only variables from one of the two vectors can be used. Furthermore,
-# the vector used -either "group" or "unit"- must have more than one variable.
-mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region",
-contribution.from = "ethnicity")
+# For more information on the package, refer to the manual and the README file.
 
-\dontrun{
-# Use the 'cores' option to increase the CPU cores used in the index computation (Windows does not
-# permit to run this function with more than one CPU core).
-mutual(data = DT_Seg_Chile, group = c("csep", "ethnicity"), unit = "school", by = "region",
-cores = 2)
-}
 }
 \references{
 Frankel, D. and Volij, O. (2011). Measuring school segregation. \emph{Journal of Economic Theory, 146}(1):1-38.
