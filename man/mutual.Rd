@@ -2,7 +2,7 @@
 % Please edit documentation in R/mutual.R
 \name{mutual}
 \alias{mutual}
-\title{Calculates and decomposes the Mutual Information index}
+\title{Computes and decomposes the Mutual Information index}
 \usage{
 mutual(
   data,
@@ -59,10 +59,10 @@ the \code{within} option is not \code{NULL} and the \code{by} option is \code{NU
 option is \code{TRUE}, and both \code{within} and \code{by} options are not \code{NULL}.
 }
 \description{
-Calculates and decomposes the Mutual Information index into "between" and "within" terms. The
+Computes and decomposes the Mutual Information index into "between" and "within" terms. The
 "within" terms can also be decomposed into "exclusive contributions" of segregation sources defined either by group
 or unit characteristics. The mathematical components required to compute each "within" term can also be displayed at
-the user's request. The results can be calculated over subsamples defined by the user.
+the user's request. The results can be computed over subsamples defined by the user.
 }
 \details{
 Mixing \code{group} variables with \code{unit} variables in \code{contribution.from} will produce an error.
