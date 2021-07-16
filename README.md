@@ -415,7 +415,7 @@ decomposition desired by an advanced user.
 ## Acknowledgement
 
 FONDECYT/ANID Project 11170583 providing funding for this project while
-UCT VIP Project FEQUIP2019‐INRN‐03 provided cluster time.
+UCT VIP Project FEQUIP2019-INRN-03 provided cluster time.
 
 ## References
 
