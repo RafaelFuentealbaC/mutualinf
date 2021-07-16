@@ -7,9 +7,13 @@
 
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![CRAN
+Version](https://www.r-pkg.org/badges/version/mutualinf)](https://CRAN.R-project.org/package=mutualinf)
+[![CRAN
+Downloads](https://cranlogs.r-pkg.org/badges/grand-total/mutualinf)](https://CRAN.R-project.org/package=mutualinf)
 <!-- badges: end -->
 
-An R package to calculate and decompose the Mutual Information Index (M)
+An R package to compute and decompose the Mutual Information Index (M)
 introduced to the social sciences by Theil and Finizza (1971). The M
 index is a multigroup segregation measure that is highly decomposable,
 satisfiying both the Strong Unit Decomposability (SUD) and the Strong
@@ -33,9 +37,35 @@ The package allows for:
     libraries (which Windows does not permit to run with more than one
     CPU core).
 
+## Authors
+
+**Rafael Fuentealba-Chaura**  
+School of Computer Science  
+Universidad Católica de Temuco  
+Rudecindo Ortega 02351  
+Temuco, Chile  
+<rfuentealba@inf.uct.cl>
+
+**Ricardo Mora**  
+Department of Economics  
+Universidad Carlos III de Madrid  
+Getafe, Spain  
+<ricmora@eco.uc3m.es>
+
+**Julio Rojas-Mora**  
+Department of Computer Science  
+Universidad Católica de Temuco  
+Rudecindo Ortega 02351  
+Temuco, Chile  
+and  
+Centro de Políticas Públicas  
+Universidad Católica de Temuco  
+Temuco, Chile  
+<jrojas@inf.uct.cl>
+
 ## Installation
 
-You can install the stable version of \[`mutualinf`\] from
+You can install the stable version of `mutualinf` from
 [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
@@ -122,7 +152,7 @@ DT_Seg_Chile_2 <- prepare_data(data = DF_Seg_Chile,
                                vars = "all_vars")
 ```
 
-The `mutual` function can calculate the index M in its simplest form,
+The `mutual` function can compute the index M in its simplest form,
 i.e., on a group dimension for a unit of analysis. For example, to
 compute socioeconomic segregation by schools:
 
@@ -381,6 +411,11 @@ be simultaneously computed since there is no single way to do this
 decomposition. However, option `components` allows retrieving all the
 elements of the linear combination of the “within” terms to compute the
 decomposition desired by an advanced user.
+
+## Acknowledgement
+
+FONDECYT/ANID Project 11170583 providing funding for this project while
+UCT VIP Project FEQUIP2019‐INRN‐03 provided cluster time.
 
 ## References
 

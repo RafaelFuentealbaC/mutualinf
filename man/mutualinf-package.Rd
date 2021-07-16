@@ -2,7 +2,7 @@
 \alias{mutualinf-package}
 \docType{package}
 \title{
-An R package to calculate and decompose the Mutual Information Index (M).
+An R package to compute and decompose the Mutual Information Index (M).
 }
 \description{
 The Mutual Information Index (M) introduced to the social sciences by Theil and Finizza (1971). The M index is a multigroup segregation measure that is highly decomposable, satisfiying both the Strong Unit Decomposability (SUD) and the Strong Group Decomposability (SGD) properties (Frankel and Volij, 2011; Mora and Ruiz-Castillo, 2011).

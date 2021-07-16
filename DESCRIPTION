@@ -1,21 +1,23 @@
 Package: mutualinf
 Type: Package
-Title: Calculation and Decomposition of the Mutual Information Index
-Version: 1.0.0
+Title: Computation and Decomposition of the Mutual Information Index
+Version: 1.0.1
 Authors@R: c(person("Rafael", "Fuentealba-Chaura", email = "rfuentealba@inf.uct.cl", role = c("aut", "cre")),
               person("Ricardo", "Mora", email = "ricmora@eco.uc3m.es", role = "aut"),
-              person("Julio", "Rojas-Mora", email = "jrojas@inf.uct.cl", role = "aut"))
+              person("Julio", "Rojas-Mora", email = "jrojas@inf.uct.cl", role = "aut"),
+              person("FONDECYT/ANID Project 11170583", role = "fnd"),
+              person("UCT VIP Project FEQUIP2019‐INRN‐03", role = "fnd"))
 Description: The Mutual Information Index (M) introduced to social science literature by
     Theil and Finizza (1971) <doi:10.1080/0022250X.1971.9989795> is a multigroup
     segregation measure that is highly decomposable and that according to Frankel
     and Volij (2011) <doi:10.1016/j.jet.2010.10.008> and Mora and Ruiz-Castillo
     (2011) <doi:10.1111/j.1467-9531.2011.01237.x> satisfies the Strong Unit
     Decomposability and Strong Group Decomposability properties. This package allows
-    calculating and decomposing the total index value into its "between" and
+    computing and decomposing the total index value into its "between" and
     "within" terms. These last terms can also be decomposed into their
     contributions, either by group or unit characteristics. The factors that produce
     each "within" term can also be displayed at the user's request. The results can
-    be calculated considering a variable or sets of variables that define separate
+    be computed considering a variable or sets of variables that define separate
     clusters.
 License: GPL-3
 Imports:
