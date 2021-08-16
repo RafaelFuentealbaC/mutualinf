@@ -8,11 +8,12 @@
 A \code{data.table} with 6703 observations and 5 variables, only for testing pourposes:
 \describe{
 \item{school}{School ID (RBD, Rol de Base de Datos).}
-\item{csep}{Socio-economic criterion. Students belong to either the non-vulnerable, the preferent, or the prioritized
-group acording to the Act 20.248 of Preferencial Scholar Subsidy (SEP).}
-\item{ethnicity}{Ethnicity criterion. Students belong to mapuche ethnicity or not.}
-\item{region}{Official region code of the school location. Schools can belong either Biobio region, La Araucania
-region or Los Rios region.}
+\item{csep}{Preferential Scholar Subsidy Category (from the SpanishCategoría de Sub-vención Escolar Preferencial).
+ Students belong to either the non-subsidized, the partially-subsidized, or the subsidized group acording to the
+ Act 20.248 of Preferencial Scholar Subsidy (SEP).}
+\item{ethnicity}{Self-reported Mapuche ethnicity. Students belong to Mapuche ethnicity or not.}
+\item{region}{Administrative region where the school is located. Schools can belong either Biobio region,
+La Araucania region or Los Rios region.}
 \item{fw}{Number of students in a cell or combination of variables.}
 }
 }

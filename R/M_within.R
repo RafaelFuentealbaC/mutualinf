@@ -66,7 +66,10 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
       else contribution <- contribution.from
 
       if (!is.null(contribution)) {
-        if (((isTRUE(contribution %in% group)) & (length(group) < 2)) | (isTRUE(contribution %in% unit)) & (length(unit) < 2)) stop("The length of the group/unit vector must be greater than one when the within vector includes some variables of him")
+        if (((isTRUE(contribution %in% group)) & (length(group) < 2)) | (isTRUE(contribution %in% unit)) & (length(unit) < 2))
+          stop("When using option 'within' alongside option 'contribution.from', there must be more than one variable left in either 'group' or 'unit'. Use only option 'within' in this case.")
+        within_on_contribution <- within[within %in% contribution]
+        if (length(within_on_contribution) > 0) stop(paste("Variables in option 'within' cannot be used simultaneously in option 'contribution.from'. Try using either 'group_vars' or 'unit_vars'." ))
         DT_within <- get_contribution(data = data, group = group, unit = unit, within = within, by = by, component = DT_within, contribution = contribution, cores = cores)
         DT_general_comp <- get_general_contribution(DT_contribution = DT_within, contribution = contribution, by = by, cores = cores)
         DT_general <- cbind(DT_general, DT_general_comp)
@@ -138,7 +141,10 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
       else contribution <- contribution.from
 
       if (!is.null(contribution)) {
-        if (((isTRUE(contribution %in% group)) & (length(group) < 2)) | (isTRUE(contribution %in% unit)) & (length(unit) < 2)) stop("The length of the group/unit vector must be greater than one when the within vector includes some variables of him")
+        if (((isTRUE(contribution %in% group)) & (length(group) < 2)) | (isTRUE(contribution %in% unit)) & (length(unit) < 2))
+          stop("When using option 'within' alongside option 'contribution.from', there must be more than one variable left in either 'group' or 'unit'. Use only option 'within' in this case.")
+        within_on_contribution <- within[within %in% contribution]
+        if (length(within_on_contribution) > 0) stop(paste("Variables in option 'within' cannot be used simultaneously in option 'contribution.from'. Try using either 'group_vars' or 'unit_vars'." ))
         DT_within <- get_contribution(data = data, group = group, unit = unit, within = within, component = DT_within, contribution = contribution, cores = cores)
         DT_general_comp <- get_general_contribution(DT_contribution = DT_within, contribution = contribution, cores = cores)
         DT_general <- cbind(DT_general, DT_general_comp)
@@ -169,7 +175,7 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
         data_tmp <- get_internal_data(data = data, vars = c(group, within, by))
         index_between <- mutual(data = data_tmp, group = group, unit = within, by = by)
         unit <- unit[!unit %in% within]
-      } else stop(paste("Variable(s)", within, "is required in group or unit elements"))
+      } else stop(paste("Computation requires that", within, "belongs to either 'group' or 'unit'."))
 
       DT_p <- get_proportion(data = data, within = within, by = by)
       data_tmp <- get_internal_data(data = data, vars = c(group, unit, by, within))
@@ -184,7 +190,10 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
       else contribution <- contribution.from
 
       if (!is.null(contribution)) {
-        if (((isTRUE(contribution %in% group)) & (length(group) < 2)) | (isTRUE(contribution %in% unit)) & (length(unit) < 2)) stop("The length of the group/unit vector must be greater than one when the within vector includes some variables of him")
+        if (((isTRUE(contribution %in% group)) & (length(group) < 2)) | (isTRUE(contribution %in% unit)) & (length(unit) < 2))
+          stop("When using option 'within' alongside option 'contribution.from', there must be more than one variable left in either 'group' or 'unit'. Use only option 'within' in this case.")
+        within_on_contribution <- within[within %in% contribution]
+        if (length(within_on_contribution) > 0) stop(paste("Variables in option 'within' cannot be used simultaneously in option 'contribution.from'. Try using either 'group_vars' or 'unit_vars'." ))
         DT_within <- get_contribution(data = data, group = group, unit = unit, within = within, by = by, component = DT_within, contribution = contribution, cores = cores)
         DT_general_comp <- get_general_contribution(DT_contribution = DT_within, contribution = contribution, by = by, cores = cores)
         DT_general <- cbind(DT_general, DT_general_comp)
@@ -229,7 +238,7 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
         data_tmp <- get_internal_data(data = data, vars = c(group, within))
         index_between <- as.numeric(mutual(data = data_tmp, group = group, unit = within))
         unit <- unit[!unit %in% within]
-      } else stop(paste("Variable(s)", within, "is required in group or unit elements"))
+      } else stop(paste("Computation requires that", within, "belongs to either 'group' or 'unit'."))
 
       DT_p <- get_proportion(data = data, within = within, total = total)
       data_tmp <- get_internal_data(data = data, vars = c(group, unit, within))
@@ -244,7 +253,10 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
       else contribution <- contribution.from
 
       if (!is.null(contribution)) {
-        if (((isTRUE(contribution %in% group)) & (length(group) < 2)) | (isTRUE(contribution %in% unit)) & (length(unit) < 2)) stop("The length of the group/unit vector must be greater than one when the within vector includes some variables of him")
+        if (((isTRUE(contribution %in% group)) & (length(group) < 2)) | (isTRUE(contribution %in% unit)) & (length(unit) < 2))
+          stop("When using option 'within' alongside option 'contribution.from', there must be more than one variable left in either 'group' or 'unit'. Use only option 'within' in this case.")
+        within_on_contribution <- within[within %in% contribution]
+        if (length(within_on_contribution) > 0) stop(paste("Variables in option 'within' cannot be used simultaneously in option 'contribution.from'. Try using either 'group_vars' or 'unit_vars'." ))
         DT_within <- get_contribution(data = data, group = group, unit = unit, within = within, component = DT_within, contribution = contribution, cores = cores)
         DT_general_comp <- get_general_contribution(DT_contribution = DT_within, contribution = contribution, cores = cores)
         DT_general <- cbind(DT_general, DT_general_comp)

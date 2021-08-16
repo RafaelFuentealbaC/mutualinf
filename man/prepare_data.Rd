@@ -34,7 +34,7 @@ Generates a \code{data.table} with the entry variables.
 \examples{
 \dontrun{
 # Using some variable names in 'data' with explicit 'fw'.
-my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "ethnicity", "school", "commune"),
+my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "ethnicity", "school", "district"),
 fw = "nobs")
 
 # Using some column numbers in 'data' and explicit 'fw' as another column number.
@@ -45,10 +45,10 @@ my_data <- prepare_data(data = DF_Seg_Chile, vars = "all_vars", fw = "nobs")
 
 # Using some variable names in 'data' and 'fw' does not exist (in this case, the new 'fw' will
 # be equal to 1 for all variable combinations as 'data' already has a frequency weights variable)
-my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "ethnicity", "school", "commune"))
+my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "ethnicity", "school", "district"))
 
 # Using the 'col.order' option to sort data according to the 'csep' column.
-my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "ethnicity", "school", "commune"),
+my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "ethnicity", "school", "district"),
 fw = "nobs", col.order = "csep")
 
 # The class of the resulting object in all cases must be "data.table", "data.frame" and

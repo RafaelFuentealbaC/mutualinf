@@ -7,17 +7,18 @@
 \format{
 A \code{data.frame} with 191495 observations and 11 variables:
 \describe{
-\item{year}{Academic year. From 2016 to 2018.}
+\item{year}{Student enrollment year. From 2016 to 2018.}
 \item{school}{School ID (RBD, Rol de Base de Datos).}
-\item{commune}{Official commune code of the school location.}
-\item{csep}{Socio-economic criterion. Students belong to either the non-vulnerable, the preferent, or the prioritized
-group acording to the Act 20.248 of Preferencial Scholar Subsidy (SEP).}
-\item{ethnicity}{Ethnicity criterion. Students belong to mapuche ethnicity or not.}
-\item{rural}{Rurality criterion. The school is located in a urban zone or not.}
-\item{region}{Official region code of the school location. Schools can belong either Biobio region, La Araucania
-region or Los Rios region.}
-\item{sch_type}{Dependency code. School dependancy as public, charter or private.}
-\item{gender}{Binary student gender. Students can either be female or male.}
+\item{district}{Administrative district where the school is located.}
+\item{csep}{Preferential Scholar Subsidy Category (from the SpanishCategoría de Sub-vención Escolar Preferencial).
+ Students belong to either the non-subsidized, the partially-subsidized, or the subsidized group acording to the
+ Act 20.248 of Preferencial Scholar Subsidy (SEP).}
+\item{ethnicity}{Self-reported Mapuche ethnicity. Students belong to Mapuche ethnicity or not.}
+\item{rural}{School with multiage classrooms. The school is located in a urban zone or not.}
+\item{region}{Administrative region where the school is located. Schools can belong either Biobio region,
+La Araucania region or Los Rios region.}
+\item{sch_type}{Whether the school is public, charter, or private.}
+\item{gender}{Student gender code. Students can either be female or male.}
 \item{grade}{Student grade. Students can either belong to the 4th (4) or 8th (8) grade of basic school.}
 \item{nobs}{Number of students in a cell or combination of variables.}
 }

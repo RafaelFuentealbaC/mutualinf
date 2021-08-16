@@ -18,7 +18,7 @@
 #' @examples
 #' \dontrun{
 #' # Using some variable names in 'data' with explicit 'fw'.
-#' my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "ethnicity", "school", "commune"),
+#' my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "ethnicity", "school", "district"),
 #' fw = "nobs")
 #'
 #' # Using some column numbers in 'data' and explicit 'fw' as another column number.
@@ -29,10 +29,10 @@
 #'
 #' # Using some variable names in 'data' and 'fw' does not exist (in this case, the new 'fw' will
 #' # be equal to 1 for all variable combinations as 'data' already has a frequency weights variable)
-#' my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "ethnicity", "school", "commune"))
+#' my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "ethnicity", "school", "district"))
 #'
 #' # Using the 'col.order' option to sort data according to the 'csep' column.
-#' my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "ethnicity", "school", "commune"),
+#' my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "ethnicity", "school", "district"),
 #' fw = "nobs", col.order = "csep")
 #'
 #' # The class of the resulting object in all cases must be "data.table", "data.frame" and
@@ -43,7 +43,7 @@
 #' @export
 prepare_data <- function(data, vars, fw = NULL, col.order = NULL) {
   if ("data.frame" %in% class(data)) {
-    if (nrow(data) == 0) stop("data.frame is empty")
+    if (nrow(data) == 0) stop("data.frame is empty.")
 
     if ("all_vars" %in% vars) {
       vars <- colnames(data)
@@ -57,23 +57,23 @@ prepare_data <- function(data, vars, fw = NULL, col.order = NULL) {
     if (is.numeric(vars_exists)) {
       if (!is.null(col.order)) {
         col_order_no_exists <- col.order[!col.order %in% vars_exists]
-        if (length(col_order_no_exists) > 0) stop(paste("Variable(s)", col_order_no_exists, "was not selected"))
+        if (length(col_order_no_exists) > 0) stop(paste("some columns are not in the tabular object:", col_order_no_exists))
       }
 
-      if (max(vars_exists) > ncol(data) | min(vars_exists) < 1) stop("One or more selected columns are outside of the data.frame")
+      if (max(vars_exists) > ncol(data) | min(vars_exists) < 1) stop("Column index not valid. It should be between 1 and ncol(tabular object).")
       ifelse ("data.table" %in% class(data), vars_exists <- names(data[, ..vars_exists]), vars_exists <- names(data[, vars_exists]))
     }
 
     vars_no_exists <- vars_exists[!vars_exists %in% names(data)]
     if (length(vars_no_exists) > 0) {
       vars_no_exists <- paste(vars_no_exists, collapse = ", ")
-      stop(paste("Variable(s)", vars_no_exists, "not in data.frame"))
+      stop(paste("Variable(s)", vars_no_exists, "not in tabular object."))
     }
 
     ifelse ("data.table" %in% class(data), data[, vars] <- lapply(data[, ..vars], as.factor), data[, vars] <- lapply(data[, vars], as.factor))
 
   } else {
-    stop("Not a data.frame")
+    stop("Not a data.frame.")
   }
 
   data <- as.data.table(data)

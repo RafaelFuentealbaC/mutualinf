@@ -69,8 +69,8 @@ NULL
 #' @import data.table
 #' @export
 mutual <- function(data, group, unit, within = NULL, by = NULL, contribution.from = NULL, components = FALSE, cores = NULL) {
-  if (!is.null(cores) & isTRUE(Sys.info()["sysname"] == "windows")) stop("The 'cores' option is not available for windows system. Consider the default option")
-  if ((!"data.table" %in% class(data)) & (!"mutual.data" %in% class(data))) stop("The 'data' object must contain at least the class 'data.table' and 'mutual.data'")
+  if (!is.null(cores) & isTRUE(Sys.info()["sysname"] == "windows")) stop("The 'cores' option is not available for Windows systems. Use the default option.")
+  if ((!"data.table" %in% class(data)) & (!"mutual.data" %in% class(data))) stop("The 'data' object must belong to classes 'data.table' and 'mutual.data'.")
 
   vars <- c(group, unit, within, by)
   contribution_all <- contribution.from[contribution.from %in% c("group_vars", "unit_vars")]
@@ -81,8 +81,8 @@ mutual <- function(data, group, unit, within = NULL, by = NULL, contribution.fro
       contribution_exists <- suppressWarnings(as.numeric(contribution_from))
       contribution_exists <- contribution_exists[!contribution_exists %in% NA]
       contribution_no_exists <- contribution_from[!contribution_from %in% as.character(contribution_exists)]
-      if (length(contribution_no_exists) > 0) stop("Select variable names or columns numbers of the dataset in the parameters")
-      if (length(contribution_all) > 0 & length(contribution_exists) > 0) stop("Select 'group_vars' or 'unit_vars' or failing that select columns numbers of the dataset")
+      if (length(contribution_no_exists) > 0) stop("Select valid variable names or columns numbers of the dataset in option 'contribution.from'.")
+      if (length(contribution_all) > 0 & length(contribution_exists) > 0) stop("Use either 'group_vars' or 'unit_vars' or a vector of valid column names or numbers.")
       vars <- c(vars, contribution_exists)
     } else {
       vars <- c(vars, contribution_from)
@@ -90,14 +90,14 @@ mutual <- function(data, group, unit, within = NULL, by = NULL, contribution.fro
   }
 
   if (is.numeric(vars)) {
-    if (max(vars) > ncol(data) | min(vars) < 1) stop("One or more selected columns are not found in the prepared data")
+    if (max(vars) > ncol(data) | min(vars) < 1) stop("Column not found in the dataset.")
     vars <- names(data[, ..vars])
   }
 
   vars_no_exists <- vars[!vars %in% names(data)]
   if (length(vars_no_exists) > 0) {
     vars_no_exists <- paste(vars_no_exists, collapse = ", ")
-    stop(paste("Variable(s)", vars_no_exists, "not included in prepared data"))
+    stop(paste("Variable(s)", vars_no_exists, "not found in the dataset."))
   }
 
   if (is.numeric(group)) group <- data[, colnames(.SD), .SDcols = group]
@@ -110,12 +110,12 @@ mutual <- function(data, group, unit, within = NULL, by = NULL, contribution.fro
   contribution_unit <- contribution.from[contribution.from %in% unit]
   contribution_no_group_no_unit <- contribution.from[!contribution.from %in% c("group_vars", "unit_vars", contribution_group, contribution_unit)]
 
-  if (("group_vars" %in% contribution.from) & ("unit_vars" %in% contribution.from)) stop("Contribution in groups and units is not possible. Select one of them")
-  if ((("group_vars" %in% contribution.from) & (length(contribution_group) > 0)) | (("group_vars" %in% contribution.from) & (length(contribution_unit) > 0))) stop("Consider the vector 'group_vars' or just some dimensions of it")
-  if ((("unit_vars" %in% contribution.from) & (length(contribution_unit) > 0)) | (("unit_vars" %in% contribution.from) & (length(contribution_group) > 0))) stop("Consider the vector 'unit_vars' or just some dimensions of it")
-  if ((length(contribution_group) > 0) & (length(contribution_unit) > 0)) stop("Contribution in groups and units is not possible. Select variables from group vector or variables from unit vector")
-  if ((length(contribution_all) > 0) & (length(contribution_from) > 0)) stop("Select 'group_vars' or 'unit_vars' as value in the contribution.from option")
-  if (length(contribution_no_group_no_unit) > 0) stop(paste("Variable(s)", paste(contribution_no_group_no_unit, collapse = ", "), "is required in group or unit elements"))
+  if (("group_vars" %in% contribution.from) & ("unit_vars" %in% contribution.from)) stop("Simultaneous contributions from 'group' and 'unit' variables is not possible. Select one of them.")
+  if ((("group_vars" %in% contribution.from) & (length(contribution_group) > 0)) | (("group_vars" %in% contribution.from) & (length(contribution_unit) > 0))) stop("Do not mix 'group_vars' with 'group' variables in option 'contribution.from'.")
+  if ((("unit_vars" %in% contribution.from) & (length(contribution_unit) > 0)) | (("unit_vars" %in% contribution.from) & (length(contribution_group) > 0))) stop("Do not mix 'unit_vars' with 'unit' variables in option 'contribution.from'.")
+  if ((length(contribution_group) > 0) & (length(contribution_unit) > 0)) stop("Simultaneous contributions from 'group' and 'unit' variables is not possible. Select one of them.")
+  if ((length(contribution_all) > 0) & (length(contribution_from) > 0)) stop("Do not mix 'group_vars' or 'unit_vars' with 'group' or 'unit' variables in option 'contribution.from'.")
+  if (length(contribution_no_group_no_unit) > 0) stop(paste("Variable(s)", paste(contribution_no_group_no_unit, collapse = ", "), "should be (a) 'group' or 'unit' variable(s)."))
 
   if (!is.null(within)) {
     M_within(data = data, group = group, unit = unit, within = within, by = by, contribution.from = contribution.from, components = components, cores = cores)
