@@ -87,7 +87,7 @@ The package provides two functions:
 - Which computes the M index and its decompositions. For more details see `help(mutual)`.
 
 ## Usage
-The library computes the M Index. Suppose you have 2016-2018 primary school enrollment Chile data. Each observation is a combination of, among other variables, school (`school`), school district (`commune`), ethnicity (` ethnicity`), and socio-economic level (`csep`) in a tabular format object (data.frame, data.table, tibble). Variable `nobs` represents students frequencies in each of these combinations. In the first step, we load the package and use the `prepare_data` function (i) to declare the variable that includes the frequencies and (ii) to format the data for the `mutual` function:
+The library computes the M Index. Suppose you have 2016-2018 primary school enrollment Chile data. Each observation is a combination of, among other variables, school (`school`), school district (`district`), ethnicity (` ethnicity`), and socio-economic level (`csep`) in a tabular format object (data.frame, data.table, tibble). Variable `nobs` represents students frequencies in each of these combinations. In the first step, we load the package and use the `prepare_data` function (i) to declare the variable that includes the frequencies and (ii) to format the data for the `mutual` function:
 ```{r}
 library(mutualinf)
 
@@ -96,7 +96,7 @@ DT_Seg_Chile_1 <- prepare_data(data = DF_Seg_Chile,
                                fw = "nobs")
 class(DT_Seg_Chile_1)
 ```
-If `vars =" all_vars "`, `prepare_data` uses all columns in the table. You may, nonetheless, use the `vars` option with tables that have a large number of columns that are not needed in the analysis. For example:
+If `vars =" all_vars "`, `prepare_data` uses all columns in the table. You may, nonetheless, use option `vars` with tables that have a large number of columns that are not needed in the analysis. For example:
 ```{r}
 DT_Seg_Chile_1 <- prepare_data(data = DF_Seg_Chile, 
                                vars = c("school", "csep"),
@@ -137,11 +137,11 @@ More generally, segregation analysis can be computed using multiple unit and/or 
 ```{r}
 mutual(data = DT_Seg_Chile, 
        group = c("csep", "ethnicity"), 
-       unit = c("school", "commune"))
+       unit = c("school", "district"))
 ```
 computes socioeconomic and ethnic segregation in combinations of schools and districts. Note that the result is identical to that obtained in the previous case, `0.2610338`. The reason is that each school only belongs to one district so that the combinations of schools and districts coincide with the set of schools. We can say that the districts are a partition of the schools and districts do not add a new source for socioeconomic and ethnic segregation.
 
-Yet the variables that define the units may not have a hierarchical relationship between them. For example, if instead of district (`commune`) we use type of school (`sch_type`, either private, charter, or public):
+Yet the variables that define the units may not have a hierarchical relationship between them. For example, if instead of district (`district`) we use type of school (`sch_type`, either private, charter, or public):
 ```{r}
  mutual(data = DT_Seg_Chile, 
         group = c("csep", "ethnicity"), 
@@ -149,7 +149,7 @@ Yet the variables that define the units may not have a hierarchical relationship
 ```
 computes segregation in units defined by combinations of schools and types of schools. There is no hierarchical structure in the units as some schools change their type in the sample period. Consequently, the level of segregation is higher (`0.2610865` vs. `0.2610338`).
 
-Option `by` computes the index for subsamples. The data used as an illustration include primary schools in the Chilean regions of Biobio, La Araucania, and Los Rios. The `by` option allows obtaining the level of segregation for each of the three regions in a single command:
+Option `by` computes the index for subsamples. The data used as an illustration include primary schools in the Chilean regions of Biobio, La Araucania, and Los Rios. Option `by` allows obtaining the level of segregation for each of the three regions in a single command:
 ```{r}
  mutual(data = DT_Seg_Chile, 
         group = c("csep", "ethnicity"), 
@@ -166,7 +166,7 @@ mutual(data = DT_Seg_Chile,
        by = "region", 
        within = "csep")
 ```
-We get three terms for each region. The first, `M`, contains the total segregation and matches the values without the `within` option. The second, `M_B_csep`, referred to as the "between" term, measures socioeconomic segregation in the combinations of schools and types of schools. The third, `M_W_csep`, referred to as the "within" term, is the weighted average of ethnic segregation (in the combinations of schools and types of schools) computed for each socioeconomic level (with weights equal to the demographic importance of each socioeconomic level). This "within" term can be interpreted as the part of total segregation, `M`, derived exclusively from ethnic differences. From this point on, we will refer to this term as "the contribution of" ethnicity.
+We get three terms for each region. The first, `M`, contains the total segregation and matches the values without option `within`. The second, `M_B_csep`, referred to as the "between" term, measures socioeconomic segregation in the combinations of schools and types of schools. The third, `M_W_csep`, referred to as the "within" term, is the weighted average of ethnic segregation (in the combinations of schools and types of schools) computed for each socioeconomic level (with weights equal to the demographic importance of each socioeconomic level). This "within" term can be interpreted as the part of total segregation, `M`, derived exclusively from ethnic differences. From this point on, we will refer to this term as "the contribution of" ethnicity.
 
 It is also possible to obtain the decomposition of the index into a "between"  ethnicity term and a "within" ethnicity term:
 ```{r}
@@ -212,17 +212,17 @@ In the presence of a true partition, the analysis of contributions is simpler:
 ```{r}
 mutual(data = DT_Seg_Chile, 
        group = c("csep", "ethnicity"), 
-       unit = c("school", "commune"), 
+       unit = c("school", "district"), 
        by = "region", 
        contribution.from = "unit_vars")
 ```
-The contribution of districts, `C_commune`, is zero since there is no segregation by districts within each school. Intuitively, all segregation by districts becomes segregation by schools.
+The contribution of districts, `C_district`, is zero since there is no segregation by districts within each school. Intuitively, all segregation by districts becomes segregation by schools.
 
 The analysis of contributions is generalized to situations in which there are more than two sources of segregation by groups or units. For example, if we consider three sources of group segregation (`csep`,` ethnicity` and `gender`):
 ```{r}
 mutual(data = DT_Seg_Chile, 
        group = c("csep", "ethnicity", "gender"), 
-       unit = c("school", "commune"), 
+       unit = c("school", "district"), 
        by = "region", 
        contribution.from = "group_vars")
 ```
