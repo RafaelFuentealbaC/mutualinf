@@ -72,6 +72,9 @@ mutual <- function(data, group, unit, within = NULL, by = NULL, contribution.fro
   if (!is.null(cores) & isTRUE(Sys.info()["sysname"] == "windows")) stop("The 'cores' option is not available for Windows systems. Use the default option.")
   if ((!"data.table" %in% class(data)) & (!"mutual.data" %in% class(data))) stop("The 'data' object must belong to classes 'data.table' and 'mutual.data'.")
 
+  group_in_unit <- group[group %in% unit]
+  if (length(group_in_unit) > 0) stop("Using a variable both in 'group' and 'unit' is not possible.")
+
   vars <- c(group, unit, within, by)
   contribution_all <- contribution.from[contribution.from %in% c("group_vars", "unit_vars")]
   contribution_from <- contribution.from[!contribution.from %in% c("group_vars", "unit_vars")]
