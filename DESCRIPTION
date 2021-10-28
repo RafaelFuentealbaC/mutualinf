@@ -6,6 +6,7 @@ Authors@R: c(person("Rafael", "Fuentealba-Chaura", email = "rfuentealba@inf.uct.
               person("Ricardo", "Mora", email = "ricmora@eco.uc3m.es", role = "aut"),
               person("Julio", "Rojas-Mora", email = "jrojas@inf.uct.cl", role = "aut"),
               person("FONDECYT/ANID Project 11170583", role = "fnd"),
+              person("MCIN/AEI/10.13039/501100011033 (Project no. PID2019-108576RB-I00)", role = "fnd"),
               person("UCT VIP Project FEQUIP2019-INRN-03", role = "fnd"))
 Description: The Mutual Information Index (M) introduced to social science literature by
     Theil and Finizza (1971) <doi:10.1080/0022250X.1971.9989795> is a multigroup

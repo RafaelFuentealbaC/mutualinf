@@ -332,13 +332,13 @@ mutual(data = DT_Seg_Chile,
        unit = c("school", "sch_type"), 
        by = "region", 
        contribution.from = "csep")
-#>          region         M    C_csep interaction
-#> 1:       Biobio 0.2312423 0.2054156  0.02582674
-#> 2: La Araucania 0.2367493 0.1883404  0.04840892
-#> 3:     Los Rios 0.2125013 0.1792539  0.03324738
+#>          region         M    C_csep
+#> 1:       Biobio 0.2312423 0.2054156
+#> 2: La Araucania 0.2367493 0.1883404
+#> 3:     Los Rios 0.2125013 0.1792539
 ```
 
-returns `M`, `C_csep`, and `interaction`, omitting `C_ethnicity`.
+returns `M` and `C_csep`, omitting `C_ethnicity` and `interaction`.
 
 The display of contributions can also be performed for organizational
 units. For example:
@@ -413,8 +413,11 @@ decomposition desired by an advanced user.
 
 ## Acknowledgement
 
-FONDECYT/ANID Project 11170583 providing funding for this project while
-UCT VIP Project FEQUIP2019-INRN-03 provided cluster time.
+Rafael Fuentealba-Chaura and Julio Rojas-Mora acknowledge the financial
+support by the FONDECYT/ANID Project 11170583. Ricardo Mora acknowledge
+the financial support of MCIN/AEI/10.13039/501100011033 (Project no.
+PID2019-108576RB-I00). Cluster time was provided by the UCT VIP Project
+FEQUIP2019-INRN-03.
 
 ## References
 

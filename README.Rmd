@@ -196,7 +196,7 @@ mutual(data = DT_Seg_Chile,
        by = "region", 
        contribution.from = "csep")
 ```
-returns `M`, `C_csep`, and `interaction`, omitting `C_ethnicity`.
+returns `M` and `C_csep`, omitting `C_ethnicity` and `interaction`.
 
 The display of contributions can also be performed for organizational units. For example:
 ```{r}
@@ -231,7 +231,7 @@ displays five terms: total segregation, the contributions of the three sources o
 The only restriction of option `contribution.from` is that contributions of variables that define groups and variables that define units cannot be simultaneously computed since there is no single way to do this decomposition. However, option `components` allows retrieving all the elements of the linear combination of the "within" terms to compute the decomposition desired by an advanced user. 
 
 ## Acknowledgement
-FONDECYT/ANID Project 11170583 providing funding for this project while UCT VIP Project FEQUIP2019-INRN-03 provided cluster time.
+Rafael Fuentealba-Chaura and Julio Rojas-Mora acknowledge the financial support by the FONDECYT/ANID Project 11170583. Ricardo Mora acknowledge the financial support of MCIN/AEI/10.13039/501100011033 (Project no. PID2019-108576RB-I00). Cluster time was provided by the UCT VIP Project FEQUIP2019-INRN-03.
  
 ## References
 Frankel, D. and Volij, O. (2011). Measuring school segregation. <em>Journal of Economic Theory, 146</em>(1):1-38. https://doi.org/10.1016/j.jet.2010.10.008.
