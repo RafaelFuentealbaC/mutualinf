@@ -3,7 +3,7 @@
 NULL
 #' @import data.table
 #' @import parallel
-get_contribution <- function(data, group, unit, within = NULL, by = NULL, component = NULL, contribution, cores = NULL) {
+get_contribution <- function(data, group, unit, within = NULL, by = NULL, component = NULL, contribution, cores = NULL, iterm = NULL) {
   data_contribution <- split(data, by = c(by, within))
   id_data_contribution <- names(data_contribution)
   DT_id_data_contribution <- data.table(do.call(rbind, strsplit(x = id_data_contribution, split = "\\.")))
@@ -39,17 +39,22 @@ get_contribution <- function(data, group, unit, within = NULL, by = NULL, compon
 
   if (is.null(within)) {
     DT_contribution <- data.table(M = DT_general$M, DT_general[, ..contribution])
-    DT_int <- DT_contribution[, list(sum_d = rowSums(.SD)), .SDcols = contribution]
-    DT_int <- cbind(M = DT_contribution$M, DT_int)
-    DT_int <- DT_int[, list(interaction = M - sum_d), by = list(row.names(DT_int))][, -1]
-    DT_contribution <- cbind(DT_contribution[, -"M"], DT_int)
-    DT_contribution
+    if (isTRUE(iterm)) {
+      DT_int <- DT_contribution[, list(sum_d = rowSums(.SD)), .SDcols = contribution]
+      DT_int <- cbind(M = DT_contribution$M, DT_int)
+      DT_int <- DT_int[, list(interaction = M - sum_d), by = list(row.names(DT_int))][, -1]
+      DT_contribution <- cbind(DT_contribution[, -"M"], DT_int)
+    } else {
+      DT_contribution[, -"M"]
+    }
   } else {
     DT_contribution <- DT_general
-    DT_int <- DT_contribution[, list(sum_d = rowSums(.SD)), .SDcols = contribution]
-    DT_int <- cbind(M = DT_contribution$within, DT_int)
-    DT_int <- DT_int[, list(interaction = M - sum_d), by = list(row.names(DT_int))][, -1]
-    DT_contribution <- cbind(DT_contribution, DT_int)
+    if (isTRUE(iterm)) {
+      DT_int <- DT_contribution[, list(sum_d = rowSums(.SD)), .SDcols = contribution]
+      DT_int <- cbind(M = DT_contribution$within, DT_int)
+      DT_int <- DT_int[, list(interaction = M - sum_d), by = list(row.names(DT_int))][, -1]
+      DT_contribution <- cbind(DT_contribution, DT_int)
+    }
     DT_contribution
   }
 }

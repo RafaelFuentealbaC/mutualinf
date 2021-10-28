@@ -31,8 +31,13 @@ M <- function(data, group, unit, by = NULL, contribution.from = NULL, cores = NU
     if (!is.null(contribution)) {
       if (((isTRUE(contribution %in% group)) & (length(group) < 2)) | (isTRUE(contribution %in% unit)) & (length(unit) < 2))
         stop("When using option 'contribution.from' vectors 'group' or 'unit' should have length larger than one. Compute without option 'contribution.from'.")
-      DT_contribution <- get_contribution(data = data, group = group, unit = unit, by = by, contribution = contribution, component = DT_general, cores = cores)
-      setnames(x = DT_contribution, old = colnames(DT_contribution[, -"interaction"]), new = paste0("C_", contribution))
+      if ((length(intersect(contribution, group)) == length(group)) | length(intersect(contribution, unit)) == length(unit)) {
+        DT_contribution <- get_contribution(data = data, group = group, unit = unit, by = by, contribution = contribution, component = DT_general, cores = cores, iterm = TRUE)
+        setnames(x = DT_contribution, old = colnames(DT_contribution[, -"interaction"]), new = paste0("C_", contribution))
+      } else {
+        DT_contribution <- get_contribution(data = data, group = group, unit = unit, by = by, contribution = contribution, component = DT_general, cores = cores, iterm = FALSE)
+        setnames(x = DT_contribution, old = colnames(DT_contribution), new = paste0("C_", contribution))
+      }
       result <- cbind(DT_general, DT_contribution)
     } else {
       result <- DT_general
@@ -64,8 +69,12 @@ M <- function(data, group, unit, by = NULL, contribution.from = NULL, cores = NU
       }
       DT_contribution <- do.call(cbind, M_contribution)
       names(DT_contribution) <- paste0("C_", contribution)
-      DT_contribution <- cbind(index_total, DT_contribution, interaction = (index_total - sum(DT_contribution)))
-      setnames(x = DT_contribution, old = "interaction.M", "interaction")
+      if ((length(intersect(contribution, group)) == length(group)) | length(intersect(contribution, unit)) == length(unit)) {
+        DT_contribution <- cbind(index_total, DT_contribution, interaction = (index_total - sum(DT_contribution)))
+        setnames(x = DT_contribution, old = "interaction.M", "interaction")
+      } else {
+        DT_contribution <- cbind(index_total, DT_contribution)
+      }
       result <- DT_contribution
     } else {
       data_tmp <- get_internal_data(data = data, vars = c(group, unit))
