@@ -53,7 +53,7 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
       }
 
       list_between_names <- c(paste0("M_B_", within[1]), rep("M_W_", length(within)-1))
-      list_between_end_names <- runner(within[-length(within)], f = paste, collapse = "_")
+      list_between_end_names <- runner::runner(within[-length(within)], f = paste, collapse = "_")
       list_between_names[2:length(list_between_names)] <- paste0(list_between_names[2:length(list_between_names)], list_between_end_names)
       index_between <- as.data.table(do.call(cbind, list_index_between))
       index_between <- setNames(object = index_between, nm = list_between_names)
@@ -137,7 +137,7 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
       }
 
       list_between_names <- c(paste0("M_B_", within[1]), rep("M_W_", length(within)-1))
-      list_between_end_names <- runner(within[-length(within)], f = paste, collapse = "_")
+      list_between_end_names <- runner::runner(within[-length(within)], f = paste, collapse = "_")
       list_between_names[2:length(list_between_names)] <- paste0(list_between_names[2:length(list_between_names)], list_between_end_names)
       index_between_sum <- sum(unlist(list_index_between, use.names = FALSE))
       list_index_between <- setNames(object = list_index_between, nm = list_between_names)
