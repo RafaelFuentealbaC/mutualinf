@@ -32,7 +32,6 @@ Receives the data that is later used in the \code{mutual} function.
 Generates a \code{data.table} with the entry variables.
 }
 \examples{
-\dontrun{
 # Using some variable names in 'data' with explicit 'fw'.
 my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "ethnicity", "school", "district"),
 fw = "nobs")
@@ -54,5 +53,4 @@ fw = "nobs", col.order = "csep")
 # The class of the resulting object in all cases must be "data.table", "data.frame" and
 # "mutual.data".
 class(my_data)
-}
 }

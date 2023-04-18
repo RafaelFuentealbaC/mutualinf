@@ -16,9 +16,9 @@ The package allows for:
 \item Fast computation employing more than one CPU core in Mac, Linux, Unix, and BSD systems. This option uses the data.table and parallel libraries (which Windows does not permit to run with more than one CPU core).
 }
 }
-\author{ Rafael Fuentealba-Chaura \email{rfuentealba@inf.uct.cl}\cr
+\author{ Rafael Fuentealba-Chaura \email{rafael.fuentealba97@gmail.com}\cr
 Ricardo Mora \email{ricmora@eco.uc3m.es}\cr
-Julio Rojas-Mora \email{jrojas@inf.uct.cl}\cr
+Julio Rojas-Mora \email{julio.rojas@uct.cl}\cr
 }
 \references{
 Frankel, D. and Volij, O. (2011). Measuring school segregation. \emph{Journal of Economic Theory, 146}(1):1-38. \doi{10.1016/j.jet.2010.10.008}.\cr
