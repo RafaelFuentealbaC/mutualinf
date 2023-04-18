@@ -22,20 +22,19 @@ and Ruiz-Castillo, 2011).
 
 The package allows for:
 
-  - The computation of the M index, either overall or over subsamples
-    defined by the user.
-  - The decomposition of the M index into a “between” and a “within”
-    term.
-  - The identification of the “exclusive contributions” of segregation
-    sources defined either by group or unit characteristics.
-  - The computation of all the elements that conform the “within” term
-    in the decomposition.
-  - Fast computation employing more than one CPU core in Mac, Linux,
-    Unix, and BSD systems. This option uses the
-    [`data.table`](https://CRAN.R-project.org/package=data.table) and
-    [`parallel`](https://stat.ethz.ch/R-manual/R-devel/library/parallel/doc/parallel.pdf)
-    libraries (which Windows does not permit to run with more than one
-    CPU core).
+- The computation of the M index, either overall or over subsamples
+  defined by the user.
+- The decomposition of the M index into a “between” and a “within” term.
+- The identification of the “exclusive contributions” of segregation
+  sources defined either by group or unit characteristics.
+- The computation of all the elements that conform the “within” term in
+  the decomposition.
+- Fast computation employing more than one CPU core in Mac, Linux, Unix,
+  and BSD systems. This option uses the
+  [`data.table`](https://CRAN.R-project.org/package=data.table) and
+  [`parallel`](https://stat.ethz.ch/R-manual/R-devel/library/parallel/doc/parallel.pdf)
+  libraries (which Windows does not permit to run with more than one CPU
+  core).
 
 ## Authors
 
@@ -44,7 +43,7 @@ School of Computer Science
 Universidad Católica de Temuco  
 Rudecindo Ortega 02351  
 Temuco, Chile  
-<rfuentealba@inf.uct.cl>
+<rafael.fuentealba97@gmail.com>
 
 **Ricardo Mora**  
 Department of Economics  
@@ -61,7 +60,7 @@ and
 Centro de Políticas Públicas  
 Universidad Católica de Temuco  
 Temuco, Chile  
-<jrojas@inf.uct.cl>
+<julio.rojas@uct.cl>
 
 ## Installation
 
@@ -87,17 +86,15 @@ The package provides two functions:
 ?prepare_data 
 ```
 
-  - Which prepares the data to be used by the `mutual` function. For
-    more details see `help(prepare_data)`.
-
-<!-- end list -->
+- Which prepares the data to be used by the `mutual` function. For more
+  details see `help(prepare_data)`.
 
 ``` r
 ?mutual
 ```
 
-  - Which computes the M index and its decompositions. For more details
-    see `help(mutual)`.
+- Which computes the M index and its decompositions. For more details
+  see `help(mutual)`.
 
 ## Usage
 
@@ -226,7 +223,7 @@ or public):
 computes segregation in units defined by combinations of schools and
 types of schools. There is no hierarchical structure in the units as
 some schools change their type in the sample period. Consequently, the
-level of segregation is higher (`0.2610865` vs. `0.2610338`).
+level of segregation is higher (`0.2610865` vs. `0.2610338`).
 
 Option `by` computes the index for subsamples. The data used as an
 illustration include primary schools in the Chilean regions of Biobio,
