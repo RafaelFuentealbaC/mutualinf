@@ -38,7 +38,7 @@ The package allows for:
   Universidad Católica de Temuco \
   Rudecindo Ortega 02351 \
   Temuco, Chile \
-  <rafael.fuentealba97@gmail.com>
+  <rfuentealba@inf.uct.cl>
 
 **Ricardo Mora** \
   Department of Economics \
@@ -55,7 +55,7 @@ The package allows for:
   Centro de Políticas Públicas \
   Universidad Católica de Temuco \
   Temuco, Chile \
-  <julio.rojas@uct.cl>
+  <jrojas@inf.uct.cl>
 
 
 ## Installation
