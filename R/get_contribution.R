@@ -1,5 +1,5 @@
 #' @include get_internal_data.R
-#' @include mutual.R
+#' @include mutual_inv.R
 NULL
 #' @import data.table
 #' @import parallel
@@ -10,23 +10,38 @@ get_contribution <- function(data, group, unit, within = NULL, by = NULL, compon
   setnames(x = DT_id_data_contribution, old = colnames(DT_id_data_contribution), new = c(by, within))
 
   if (!is.null(cores)) {
-    comp_d <- mclapply(X = data_contribution, function(d) {
-      M_contribution <- mclapply(X = contribution, function(c) {
-        if (c %in% group) c_tmp <- group[!group %in% c]
-        else c_tmp <- unit[!unit %in% c]
-        data_tmp <- get_internal_data(data = d, vars = c(group, unit, c_tmp))
-        DT_res <- rev(mutual(data = data_tmp, group = group, unit = unit, within = c_tmp))
-        DT_res[, 1]
-      }, mc.cores = cores)
+    if ((tolower(Sys.info()["sysname"]) == "windows") || (cores <= 6)) {
+      cl <- makePSOCKcluster(cores)
+      comp_d <- parLapply(cl, data_contribution, function(d) {
+        M_contribution <- lapply(contribution, function(c) {
+          if (c %in% group) c_tmp <- group[!group %in% c]
+          else c_tmp <- unit[!unit %in% c]
+          data_tmp <- get_internal_data(data = d, vars = c(group, unit, c_tmp))
+          DT_res <- rev(mutual_inv(data = data_tmp, group = group, unit = unit, within = c_tmp))
+          DT_res[, 1]
+        })
       unlist(M_contribution, use.names = FALSE)
-    }, mc.cores = cores)
+      })
+      stopCluster(cl)
+    } else {
+      comp_d <- mclapply(X = data_contribution, function(d) {
+        M_contribution <- mclapply(X = contribution, function(c) {
+          if (c %in% group) c_tmp <- group[!group %in% c]
+          else c_tmp <- unit[!unit %in% c]
+          data_tmp <- get_internal_data(data = d, vars = c(group, unit, c_tmp))
+          DT_res <- rev(mutual_inv(data = data_tmp, group = group, unit = unit, within = c_tmp))
+          DT_res[, 1]
+        }, mc.cores = cores)
+        unlist(M_contribution, use.names = FALSE)
+      }, mc.cores = cores)
+    }
   } else {
-    comp_d <- lapply(X = data_contribution, function(d) {
-      M_contribution <- lapply(X = contribution, function(c) {
+    comp_d <- lapply(data_contribution, function(d) {
+      M_contribution <- lapply(contribution, function(c) {
         if (c %in% group) c_tmp <- group[!group %in% c]
         else c_tmp <- unit[!unit %in% c]
         data_tmp <- get_internal_data(data = d, vars = c(group, unit, c_tmp))
-        DT_res <- rev(mutual(data = data_tmp, group = group, unit = unit, within = c_tmp))
+        DT_res <- rev(mutual_inv(data = data_tmp, group = group, unit = unit, within = c_tmp))
         DT_res[, 1]
       })
       unlist(M_contribution, use.names = FALSE)

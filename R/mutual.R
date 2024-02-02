@@ -1,5 +1,6 @@
 #' @include M_within.R
 #' @include M.R
+#' @include get_internal_data.R
 NULL
 #' @title Computes and decomposes the Mutual Information index
 #' @description Computes and decomposes the Mutual Information index into "between" and "within" terms. The
@@ -69,10 +70,18 @@ NULL
 #' @import data.table
 #' @export
 mutual <- function(data, group, unit, within = NULL, by = NULL, contribution.from = NULL, components = FALSE, cores = NULL) {
-  if (!is.null(cores) & isTRUE(Sys.info()["sysname"] == "windows")) stop("The 'cores' option is not available for Windows systems. Use the default option.")
+  if (!is.null(cores)) {
+    available_cores <- detectCores()
+    if (cores > available_cores) {
+      message(paste("The specified number of cores (", cores, ") exceeds the maximum available (", available_cores, "). It will adjust to the maximum"))
+      cores <- available_cores
+    } else {
+      cores <- cores
+    }
+  }
   if ((!"data.table" %in% class(data)) & (!"mutual.data" %in% class(data))) stop("The 'data' object must belong to classes 'data.table' and 'mutual.data'.")
-
   group_in_unit <- group[group %in% unit]
+
   if (length(group_in_unit) > 0) stop("Using a variable both in 'group' and 'unit' is not possible.")
 
   vars <- c(group, unit, within, by)
@@ -124,5 +133,7 @@ mutual <- function(data, group, unit, within = NULL, by = NULL, contribution.fro
     M_within(data = data, group = group, unit = unit, within = within, by = by, contribution.from = contribution.from, components = components, cores = cores)
   } else {
     M(data = data, group = group, unit = unit, by = by, contribution.from = contribution.from, cores = cores)
+    }
   }
-}
+
+
