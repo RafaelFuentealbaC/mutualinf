@@ -63,7 +63,7 @@ M <- function(data, group, unit, by = NULL, contribution.from = NULL, cores = NU
             if (c %in% group) c_tmp <- group[!group %in% c]
             else c_tmp <- unit[!unit %in% c]
             data_tmp <- get_internal_data(data = data, vars = c(group, unit, c_tmp))
-            DT_res <- rev(mutual_inv(data = data_tmp, group = group, unit = unit, within = c_tmp))
+            DT_res <- rev(mutual_inv(data = data_tmp, group = group, unit = unit, within = c_tmp)) #Revisar https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/rev
             DT_res[, 1]
           })
         } else {
