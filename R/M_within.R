@@ -1,5 +1,5 @@
 #' @include get_internal_data.R
-#' @include mutual.R
+#' @include mutual_inv.R
 #' @include get_proportion.R
 #' @include get_contribution.R
 #' @include get_general_contribution.R
@@ -28,19 +28,19 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
       repeat {
         if (w == 1) {
           data_tmp <- get_internal_data(data = data, vars = c(group, unit, within[w], by))
-          index_between <- mutual(data = data_tmp, group = group, unit = unit, within = within[w], by = by)$M_B
+          index_between <- mutual_inv(data = data_tmp, group = group, unit = unit, within = within[w], by = by)$M_B
           list_index_between[[w]] <- index_between
           vec_p_within <- get_proportion(data = data, within = within[w], by = by)$p
         } else {
           data_tmp <- get_internal_data(data = data, vars = c(group, unit, within[w], by, within_tmp))
-          index_between <- mutual(data = data_tmp, group = group, unit = unit, within = within[w], by = c(by, within_tmp))$M_B
+          index_between <- mutual_inv(data = data_tmp, group = group, unit = unit, within = within[w], by = c(by, within_tmp))$M_B
           DT_index_between <- data.table(unique(data[, .SD, .SDcols = c(by, within_tmp)]), p = vec_p_within, M = index_between)
           list_index_between[[w]] <- DT_index_between[, list(M_B = sum(p %*% M)), by = by]$M_B
           vec_p_within <- get_proportion(data = data, within = c(within_tmp, within[w]), by = by)$p
 
           if (w == length(within)) {
             data_tmp <- get_internal_data(data = data, vars = c(group, unit, by, within))
-            comp_within <- mutual(data = data_tmp, group = group, unit = unit, by = c(by, within))$M
+            comp_within <- mutual_inv(data = data_tmp, group = group, unit = unit, by = c(by, within))$M
           }
         }
 
@@ -114,17 +114,17 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
       repeat {
         if (w == 1) {
           data_tmp <- get_internal_data(data = data, vars = c(group, unit, within[w]))
-          list_index_between[[w]] <- mutual(data = data_tmp, group = group, unit = unit, within = within[w])$M_B
+          list_index_between[[w]] <- mutual_inv(data = data_tmp, group = group, unit = unit, within = within[w])$M_B
           vec_p_within <- get_proportion(data = data, within = within[w], total = total)$p
         } else {
           data_tmp <- get_internal_data(data = data, vars = c(group, unit, within[w], within_tmp))
-          index_between <- mutual(data = data_tmp, group = group, unit = unit, within = within[w], by = within_tmp)$M_B
+          index_between <- mutual_inv(data = data_tmp, group = group, unit = unit, within = within[w], by = within_tmp)$M_B
           list_index_between[[w]] <- sum(vec_p_within %*% index_between)
           vec_p_within <- get_proportion(data = data, within = c(within_tmp, within[w]), total = total)$p
 
           if (w == length(within)) {
             data_tmp <- get_internal_data(data = data, vars = c(group, unit, within))
-            comp_within <- mutual(data = data_tmp, group = group, unit = unit, by = within)$M
+            comp_within <- mutual_inv(data = data_tmp, group = group, unit = unit, by = within)$M
           }
         }
 
@@ -181,23 +181,22 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
   } else {
     if (!is.null(by)) {
       result <- NULL
-
       data_tmp <- get_internal_data(data = data, vars = c(group, unit, by))
-      index_total <- mutual(data = data_tmp, group = group, unit = unit, by = by)
+      index_total <- mutual_inv(data = data_tmp, group = group, unit = unit, by = by)
 
       if (within %in% group) {
         data_tmp <- get_internal_data(data = data, vars = c(within, unit, by))
-        index_between <- mutual(data = data_tmp, group = within, unit = unit, by = by)
+        index_between <- mutual_inv(data = data_tmp, group = within, unit = unit, by = by)
         group <- group[!group %in% within]
       } else if (within %in% unit) {
         data_tmp <- get_internal_data(data = data, vars = c(group, within, by))
-        index_between <- mutual(data = data_tmp, group = group, unit = within, by = by)
+        index_between <- mutual_inv(data = data_tmp, group = group, unit = within, by = by)
         unit <- unit[!unit %in% within]
       } else stop(paste("Computation requires that", within, "belongs to either 'group' or 'unit'."))
 
       DT_p <- get_proportion(data = data, within = within, by = by)
       data_tmp <- get_internal_data(data = data, vars = c(group, unit, by, within))
-      comp_within <- mutual(data = data_tmp, group = group, unit = unit, by = c(by, within))$M
+      comp_within <- mutual_inv(data = data_tmp, group = group, unit = unit, by = c(by, within))$M
       DT_within <- cbind(DT_p, within = comp_within)
       index_within <- DT_within[, list(M_W = sum(p %*% within)), by = by]
       DT_general <- merge(x = index_total, y = index_between, by = by, sort = FALSE)
@@ -251,21 +250,21 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
       result
     } else {
       data_tmp <- get_internal_data(data = data, vars = c(group, unit))
-      index_total <- as.numeric(mutual(data = data_tmp, group = group, unit = unit))
+      index_total <- as.numeric(mutual_inv(data = data_tmp, group = group, unit = unit))
 
       if (within %in% group) {
         data_tmp <- get_internal_data(data = data, vars = c(within, unit))
-        index_between <- as.numeric(mutual(data = data_tmp, group = within, unit = unit))
+        index_between <- as.numeric(mutual_inv(data = data_tmp, group = within, unit = unit))
         group <- group[!group %in% within]
       } else if (within %in% unit) {
         data_tmp <- get_internal_data(data = data, vars = c(group, within))
-        index_between <- as.numeric(mutual(data = data_tmp, group = group, unit = within))
+        index_between <- as.numeric(mutual_inv(data = data_tmp, group = group, unit = within))
         unit <- unit[!unit %in% within]
       } else stop(paste("Computation requires that", within, "belongs to either 'group' or 'unit'."))
 
       DT_p <- get_proportion(data = data, within = within, total = total)
       data_tmp <- get_internal_data(data = data, vars = c(group, unit, within))
-      comp_within <- mutual(data = data_tmp, group = group, unit = unit, by = within)$M
+      comp_within <- mutual_inv(data = data_tmp, group = group, unit = unit, by = within)$M
       DT_within <- cbind(DT_p, within = comp_within)
       index_within <- sum(DT_within$p %*% DT_within$within)
       DT_general <- data.table(M = index_total, M_B = index_between)
