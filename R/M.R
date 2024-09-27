@@ -1,7 +1,6 @@
 #' @include get_internal_data.R
 #' @include M_value.R
 #' @include get_contribution.R
-#' @include mutual_inv.R
 #' @import data.table
 #' @import parallel
 #' @import stats
@@ -12,23 +11,17 @@ M <- function(data, group, unit, by = NULL, contribution.from = NULL, cores = NU
 
   if (!is.null(by))  {
     data_by <- split(data, by = by)
-
-    if (!is.null(cores)) {
-      if ((tolower(Sys.info()["sysname"]) == "windows") || (cores <= 6)) {
-        M_list <- lapply(X = data_by, function(d) {
-          data_tmp <- get_internal_data(data = d, vars = c(group, unit))
-          cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = group, unit = unit))
-        })
-      } else {
-        M_list <- mclapply(X = data_by, function(d) {
-          data_tmp <- get_internal_data(data = d, vars = c(group, unit))
-          cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = group, unit = unit))
-        }, mc.cores = cores)
-      }
-    } else {
-      M_list <- lapply(X = data_by, function(d) {
+    if (!is.null(cores) && tolower(Sys.info()["sysname"]) != "windows" && cores > 6) {
+      M_list <- mclapply(X = data_by, function(d) {
         data_tmp <- get_internal_data(data = d, vars = c(group, unit))
-        cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = group, unit = unit))
+        cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = group, unit = unit
+        ))
+      }, mc.cores = cores)
+    } else {
+      M_list <- lapply(data_by, function(d) {
+        data_tmp <- get_internal_data(data = d, vars = c(group, unit))
+        cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = group, unit = unit
+        ))
       })
     }
 
@@ -55,37 +48,28 @@ M <- function(data, group, unit, by = NULL, contribution.from = NULL, cores = NU
       if (((isTRUE(contribution %in% group)) & (length(group) < 2)) | (isTRUE(contribution %in% unit)) & (length(unit) < 2))
         stop("When using option 'contribution.from' vectors 'group' or 'unit' should have length larger than one. Compute without option 'contribution.from'.")
       data_tmp <- get_internal_data(data = data, vars = c(group, unit))
-      index_total <- mutual_inv(data = data_tmp, group = group, unit = unit)
+      index_total <- data.table(M = M_value(data = data_tmp, group =  group, unit = unit))
 
-      if (!is.null(cores)) {
-        if ((tolower(Sys.info()["sysname"]) == "windows") || (cores <= 6)) {
-          M_contribution <- lapply(X = contribution, function(c) {
-            if (c %in% group) c_tmp <- group[!group %in% c]
-            else c_tmp <- unit[!unit %in% c]
-            data_tmp <- get_internal_data(data = data, vars = c(group, unit, c_tmp))
-            DT_res <- rev(mutual_inv(data = data_tmp, group = group, unit = unit, within = c_tmp)) #Revisar https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/rev
-            DT_res[, 1]
-          })
-        } else {
-          M_contribution <- mclapply(X = contribution, function(c) {
-            if (c %in% group) c_tmp <- group[!group %in% c]
-            else c_tmp <- unit[!unit %in% c]
-            data_tmp <- get_internal_data(data = data, vars = c(group, unit, c_tmp))
-            DT_res <- rev(mutual_inv(data = data_tmp, group = group, unit = unit, within = c_tmp))
-            DT_res[, 1]
-          }, mc.cores = cores)
-        }
-      } else {
-        M_contribution <- lapply(X = contribution, function(c) {
+      if (!is.null(cores) && tolower(Sys.info()["sysname"]) != "windows" && cores > 6) {
+        M_contribution <- mclapply(contribution, function(c) {
           if (c %in% group) c_tmp <- group[!group %in% c]
           else c_tmp <- unit[!unit %in% c]
           data_tmp <- get_internal_data(data = data, vars = c(group, unit, c_tmp))
-          DT_res <- rev(mutual_inv(data = data_tmp, group = group, unit = unit, within = c_tmp))
+          DT_res <- rev(M_within_inv(data = data_tmp, group = group, unit = unit, within = c_tmp))
+          DT_res[, 1]
+        }, mc.cores = cores)
+      } else {
+        M_contribution <- lapply(contribution, function(c) {
+          if (c %in% group) c_tmp <- group[!group %in% c]
+          else c_tmp <- unit[!unit %in% c]
+          data_tmp <- get_internal_data(data = data, vars = c(group, unit, c_tmp))
+          DT_res <- rev(M_within_inv(data = data_tmp, group = group, unit = unit, within = c_tmp))
           DT_res[, 1]
         })
       }
       DT_contribution <- do.call(cbind, M_contribution)
       names(DT_contribution) <- paste0("C_", contribution)
+
       if ((length(intersect(contribution, group)) == length(group)) | length(intersect(contribution, unit)) == length(unit)) {
         DT_contribution <- cbind(index_total, DT_contribution, interaction = (index_total - sum(DT_contribution)))
         setnames(x = DT_contribution, old = "interaction.M", "interaction")

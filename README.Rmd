@@ -39,6 +39,13 @@ The package allows for:
   Rudecindo Ortega 02351 \
   Temuco, Chile \
   <rafael.fuentealba97@gmail.com>
+  
+**Cristian Angulo-Gonzalez** \
+  School of Computer Science \
+  Universidad Católica de Temuco \
+  Rudecindo Ortega 02351 \
+  Temuco, Chile \
+  <cristian_world@hotmail.cl>
 
 **Ricardo Mora** \
   Department of Economics \
