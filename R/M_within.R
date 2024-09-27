@@ -1,5 +1,4 @@
 #' @include get_internal_data.R
-#' @include mutual_inv.R
 #' @include get_proportion.R
 #' @include get_contribution.R
 #' @include get_general_contribution.R
@@ -27,20 +26,165 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
 
       repeat {
         if (w == 1) {
-          data_tmp <- get_internal_data(data = data, vars = c(group, unit, within[w], by))
-          index_between <- mutual_inv(data = data_tmp, group = group, unit = unit, within = within[w], by = by)$M_B
+          data_tmp_input <- get_internal_data(data = data, vars = c(group, unit, within[w], by))
+          data_tmp <- get_internal_data(data = data_tmp_input, vars = c(group, unit, by))
+
+          data_by <- split(data_tmp, by = by)
+
+          M_list <- lapply(data_by, function(d) {
+            data_tmp <- get_internal_data(data = d, vars = c(group, unit))
+            cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = group, unit = unit))
+          })
+
+          DT_general <- do.call(rbind, M_list)
+          index_total <- na.omit(object = DT_general, cols = colnames(DT_general))
+
+          if (within[w] %in% group) {
+            data_tmp <- get_internal_data(data = data_tmp_input, vars = c(within[w], unit, by))
+
+            data_by <- split(data_tmp, by = by)
+
+            M_list <- lapply(data_by, function(d) {
+              data_tmp <- get_internal_data(data = d, vars = c(within[w], unit))
+              cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = within[w], unit = unit))
+            })
+
+            DT_general <- do.call(rbind, M_list)
+            index_between  <- na.omit(object = DT_general, cols = colnames(DT_general))
+            group <- group[!group %in% within[w]]
+
+          } else if (within[w] %in% unit) {
+            data_tmp <- get_internal_data(data = data_tmp_input, vars = c(group, within[w], by))
+            data_by <- split(data_tmp, by = by)
+
+            M_list <- lapply(data_by, function(d) {
+              data_tmp <- get_internal_data(data = d, vars = c(group, within[w]))
+              cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = group, unit = within[w]))
+            })
+
+            DT_general <- do.call(rbind, M_list)
+            index_between  <- na.omit(object = DT_general, cols = colnames(DT_general))
+            unit <- unit[!unit %in% within[w]]
+
+          } else stop(paste("Computation requires that", within[w], "belongs to either 'group' or 'unit'."))
+
+          DT_p <- get_proportion(data = data_tmp_input, within = within[w], by = by)
+          data_tmp <- get_internal_data(data = data_tmp_input, vars = c(group, unit, by, within[w]))
+
+          data_by <- split(data_tmp, by = c(by, within[w]))
+
+          M_list <- lapply(data_by, function(d) {
+            data_tmp <- get_internal_data(data = d, vars = c(group, unit))
+            cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = group, unit = unit))
+          })
+
+          DT_general <- do.call(rbind, M_list)
+          comp_within  <- na.omit(object = DT_general, cols = colnames(DT_general))$M
+
+          DT_within <- cbind(DT_p, within = comp_within)
+
+          index_within <- DT_within[, list(M_W = sum(p %*% within)), by = by]
+          DT_general <- merge(x = index_total, y = index_between, by = by, sort = FALSE)
+          setnames(x = DT_general, old = c("M.x", "M.y"), new = c("M", paste0("M_B_", within[w])))
+
+          DT_general <- merge(x = DT_general, y = index_within, by = by, sort = FALSE)
+          setnames(x = DT_general, old = "M_W", new = paste0("M_W_", within[w]))
+
+          index_between <- DT_general$M_B
           list_index_between[[w]] <- index_between
           vec_p_within <- get_proportion(data = data, within = within[w], by = by)$p
+
         } else {
-          data_tmp <- get_internal_data(data = data, vars = c(group, unit, within[w], by, within_tmp))
-          index_between <- mutual_inv(data = data_tmp, group = group, unit = unit, within = within[w], by = c(by, within_tmp))$M_B
-          DT_index_between <- data.table(unique(data[, .SD, .SDcols = c(by, within_tmp)]), p = vec_p_within, M = index_between)
-          list_index_between[[w]] <- DT_index_between[, list(M_B = sum(p %*% M)), by = by]$M_B
-          vec_p_within <- get_proportion(data = data, within = c(within_tmp, within[w]), by = by)$p
+          data_tmp_input <- get_internal_data(data = data, vars = c(group, unit, within[w], by, within_tmp))
+
+          by_original <- by
+
+          by <- c(by, within_tmp)
+
+          data_tmp <- get_internal_data(data = data_tmp_input, vars = c(group, unit, by))
+
+          data_by <- split(data_tmp, by = by)
+
+          M_list <- lapply(data_by, function(d) {
+            data_tmp <- get_internal_data(data = d, vars = c(group, unit))
+            cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = group, unit = unit))
+          })
+
+
+          DT_general <- do.call(rbind, M_list)
+          index_total <- na.omit(object = DT_general, cols = colnames(DT_general))
+
+          if (within[w] %in% group) {
+            data_tmp <- get_internal_data(data = data, vars = c(within[w], unit, by))
+
+            data_by <- split(data_tmp, by = by)
+
+            M_list <- lapply(data_by, function(d) {
+              data_tmp <- get_internal_data(data = d, vars = c(within[w], unit))
+              cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = within[w], unit = unit))
+            })
+
+            DT_general <- do.call(rbind, M_list)
+            index_between  <- na.omit(object = DT_general, cols = colnames(DT_general))
+            group <- group[!group %in% within[w]]
+
+          } else if (within[w] %in% unit) {
+            data_tmp <- get_internal_data(data = data, vars = c(group, within[w], by))
+
+            data_by <- split(data_tmp, by = by)
+
+            M_list <- lapply(data_by, function(d) {
+              data_tmp <- get_internal_data(data = d, vars = c(group, within))
+              cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = group, unit = within[w]))
+            })
+
+            DT_general <- do.call(rbind, M_list)
+            index_between  <- na.omit(object = DT_general, cols = colnames(DT_general))
+            unit <- unit[!unit %in% within[w]]
+
+          } else stop(paste("Computation requires that", within[w], "belongs to either 'group' or 'unit'."))
+
+          DT_p <- get_proportion(data = data, within = within[w], by = by)
+          data_tmp <- get_internal_data(data = data, vars = c(group, unit, by, within[w]))
+
+          data_by <- split(data_tmp, by = c(by, within[w]))
+
+          M_list <- lapply(data_by, function(d) {
+            data_tmp <- get_internal_data(data = d, vars = c(group, unit))
+            cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = group, unit = unit))
+          })
+
+
+          DT_general <- do.call(rbind, M_list)
+          comp_within  <- na.omit(object = DT_general, cols = colnames(DT_general))$M
+          DT_within <- cbind(DT_p, within = comp_within)
+          index_within <- DT_within[, list(M_W = sum(p %*% within)), by = by]
+
+          DT_general <- merge(x = index_total, y = index_between, by = by, sort = FALSE)
+          setnames(x = DT_general, old = c("M.x", "M.y"), new = c("M", paste0("M_B_", within[w])))
+
+          DT_general <- merge(x = DT_general, y = index_within, by = by, sort = FALSE)
+          setnames(x = DT_general, old = "M_W", new = paste0("M_W_", within[w]))
+
+          index_between <- DT_general$M_B
+
+          DT_index_between <- data.table(unique(data[, .SD, .SDcols = by]), p = vec_p_within, M = index_between)
+          list_index_between[[w]] <- DT_index_between[, list(M_B = sum(p %*% M)), by = by_original]$M_B
+          vec_p_within <- get_proportion(data = data, within = c(within_tmp, within[w]), by = by_original)$p
 
           if (w == length(within)) {
-            data_tmp <- get_internal_data(data = data, vars = c(group, unit, by, within))
-            comp_within <- mutual_inv(data = data_tmp, group = group, unit = unit, by = c(by, within))$M
+            data_tmp <- get_internal_data(data = data, vars = c(group, unit, by_original, within))
+            data_by <- split(data_tmp, by = c(by_original, within))
+            by <- by_original
+
+                M_list <- lapply(data_by, function(d) {
+                  data_tmp <- get_internal_data(data = d, vars = c(group, unit))
+                  cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = group, unit = unit))
+                })
+
+            DT_general <- do.call(rbind, M_list)
+            comp_within  <- na.omit(object = DT_general, cols = colnames(DT_general))$M
+
           }
         }
 
@@ -113,18 +257,134 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
     } else {
       repeat {
         if (w == 1) {
-          data_tmp <- get_internal_data(data = data, vars = c(group, unit, within[w]))
-          list_index_between[[w]] <- mutual_inv(data = data_tmp, group = group, unit = unit, within = within[w])$M_B
+          data_tmp_input <- get_internal_data(data = data, vars = c(group, unit, within[w]))
+          data_tmp <- get_internal_data(data = data_tmp_input, vars = c(group, unit))
+          index_total <- as.numeric(M_value(data = data_tmp, group =  group, unit = unit))
+
+          if (within[w] %in% group) {
+            data_tmp <- get_internal_data(data = data_tmp_input, vars = c(within[w], unit))
+            index_between <- as.numeric(M_value(data = data_tmp, group = within[w], unit = unit))
+            group <- group[!group %in% within[w]]
+
+          } else if (within[w] %in% unit) {
+            data_tmp <- get_internal_data(data = data_tmp_input, vars = c(group, within[w]))
+            index_between <- as.numeric(M_value(data = data_tmp, group =  group, unit = within[w]))
+            unit <- unit[!unit %in% within[w]]
+
+          } else stop(paste("Computation requires that", within[w], "belongs to either 'group' or 'unit'."))
+
+          DT_p <- get_proportion(data = data_tmp_input, within = within[w], total = total)
+          data_tmp <- get_internal_data(data = data_tmp_input, vars = c(group, unit, within[w]))
+          by <- within[w]
+
+          data_by <- split(data_tmp, by = by)
+          M_list <- lapply(data_by, function(d) {
+            data_tmp <- get_internal_data(data = d, vars = c(group, unit))
+            cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = group, unit = unit))
+          })
+
+          DT_general <- do.call(rbind, M_list)
+          DT_general <- na.omit(object = DT_general, cols = colnames(DT_general))
+
+          comp_within <- DT_general$M
+
+          DT_within <- cbind(DT_p, within = comp_within)
+          index_within <- sum(DT_within$p %*% DT_within$within)
+          DT_general <- data.table(M = index_total, M_B = index_between)
+          setnames(x = DT_general, old = "M_B", new = paste0("M_B_", within[w]))
+
+          DT_general <- cbind(DT_general, M_W = index_within)
+          setnames(x = DT_general, old = "M_W", new = paste0("M_W_", within[w]))
+
+          list_index_between[[w]] <- DT_general$M_B
           vec_p_within <- get_proportion(data = data, within = within[w], total = total)$p
+
         } else {
-          data_tmp <- get_internal_data(data = data, vars = c(group, unit, within[w], within_tmp))
-          index_between <- mutual_inv(data = data_tmp, group = group, unit = unit, within = within[w], by = within_tmp)$M_B
+          data_tmp_input <- get_internal_data(data = data, vars = c(group, unit, within[w], within_tmp))
+          by <- within_tmp
+          data_tmp <- get_internal_data(data = data_tmp_input, vars = c(group, unit, by))
+          data_by <- split(data_tmp, by = by)
+
+          M_list <- lapply(data_by, function(d) {
+            data_tmp <- get_internal_data(data = d, vars = c(group, unit))
+            cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = group, unit = unit))
+          })
+
+          DT_general <- do.call(rbind, M_list)
+          index_total <- na.omit(object = DT_general, cols = colnames(DT_general))
+
+          if (within[w] %in% group) {
+            data_tmp <- get_internal_data(data = data_tmp_input, vars = c(within[w], unit, by))
+            data_by <- split(data_tmp, by = by)
+
+            M_list <- lapply(data_by, function(d) {
+              data_tmp <- get_internal_data(data = d, vars = c(within[w], unit))
+              cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = within[w], unit = unit))
+            })
+
+            DT_general <- do.call(rbind, M_list)
+            index_between <- na.omit(object = DT_general, cols = colnames(DT_general))
+            group <- group[!group %in% within[w]]
+
+          } else if (within[w] %in% unit) {
+            data_tmp <- get_internal_data(data = data, vars = c(group, within[w], by))
+            data_by <- split(data_tmp, by = by)
+
+            M_list <- lapply(data_by, function(d) {
+              data_tmp <- get_internal_data(data = d, vars = c(group, within[w]))
+              cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = group, unit = within[w]))
+            })
+
+            DT_general <- do.call(rbind, M_list)
+            index_between <- na.omit(object = DT_general, cols = colnames(DT_general))
+            unit <- unit[!unit %in% within[w]]
+
+          } else stop(paste("Computation requires that", within[w], "belongs to either 'group' or 'unit'."))
+
+          DT_p <- get_proportion(data = data_tmp_input, within = within[w], by = by)
+          data_tmp <- get_internal_data(data = data_tmp_input, vars = c(group, unit, by, within))
+          by <- c(by, within[w])
+          data_by <- split(data_tmp, by = by)
+
+          M_list <- lapply(data_by, function(d) {
+            data_tmp <- get_internal_data(data = d, vars = c(group, unit))
+            cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = group, unit = unit))
+          })
+
+          DT_general <- do.call(rbind, M_list)
+          DT_general <- na.omit(object = DT_general, cols = colnames(DT_general))
+
+          comp_within <- DT_general$M
+          by <- within_tmp
+
+          DT_within <- cbind(DT_p, within = comp_within)
+          index_within <- DT_within[, list(M_W = sum(p %*% within)), by = by]
+          DT_general <- merge(x = index_total, y = index_between, by = by, sort = FALSE)
+          setnames(x = DT_general, old = c("M.x", "M.y"), new = c("M", paste0("M_B_", within[w])))
+
+          DT_general <- merge(x = DT_general, y = index_within, by = by, sort = FALSE)
+          setnames(x = DT_general, old = "M_W", new = paste0("M_W_", within[w]))
+
+          index_between <- DT_general$M_B
+
           list_index_between[[w]] <- sum(vec_p_within %*% index_between)
           vec_p_within <- get_proportion(data = data, within = c(within_tmp, within[w]), total = total)$p
 
           if (w == length(within)) {
             data_tmp <- get_internal_data(data = data, vars = c(group, unit, within))
-            comp_within <- mutual_inv(data = data_tmp, group = group, unit = unit, by = within)$M
+            by <- within
+
+            data_by <- split(data_tmp, by = by)
+            M_list <- lapply(data_by, function(d) {
+              data_tmp <- get_internal_data(data = d, vars = c(group, unit))
+              cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = group, unit = unit))
+            })
+
+            DT_general <- do.call(rbind, M_list)
+            DT_general <- na.omit(object = DT_general, cols = colnames(DT_general))
+
+            comp_within <- DT_general$M
+
           }
         }
 
@@ -182,21 +442,60 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
     if (!is.null(by)) {
       result <- NULL
       data_tmp <- get_internal_data(data = data, vars = c(group, unit, by))
-      index_total <- mutual_inv(data = data_tmp, group = group, unit = unit, by = by)
+
+      data_by <- split(data_tmp, by = by)
+
+          M_list <- lapply(data_by, function(d) {
+            data_tmp <- get_internal_data(data = d, vars = c(group, unit))
+            cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = group, unit = unit))
+          })
+
+
+      DT_general <- do.call(rbind, M_list)
+      index_total <- na.omit(object = DT_general, cols = colnames(DT_general))
 
       if (within %in% group) {
         data_tmp <- get_internal_data(data = data, vars = c(within, unit, by))
-        index_between <- mutual_inv(data = data_tmp, group = within, unit = unit, by = by)
+
+        data_by <- split(data_tmp, by = by)
+
+            M_list <- lapply(data_by, function(d) {
+              data_tmp <- get_internal_data(data = d, vars = c(within, unit))
+              cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = within, unit = unit))
+            })
+
+        DT_general <- do.call(rbind, M_list)
+        index_between  <- na.omit(object = DT_general, cols = colnames(DT_general))
         group <- group[!group %in% within]
+
       } else if (within %in% unit) {
         data_tmp <- get_internal_data(data = data, vars = c(group, within, by))
-        index_between <- mutual_inv(data = data_tmp, group = group, unit = within, by = by)
+
+        data_by <- split(data_tmp, by = by)
+
+            M_list <- lapply(data_by, function(d) {
+              data_tmp <- get_internal_data(data = d, vars = c(group, within))
+              cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = group, unit = within))
+            })
+
+        DT_general <- do.call(rbind, M_list)
+        index_between  <- na.omit(object = DT_general, cols = colnames(DT_general))
+
         unit <- unit[!unit %in% within]
       } else stop(paste("Computation requires that", within, "belongs to either 'group' or 'unit'."))
 
       DT_p <- get_proportion(data = data, within = within, by = by)
       data_tmp <- get_internal_data(data = data, vars = c(group, unit, by, within))
-      comp_within <- mutual_inv(data = data_tmp, group = group, unit = unit, by = c(by, within))$M
+
+      data_by <- split(data_tmp, by = c(by, within))
+
+          M_list <- lapply(data_by, function(d) {
+            data_tmp <- get_internal_data(data = d, vars = c(group, unit))
+            cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = group, unit = unit))
+          })
+
+      DT_general <- do.call(rbind, M_list)
+      comp_within  <- na.omit(object = DT_general, cols = colnames(DT_general))$M
       DT_within <- cbind(DT_p, within = comp_within)
       index_within <- DT_within[, list(M_W = sum(p %*% within)), by = by]
       DT_general <- merge(x = index_total, y = index_between, by = by, sort = FALSE)
@@ -250,21 +549,32 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
       result
     } else {
       data_tmp <- get_internal_data(data = data, vars = c(group, unit))
-      index_total <- as.numeric(mutual_inv(data = data_tmp, group = group, unit = unit))
+      index_total <- data.table(M = M_value(data = data_tmp, group =  group, unit = unit))$M
 
       if (within %in% group) {
         data_tmp <- get_internal_data(data = data, vars = c(within, unit))
-        index_between <- as.numeric(mutual_inv(data = data_tmp, group = within, unit = unit))
+        index_between <- data.table(M = M_value(data = data_tmp, group =  within, unit = unit))$M
         group <- group[!group %in% within]
+
       } else if (within %in% unit) {
         data_tmp <- get_internal_data(data = data, vars = c(group, within))
-        index_between <- as.numeric(mutual_inv(data = data_tmp, group = group, unit = within))
+        index_between <- data.table(M = M_value(data = data_tmp, group =  group, unit = within))$M
         unit <- unit[!unit %in% within]
+
       } else stop(paste("Computation requires that", within, "belongs to either 'group' or 'unit'."))
 
       DT_p <- get_proportion(data = data, within = within, total = total)
       data_tmp <- get_internal_data(data = data, vars = c(group, unit, within))
-      comp_within <- mutual_inv(data = data_tmp, group = group, unit = unit, by = within)$M
+
+      data_by <- split(data_tmp, by = within)
+
+        M_list <- lapply(data_by, function(d) {
+          data_tmp <- get_internal_data(data = d, vars = c(group, unit))
+          cbind(unique(d[, ..by]), M = M_value(data = data_tmp, group = group, unit = unit))
+        })
+
+      DT_general <- do.call(rbind, M_list)
+      comp_within  <- na.omit(object = DT_general, cols = colnames(DT_general))$M
       DT_within <- cbind(DT_p, within = comp_within)
       index_within <- sum(DT_within$p %*% DT_within$within)
       DT_general <- data.table(M = index_total, M_B = index_between)

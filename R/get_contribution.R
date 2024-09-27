@@ -1,8 +1,8 @@
 #' @include get_internal_data.R
-#' @include mutual_inv.R
 NULL
 #' @import data.table
 #' @import parallel
+#' @import future.apply
 get_contribution <- function(data, group, unit, within = NULL, by = NULL, component = NULL, contribution, cores = NULL, iterm = NULL) {
   data_contribution <- split(data, by = c(by, within))
   id_data_contribution <- names(data_contribution)
@@ -11,25 +11,26 @@ get_contribution <- function(data, group, unit, within = NULL, by = NULL, compon
 
   if (!is.null(cores)) {
     if ((tolower(Sys.info()["sysname"]) == "windows") || (cores <= 6)) {
-      cl <- makePSOCKcluster(cores)
-      comp_d <- parLapply(cl, data_contribution, function(d) {
+      plan(multisession, workers = cores)
+      comp_d <- future_lapply(data_contribution, function(d) {
         M_contribution <- lapply(contribution, function(c) {
           if (c %in% group) c_tmp <- group[!group %in% c]
           else c_tmp <- unit[!unit %in% c]
           data_tmp <- get_internal_data(data = d, vars = c(group, unit, c_tmp))
-          DT_res <- rev(mutual_inv(data = data_tmp, group = group, unit = unit, within = c_tmp))
+          DT_res <- rev(M_within_inv(data = data_tmp, group = group, unit = unit, within = c_tmp))
           DT_res[, 1]
         })
-      unlist(M_contribution, use.names = FALSE)
-      })
-      stopCluster(cl)
+        unlist(M_contribution, use.names = FALSE)
+
+      }, future.seed = NULL)
+      plan(sequential)
     } else {
       comp_d <- mclapply(X = data_contribution, function(d) {
         M_contribution <- mclapply(X = contribution, function(c) {
           if (c %in% group) c_tmp <- group[!group %in% c]
           else c_tmp <- unit[!unit %in% c]
           data_tmp <- get_internal_data(data = d, vars = c(group, unit, c_tmp))
-          DT_res <- rev(mutual_inv(data = data_tmp, group = group, unit = unit, within = c_tmp))
+          DT_res <- rev(M_within_inv(data = data_tmp, group = group, unit = unit, within = c_tmp))
           DT_res[, 1]
         }, mc.cores = cores)
         unlist(M_contribution, use.names = FALSE)
@@ -41,7 +42,7 @@ get_contribution <- function(data, group, unit, within = NULL, by = NULL, compon
         if (c %in% group) c_tmp <- group[!group %in% c]
         else c_tmp <- unit[!unit %in% c]
         data_tmp <- get_internal_data(data = d, vars = c(group, unit, c_tmp))
-        DT_res <- rev(mutual_inv(data = data_tmp, group = group, unit = unit, within = c_tmp))
+        DT_res <- rev(M_within_inv(data = data_tmp, group = group, unit = unit, within = c_tmp))
         DT_res[, 1]
       })
       unlist(M_contribution, use.names = FALSE)
