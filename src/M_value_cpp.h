@@ -1,32 +1,10 @@
+#ifndef M_VALUE_CPP_H
+#define M_VALUE_CPP_H
+
 #include <RcppArmadillo.h>
-#include <RcppThread.h>
-#include <unordered_map>
-#include <utility>
-#include <vector>
+#include "VectorHash.h"
 
-using namespace Rcpp;
-using namespace RcppThread;
-
-// [[Rcpp::depends(RcppThread)]]
-// [[Rcpp::plugins(cpp23)]]
-// [[Rcpp::depends(RcppArmadillo)]]
-
-// Función hash para vector<int>
-struct VectorHash {
-  size_t operator()(const std::vector<int>& v) const {
-    std::hash<int> hasher;
-    size_t seed = 0;
-    //parallelFor(0, v, [&] (int i) {
-    for (int i : v) {
-      seed ^= hasher(i) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-    }
-    //});
-    return seed;
-  }
-};
-
-// [[Rcpp::export]]
-double M_valuerp(arma::mat data, arma::uvec group, arma::uvec unit) {
+double M_value_cpp(arma::mat data, arma::uvec group, arma::uvec unit) {
   // La última columna se asume como "fw"
   arma::vec fw = data.col(data.n_cols - 1);
   double total = arma::sum(fw);
@@ -41,7 +19,6 @@ double M_valuerp(arma::mat data, arma::uvec group, arma::uvec unit) {
 
   // Calcular las combinaciones únicas y sus sumas de `fw`
   for (unsigned int i = 0; i < data.n_rows; ++i) {
-  //parallelFor(0, data.n_rows, [&] (int i) {
     //for (unsigned int i = 0; i < data.n_rows; ++i) {
     std::vector<int> group_key(group.n_elem);
     std::vector<int> unit_key(unit.n_elem);
@@ -55,12 +32,10 @@ double M_valuerp(arma::mat data, arma::uvec group, arma::uvec unit) {
 
     group_sums[group_key] += fw(i);
     unit_sums[unit_key] += fw(i);
-  };
-  //});
+  }
 
   // Asignar valores de Pg y Pn basados en las combinaciones únicas
-  parallelFor(0, data.n_rows, [&] (int i) {
-  //for (unsigned int i = 0; i < data.n_rows; ++i) {
+  for (unsigned int i = 0; i < data.n_rows; ++i) {
     std::vector<int> group_key(group.n_elem);
     std::vector<int> unit_key(unit.n_elem);
 
@@ -73,8 +48,7 @@ double M_valuerp(arma::mat data, arma::uvec group, arma::uvec unit) {
 
     Pg(i) = group_sums[group_key] / total;
     Pn(i) = unit_sums[unit_key] / total;
-  //}
-  },6);
+  }
 
   // Calcular Png
   arma::vec Png = fw / total;
@@ -94,4 +68,4 @@ double M_valuerp(arma::mat data, arma::uvec group, arma::uvec unit) {
   return M;
 }
 
-
+#endif // M_VALUE_CPP_H

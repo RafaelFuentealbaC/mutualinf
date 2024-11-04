@@ -1,28 +1,11 @@
+#ifndef GET_INTERNAL_DATA_H
+#define GET_INTERNAL_DATA_H
+
 #include <RcppArmadillo.h>
-#include <unordered_map>
 #include <vector>
-#include <RcppThread.h>
+#include <unordered_map>
+#include "VectorHash.h"
 
-using namespace Rcpp;
-using namespace RcppThread;
-
-// [[Rcpp::depends(RcppArmadillo, RcppThread)]]
-// [[Rcpp::plugins(cpp23)]]
-
-// Estructura hash para combinar claves de grupos
-struct VectorHash {
-  size_t operator()(const std::vector<int>& v) const {
-    std::hash<int> hasher;
-    size_t seed = 0;
-    for (int i : v) {
-      seed ^= hasher(i) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-    }
-    return seed;
-  }
-};
-
-// Función para replicar el comportamiento de get_internal_data en C++
-// [[Rcpp::export]]
 arma::mat get_internal_data_cpp(const arma::mat& data, const arma::uvec& vars) {
   // La última columna se asume como "fw" (frecuencia)
   arma::vec fw = data.col(data.n_cols - 1);
@@ -54,3 +37,5 @@ arma::mat get_internal_data_cpp(const arma::mat& data, const arma::uvec& vars) {
 
   return result;  // Devolver la matriz resultante
 }
+
+#endif // M_VALUE_CPP_H

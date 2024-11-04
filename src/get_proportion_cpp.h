@@ -1,36 +1,18 @@
+#ifndef GET_PROPORTION_CPP_H
+#define GET_PROPORTION_CPP_H
+
 #include <RcppArmadillo.h>
-#include <unordered_map>
 #include <vector>
-#include <RcppThread.h>
+#include <unordered_map>
+#include "VectorHash.h"
 
-using namespace Rcpp;
-using namespace RcppThread;
-
-// [[Rcpp::depends(RcppArmadillo, RcppThread)]]
-
-// Estructura hash para combinar claves de grupos
-struct VectorHash {
-  size_t operator()(const std::vector<int>& v) const {
-    std::hash<int> hasher;
-    size_t seed = 0;
-    for (int i : v) {
-      seed ^= hasher(i) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-    }
-    return seed;
-  }
-};
-
-// Función para replicar el comportamiento de get_proportion en C++
-// [[Rcpp::export]]
 arma::mat get_proportion_cpp(const arma::mat& data, const arma::uvec& within, const arma::uvec& by = arma::uvec(), double total = -1) {
   // La última columna se asume como "fw" (frecuencia)
   arma::vec fw = data.col(data.n_cols - 1);
-
   // Si no se ha proporcionado un valor total, lo calculamos
   if (total < 0) {
     total = arma::sum(fw);
   }
-
   // Mapas hash para acumular sumas de `fw` en diferentes combinaciones
   std::unordered_map<std::vector<int>, double, VectorHash> sum_within;
   std::unordered_map<std::vector<int>, double, VectorHash> sum_by_within;
@@ -40,17 +22,14 @@ arma::mat get_proportion_cpp(const arma::mat& data, const arma::uvec& within, co
     // Primera parte: Calcular las sumas de `fw` por las combinaciones de `by` y `within`
     for (unsigned int i = 0; i < data.n_rows; ++i) {
       std::vector<int> key_by_within(by.n_elem + within.n_elem);
-
       // Obtener las claves de `by`
       for (unsigned int j = 0; j < by.n_elem; ++j) {
         key_by_within[j] = data(i, by(j));
       }
-
       // Obtener las claves de `within`
       for (unsigned int j = 0; j < within.n_elem; ++j) {
         key_by_within[by.n_elem + j] = data(i, within(j));
       }
-
       // Acumular las sumas
       sum_by_within[key_by_within] += fw(i);
     }
@@ -59,16 +38,13 @@ arma::mat get_proportion_cpp(const arma::mat& data, const arma::uvec& within, co
     std::unordered_map<std::vector<int>, double, VectorHash> sum_by;
     for (unsigned int i = 0; i < data.n_rows; ++i) {
       std::vector<int> key_by(by.n_elem);
-
       // Obtener las claves de `by`
       for (unsigned int j = 0; j < by.n_elem; ++j) {
         key_by[j] = data(i, by(j));
       }
-
       // Acumular las sumas
       sum_by[key_by] += fw(i);
     }
-
     // Crear la matriz de salida para almacenar las proporciones
     arma::mat result(sum_by_within.size(), by.n_elem + within.n_elem + 1);
 
@@ -76,39 +52,32 @@ arma::mat get_proportion_cpp(const arma::mat& data, const arma::uvec& within, co
     unsigned int row = 0;
     for (const auto& kv : sum_by_within) {
       std::vector<int> key_by(by.n_elem);
-
       // Obtener la clave para `by` y buscar su suma
       for (unsigned int j = 0; j < by.n_elem; ++j) {
         key_by[j] = kv.first[j];
         result(row, j) = kv.first[j];
       }
-
       // Añadir las claves para `within`
       for (unsigned int j = 0; j < within.n_elem; ++j) {
         result(row, by.n_elem + j) = kv.first[by.n_elem + j];
       }
-
       // Dividir la suma de `by_within` entre la suma de `by`
       result(row, by.n_elem + within.n_elem) = kv.second / sum_by[key_by];
       ++row;
     }
-
     return result;
 
   } else {
     // Si `by` está vacío, calcular las sumas de `fw` solo para `within`
     for (unsigned int i = 0; i < data.n_rows; ++i) {
       std::vector<int> key_within(within.n_elem);
-
       // Obtener las claves de `within`
       for (unsigned int j = 0; j < within.n_elem; ++j) {
         key_within[j] = data(i, within(j));
       }
-
       // Acumular las sumas
       sum_within[key_within] += fw(i);
     }
-
     // Crear la matriz de salida para almacenar las proporciones
     arma::mat result(sum_within.size(), within.n_elem + 1);
 
@@ -121,7 +90,8 @@ arma::mat get_proportion_cpp(const arma::mat& data, const arma::uvec& within, co
       result(row, within.n_elem) = kv.second / total;
       ++row;
     }
-
     return result;
   }
 }
+
+#endif

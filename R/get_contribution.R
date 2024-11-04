@@ -4,15 +4,19 @@ NULL
 #' @import parallel
 #' @import future.apply
 get_contribution <- function(data, group, unit, within = NULL, by = NULL, component = NULL, contribution, cores = NULL, iterm = NULL) {
-  data_contribution <- split(data, by = c(by, within))
+  data_prev <- split(data, by = c(by, within))
+  data_contribution <- lapply(data_prev, function(dt) {
+    dt_numeric <- dt[, lapply(.SD, function(x) if(is.factor(x)) as.integer(x) else x)]
+    as.matrix(dt_numeric)
+  })
+
   id_data_contribution <- names(data_contribution)
   DT_id_data_contribution <- data.table(do.call(rbind, strsplit(x = id_data_contribution, split = "\\.")))
   setnames(x = DT_id_data_contribution, old = colnames(DT_id_data_contribution), new = c(by, within))
-
   if (!is.null(cores)) {
     if ((tolower(Sys.info()["sysname"]) == "windows") || (cores <= 6)) {
       plan(multisession, workers = cores)
-      comp_d <- future_lapply(data_contribution, function(d) {
+      comp_d <- future_lapply(data_prev, function(d) {
         M_contribution <- lapply(contribution, function(c) {
           if (c %in% group) c_tmp <- group[!group %in% c]
           else c_tmp <- unit[!unit %in% c]
@@ -25,7 +29,7 @@ get_contribution <- function(data, group, unit, within = NULL, by = NULL, compon
       }, future.seed = NULL)
       plan(sequential)
     } else {
-      comp_d <- mclapply(X = data_contribution, function(d) {
+      comp_d <- mclapply(X = data_prev, function(d) {
         M_contribution <- mclapply(X = contribution, function(c) {
           if (c %in% group) c_tmp <- group[!group %in% c]
           else c_tmp <- unit[!unit %in% c]
@@ -41,13 +45,18 @@ get_contribution <- function(data, group, unit, within = NULL, by = NULL, compon
       M_contribution <- lapply(contribution, function(c) {
         if (c %in% group) c_tmp <- group[!group %in% c]
         else c_tmp <- unit[!unit %in% c]
-        data_tmp <- get_internal_data(data = d, vars = c(group, unit, c_tmp))
-        DT_res <- rev(M_within_inv(data = data_tmp, group = group, unit = unit, within = c_tmp))
-        DT_res[, 1]
+
+        group <- match(group, colnames(d)) - 1
+        unit <- match(unit, colnames(d)) - 1
+        c_tmp <- match(c_tmp, colnames(d)) - 1
+
+        DT_res <- rev(M_within_inv_with_gid(data = d, vars = c(group, unit, c_tmp), group = group, unit = unit, within = c_tmp))
+        DT_res[1]
       })
       unlist(M_contribution, use.names = FALSE)
     })
   }
+
   DT_comp_d <- transpose(as.data.table(comp_d), keep.names = NULL)
   names(DT_comp_d) <- contribution
   DT_comp_d <- cbind(DT_id_data_contribution, DT_comp_d)
@@ -59,6 +68,8 @@ get_contribution <- function(data, group, unit, within = NULL, by = NULL, compon
       DT_int <- DT_contribution[, list(sum_d = rowSums(.SD)), .SDcols = contribution]
       DT_int <- cbind(M = DT_contribution$M, DT_int)
       DT_int <- DT_int[, list(interaction = M - sum_d), by = list(row.names(DT_int))][, -1]
+      epsilon <- .Machine$double.eps
+      DT_int$interaction[abs(DT_int$interaction) < epsilon] <- 0
       DT_contribution <- cbind(DT_contribution[, -"M"], DT_int)
     } else {
       DT_contribution[, -"M"]
@@ -69,6 +80,8 @@ get_contribution <- function(data, group, unit, within = NULL, by = NULL, compon
       DT_int <- DT_contribution[, list(sum_d = rowSums(.SD)), .SDcols = contribution]
       DT_int <- cbind(M = DT_contribution$within, DT_int)
       DT_int <- DT_int[, list(interaction = M - sum_d), by = list(row.names(DT_int))][, -1]
+      epsilon <- .Machine$double.eps
+      DT_int$interaction[abs(DT_int$interaction) < epsilon] <- 0
       DT_contribution <- cbind(DT_contribution, DT_int)
     }
     DT_contribution
