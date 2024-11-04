@@ -29,12 +29,11 @@ The package allows for:
   sources defined either by group or unit characteristics.
 - The computation of all the elements that conform the “within” term in
   the decomposition.
-- Fast computation employing more than one CPU core in Mac, Linux, Unix,
-  and BSD systems. This option uses the
+- Fast computation employing more than one CPU core in Mac, Linux,
+  Windows, Unix, and BSD systems. This option uses the
   [`data.table`](https://CRAN.R-project.org/package=data.table) and
   [`parallel`](https://stat.ethz.ch/R-manual/R-devel/library/parallel/doc/parallel.pdf)
-  libraries (which Windows does not permit to run with more than one CPU
-  core).
+  libraries.
 
 ## Authors
 

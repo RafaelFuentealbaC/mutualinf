@@ -59,20 +59,30 @@ M <- function(data, group, unit, by = NULL, contribution.from = NULL, cores = NU
           DT_res[, 1]
         }, mc.cores = cores)
       } else {
+        data <- data[, lapply(.SD, function(x) if(is.factor(x)) as.integer(x) else x)]
+        data <- as.matrix(data)
         M_contribution <- lapply(contribution, function(c) {
           if (c %in% group) c_tmp <- group[!group %in% c]
           else c_tmp <- unit[!unit %in% c]
-          data_tmp <- get_internal_data(data = data, vars = c(group, unit, c_tmp))
-          DT_res <- rev(M_within_inv(data = data_tmp, group = group, unit = unit, within = c_tmp))
-          DT_res[, 1]
+
+          group <- match(group, colnames(data)) - 1
+          unit <- match(unit, colnames(data)) - 1
+          c_tmp <- match(c_tmp, colnames(data)) - 1
+
+          DT_res <- rev(M_within_inv_with_gid(data = data, vars = c(group, unit, c_tmp), group = group, unit = unit, within = c_tmp))
+          DT_res[1]
         })
       }
+
       DT_contribution <- do.call(cbind, M_contribution)
+      DT_contribution <- as.data.table(DT_contribution)
       names(DT_contribution) <- paste0("C_", contribution)
 
       if ((length(intersect(contribution, group)) == length(group)) | length(intersect(contribution, unit)) == length(unit)) {
         DT_contribution <- cbind(index_total, DT_contribution, interaction = (index_total - sum(DT_contribution)))
         setnames(x = DT_contribution, old = "interaction.M", "interaction")
+        epsilon <- .Machine$double.eps
+        DT_contribution$interaction[abs(DT_contribution$interaction) < epsilon] <- 0
       } else {
         DT_contribution <- cbind(index_total, DT_contribution)
       }
