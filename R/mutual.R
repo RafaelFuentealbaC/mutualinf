@@ -133,7 +133,7 @@ mutual <- function(data, group, unit, within = NULL, by = NULL, contribution.fro
     M_within(data = data, group = group, unit = unit, within = within, by = by, contribution.from = contribution.from, components = components, cores = cores)
   } else {
     M(data = data, group = group, unit = unit, by = by, contribution.from = contribution.from, cores = cores)
-    }
   }
+}
 
 
