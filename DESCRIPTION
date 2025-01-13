@@ -3,14 +3,14 @@ Type: Package
 Title: Computation and Decomposition of the Mutual Information Index
 Version: 2.0.1
 Date: 2024-10-01
-Authors@R: c(person("Cristian", "Angulo", email = "cristian_world@hotmail.cl", role = c("aut", "cre")),
+Authors@R: c(person("Cristian", "Angulo-Gonzalez", email = "cristian_world@hotmail.cl", role = c("aut", "cre")),
               person("Rafael", "Fuentealba-Chaura", email = "rafael.fuentealba97@gmail.com", role = "aut"),
               person("Ricardo", "Mora", email = "ricmora@eco.uc3m.es", role = "aut"),
               person("Julio", "Rojas-Mora", email = "julio.rojas@uct.cl", role = "aut"),
               person("FONDECYT/ANID Project 11170583", role = "fnd"),
               person("MCIN/AEI/10.13039/501100011033 (Project no. PID2019-108576RB-I00)", role = "fnd"),
               person("UCT VIP Project FEQUIP2019-INRN-03", role = "fnd"))
-Maintainer: Cristian Angulo <cristian_world@hotmail.cl>
+Maintainer: Cristian Angulo-Gonzalez <cristian_world@hotmail.cl>
 Description: The Mutual Information Index (M) introduced to social science literature by
     Theil and Finizza (1971) <doi:10.1080/0022250X.1971.9989795> is a multigroup
     segregation measure that is highly decomposable and that according to Frankel
