@@ -1,7 +1,6 @@
 #' @include get_internal_data.R
 #' @include get_proportion.R
 #' @include get_contribution.R
-#' @include get_general_contribution.R
 NULL
 #' @import data.table
 #' @import parallel

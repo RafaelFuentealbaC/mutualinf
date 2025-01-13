@@ -1,10 +1,10 @@
 Package: mutualinf
 Type: Package
 Title: Computation and Decomposition of the Mutual Information Index
-Version: 2.0.0
+Version: 2.0.1
 Date: 2024-10-01
-Authors@R: c(person("Rafael", "Fuentealba-Chaura", email = "rafael.fuentealba97@gmail.com", role = c("aut", "cre")),
-              person("Cristian", "Angulo", email = "cristian_world@hotmail.cl", role = "aut"),
+Authors@R: c(person("Cristian", "Angulo", email = "cristian_world@hotmail.cl", role = c("aut", "cre")),
+              person("Rafael", "Fuentealba-Chaura", email = "rafael.fuentealba97@gmail.com", role = "aut"),
               person("Ricardo", "Mora", email = "ricmora@eco.uc3m.es", role = "aut"),
               person("Julio", "Rojas-Mora", email = "julio.rojas@uct.cl", role = "aut"),
               person("FONDECYT/ANID Project 11170583", role = "fnd"),
@@ -23,13 +23,11 @@ Description: The Mutual Information Index (M) introduced to social science liter
     each "within" term can also be displayed at the user's request. The results can
     be computed considering a variable or sets of variables that define separate
     clusters.
-License: GPL (>= 2)
+License: GPL-3
 Imports: 
   Rcpp (>= 1.0.13),
   data.table,
   parallel,
-  future,
-  future.apply,
   runner,
   stats,
 LinkingTo: Rcpp, RcppArmadillo

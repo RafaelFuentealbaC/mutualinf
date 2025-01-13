@@ -2,7 +2,6 @@
 NULL
 #' @import data.table
 #' @import parallel
-#' @import future.apply
 get_contribution <- function(data, group, unit, within = NULL, by = NULL, component = NULL, contribution, cores = NULL, iterm = NULL) {
   data_prev <- split(data, by = c(by, within))
   data_contribution <- lapply(data_prev, function(dt) {
@@ -15,26 +14,27 @@ get_contribution <- function(data, group, unit, within = NULL, by = NULL, compon
   setnames(x = DT_id_data_contribution, old = colnames(DT_id_data_contribution), new = c(by, within))
   if (!is.null(cores)) {
     if ((tolower(Sys.info()["sysname"]) == "windows") || (cores <= 6)) {
-      plan(multisession, workers = cores)
-      comp_d <- future_lapply(data_prev, function(d) {
+      cl <- makePSOCKcluster(cores)
+      comp_d <- parLapply(cl, data_prev, function(d) {
         M_contribution <- lapply(contribution, function(c) {
           if (c %in% group) c_tmp <- group[!group %in% c]
           else c_tmp <- unit[!unit %in% c]
           data_tmp <- get_internal_data(data = d, vars = c(group, unit, c_tmp))
-          DT_res <- rev(M_within_inv(data = data_tmp, group = group, unit = unit, within = c_tmp))
+          DT_res <- M_within_inv(data = data_tmp, group = group, unit = unit, within = c_tmp)
+          DT_res <- DT_res[.N:1]
           DT_res[, 1]
         })
         unlist(M_contribution, use.names = FALSE)
-
-      }, future.seed = NULL)
-      plan(sequential)
+      })
+      stopCluster(cl)
     } else {
       comp_d <- mclapply(X = data_prev, function(d) {
         M_contribution <- mclapply(X = contribution, function(c) {
           if (c %in% group) c_tmp <- group[!group %in% c]
           else c_tmp <- unit[!unit %in% c]
           data_tmp <- get_internal_data(data = d, vars = c(group, unit, c_tmp))
-          DT_res <- rev(M_within_inv(data = data_tmp, group = group, unit = unit, within = c_tmp))
+          DT_res <- M_within_inv(data = data_tmp, group = group, unit = unit, within = c_tmp)
+          DT_res <- DT_res[.N:1]
           DT_res[, 1]
         }, mc.cores = cores)
         unlist(M_contribution, use.names = FALSE)
@@ -50,7 +50,8 @@ get_contribution <- function(data, group, unit, within = NULL, by = NULL, compon
         unit <- match(unit, colnames(d)) - 1
         c_tmp <- match(c_tmp, colnames(d)) - 1
 
-        DT_res <- rev(M_within_inv_with_gid(data = d, vars = c(group, unit, c_tmp), group = group, unit = unit, within = c_tmp))
+        DT_res <- M_within_inv_with_gid(data = d, vars = c(group, unit, c_tmp), group = group, unit = unit, within = c_tmp)
+        DT_res <- DT_res[nrow(DT_res):1, ]
         DT_res[1]
       })
       unlist(M_contribution, use.names = FALSE)
