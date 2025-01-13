@@ -17,6 +17,7 @@ The package allows for:
 }
 }
 \author{ Rafael Fuentealba-Chaura \email{rafael.fuentealba97@gmail.com}\cr
+Cristian Angulo-Gonzalez \email{cristian_world@hotmail.cl}\cr
 Ricardo Mora \email{ricmora@eco.uc3m.es}\cr
 Julio Rojas-Mora \email{julio.rojas@uct.cl}\cr
 }
