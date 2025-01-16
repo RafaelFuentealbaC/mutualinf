@@ -56,6 +56,7 @@ NULL
 #' informational concepts. \emph{The Journal of Mathematical Sociology, 1}(2):187-193. \doi{10.1080/0022250X.1971.9989795}.
 #'
 #' @examples
+#' \donttest{
 #' # To compute the overall measure of school segregation by socioeconomic and ethnic status.
 #' mutual(data = DT_test, group = c("csep", "ethnicity"), unit = "school")
 #'
@@ -66,7 +67,7 @@ NULL
 #' contribution.from = "group_vars")
 #'
 #' # For more information on the package, refer to the manual and the README file.
-#'
+#'}
 #' @import data.table
 #' @export
 mutual <- function(data, group, unit, within = NULL, by = NULL, contribution.from = NULL, components = FALSE, cores = NULL) {

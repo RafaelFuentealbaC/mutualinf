@@ -15,7 +15,9 @@
 #' number or vector of column numbers contained in \code{vars}. Selects the columns to sort the dataset. By
 #' default is \code{NULL}.
 #' @return Returns a \code{data.table} of class "data.table" "data.frame" "mutual.data".
+#'
 #' @examples
+#' \donttest{
 #' # Using some variable names in 'data' with explicit 'fw'.
 #' my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "ethnicity", "school", "district"),
 #' fw = "nobs")
@@ -37,6 +39,7 @@
 #' # The class of the resulting object in all cases must be "data.table", "data.frame" and
 #' # "mutual.data".
 #' class(my_data)
+#' }
 #' @import data.table
 #' @export
 prepare_data <- function(data, vars, fw = NULL, col.order = NULL) {

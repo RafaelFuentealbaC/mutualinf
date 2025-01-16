@@ -68,6 +68,7 @@ the user's request. The results can be computed over subsamples defined by the u
 Mixing \code{group} variables with \code{unit} variables in \code{contribution.from} will produce an error.
 }
 \examples{
+\donttest{
 # To compute the overall measure of school segregation by socioeconomic and ethnic status.
 mutual(data = DT_test, group = c("csep", "ethnicity"), unit = "school")
 
@@ -78,7 +79,7 @@ mutual(data = DT_test, group = c("csep", "ethnicity"), unit = "school", by = "re
 contribution.from = "group_vars")
 
 # For more information on the package, refer to the manual and the README file.
-
+}
 }
 \references{
 Frankel, D. and Volij, O. (2011). Measuring school segregation. \emph{Journal of Economic Theory, 146}(1):1-38.
