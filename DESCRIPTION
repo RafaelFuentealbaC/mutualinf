@@ -2,7 +2,7 @@ Package: mutualinf
 Type: Package
 Title: Computation and Decomposition of the Mutual Information Index
 Version: 2.0.1
-Date: 2024-10-01
+Date: 2025-01-13
 Authors@R: c(person("Cristian", "Angulo-Gonzalez", email = "cristian_world@hotmail.cl", role = c("aut", "cre")),
               person("Rafael", "Fuentealba-Chaura", email = "rafael.fuentealba97@gmail.com", role = "aut"),
               person("Ricardo", "Mora", email = "ricmora@eco.uc3m.es", role = "aut"),
