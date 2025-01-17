@@ -2,6 +2,7 @@
 #define VECTOR_HASH_H
 
 #include <vector>
+#include <cstddef>
 
 struct VectorHash {
   size_t operator()(const std::vector<int>& v) const {
