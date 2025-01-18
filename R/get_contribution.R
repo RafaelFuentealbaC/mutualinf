@@ -20,8 +20,7 @@ get_contribution <- function(data, group, unit, within = NULL, by = NULL, compon
           if (c %in% group) c_tmp <- group[!group %in% c]
           else c_tmp <- unit[!unit %in% c]
           data_tmp <- get_internal_data(data = d, vars = c(group, unit, c_tmp))
-          DT_res <- M_within_inv(data = data_tmp, group = group, unit = unit, within = c_tmp)
-          DT_res <- DT_res[.N:1]
+          DT_res <- rev(M_within_inv(data = data_tmp, group = group, unit = unit, within = c_tmp))
           DT_res[, 1]
         })
         unlist(M_contribution, use.names = FALSE)
@@ -33,8 +32,7 @@ get_contribution <- function(data, group, unit, within = NULL, by = NULL, compon
           if (c %in% group) c_tmp <- group[!group %in% c]
           else c_tmp <- unit[!unit %in% c]
           data_tmp <- get_internal_data(data = d, vars = c(group, unit, c_tmp))
-          DT_res <- M_within_inv(data = data_tmp, group = group, unit = unit, within = c_tmp)
-          DT_res <- DT_res[.N:1]
+          DT_res <- rev(M_within_inv(data = data_tmp, group = group, unit = unit, within = c_tmp))
           DT_res[, 1]
         }, mc.cores = cores)
         unlist(M_contribution, use.names = FALSE)
@@ -50,8 +48,7 @@ get_contribution <- function(data, group, unit, within = NULL, by = NULL, compon
         unit <- match(unit, colnames(d)) - 1
         c_tmp <- match(c_tmp, colnames(d)) - 1
 
-        DT_res <- M_within_inv_with_gid(data = d, vars = c(group, unit, c_tmp), group = group, unit = unit, within = c_tmp)
-        DT_res <- DT_res[nrow(DT_res):1, ]
+        DT_res <- rev(M_within_inv_with_gid(data = d, vars = c(group, unit, c_tmp), group = group, unit = unit, within = c_tmp))
         DT_res[1]
       })
       unlist(M_contribution, use.names = FALSE)
