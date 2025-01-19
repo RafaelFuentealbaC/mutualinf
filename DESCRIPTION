@@ -1,8 +1,8 @@
 Package: mutualinf
 Type: Package
 Title: Computation and Decomposition of the Mutual Information Index
-Version: 2.0.2
-Date: 2025-01-18
+Version: 2.0.3
+Date: 2025-01-19
 Authors@R: c(person("Cristian", "Angulo-Gonzalez", email = "cristian_world@hotmail.cl", role = c("aut", "cre")),
               person("Rafael", "Fuentealba-Chaura", email = "rafael.fuentealba97@gmail.com", role = "aut"),
               person("Ricardo", "Mora", email = "ricmora@eco.uc3m.es", role = "aut"),
@@ -40,14 +40,15 @@ Depends:
 Collate: 
     'Data_Source.R'
     'get_internal_data.R'
-    'get_general_contribution.R'
     'get_contribution.R'
+    'M_value.R'
+    'M.R'
+    'get_general_contribution.R'
     'get_proportion.R'
     'M_within.R'
     'M_within_inv.R'
-    'mutual.R'
-    'M_value.R'
-    'M.R'
-    'globals.R'
-    'prepare_data.R'
     'RcppExports.R'
+    'globals.R'
+    'mutual.R'
+    'prepare_data.R'
+RoxygenNote: 7.3.2

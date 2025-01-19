@@ -55,8 +55,7 @@ M <- function(data, group, unit, by = NULL, contribution.from = NULL, cores = NU
           if (c %in% group) c_tmp <- group[!group %in% c]
           else c_tmp <- unit[!unit %in% c]
           data_tmp <- get_internal_data(data = data, vars = c(group, unit, c_tmp))
-          DT_res <- M_within_inv(data = data_tmp, group = group, unit = unit, within = c_tmp)
-          DT_res <- DT_res[.N:1]
+          DT_res <- rev(M_within_inv(data = data_tmp, group = group, unit = unit, within = c_tmp))
           DT_res[, 1]
         }, mc.cores = cores)
       } else {
@@ -70,8 +69,7 @@ M <- function(data, group, unit, by = NULL, contribution.from = NULL, cores = NU
           unit <- match(unit, colnames(data)) - 1
           c_tmp <- match(c_tmp, colnames(data)) - 1
 
-          DT_res <- M_within_inv_with_gid(data = data, vars = c(group, unit, c_tmp), group = group, unit = unit, within = c_tmp)
-          DT_res <- DT_res[nrow(DT_res):1, ]
+          DT_res <- rev(M_within_inv_with_gid(data = data, vars = c(group, unit, c_tmp), group = group, unit = unit, within = c_tmp))
           DT_res[1]
         })
       }
