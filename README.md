@@ -11,6 +11,7 @@ v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/li
 Version](https://www.r-pkg.org/badges/version/mutualinf)](https://CRAN.R-project.org/package=mutualinf)
 [![CRAN
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/mutualinf)](https://CRAN.R-project.org/package=mutualinf)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/RafaelFuentealbaC/mutualinf)
 <!-- badges: end -->
 
 An R package to compute and decompose the Mutual Information Index (M)
