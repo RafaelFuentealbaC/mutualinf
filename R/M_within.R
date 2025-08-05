@@ -219,13 +219,10 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
           stop("When using option 'within' alongside option 'contribution.from', there must be more than one variable left in either 'group' or 'unit'. Use only option 'within' in this case.")
         within_on_contribution <- within[within %in% contribution]
         if (length(within_on_contribution) > 0) stop(paste("Variables in option 'within' cannot be used simultaneously in option 'contribution.from'. Try using either 'group_vars' or 'unit_vars'." ))
-        if ((length(intersect(contribution, group)) == length(group)) | length(intersect(contribution, unit)) == length(unit)) {
-          DT_within <- get_contribution(data = data, group = group, unit = unit, within = within, by = by, component = DT_within, contribution = contribution, cores = cores, iterm = TRUE)
-          DT_general_comp <- get_general_contribution(DT_contribution = DT_within, contribution = contribution, by = by, cores = cores, iterm = TRUE)
-        } else {
-          DT_within <- get_contribution(data = data, group = group, unit = unit, within = within, by = by, component = DT_within, contribution = contribution, cores = cores, iterm = FALSE)
-          DT_general_comp <- get_general_contribution(DT_contribution = DT_within, contribution = contribution, by = by, cores = cores, iterm = FALSE)
-        }
+
+        DT_within <- get_contribution(data = data, group = group, unit = unit, within = within, by = by, component = DT_within, contribution = contribution, cores = cores, iterm = TRUE)
+        DT_general_comp <- get_general_contribution(DT_contribution = DT_within, contribution = contribution, by = by, cores = cores, iterm = TRUE)
+
         DT_general <- cbind(DT_general, DT_general_comp)
       } else {
         DT_general <- cbind(DT_general, M_W = index_within)
@@ -418,13 +415,10 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
           stop("When using option 'within' alongside option 'contribution.from', there must be more than one variable left in either 'group' or 'unit'. Use only option 'within' in this case.")
         within_on_contribution <- within[within %in% contribution]
         if (length(within_on_contribution) > 0) stop(paste("Variables in option 'within' cannot be used simultaneously in option 'contribution.from'. Try using either 'group_vars' or 'unit_vars'." ))
-        if ((length(intersect(contribution, group)) == length(group)) | length(intersect(contribution, unit)) == length(unit)) {
-          DT_within <- get_contribution(data = data, group = group, unit = unit, within = within, component = DT_within, contribution = contribution, cores = cores, iterm = TRUE)
-          DT_general_comp <- get_general_contribution(DT_contribution = DT_within, contribution = contribution, cores = cores, iterm = TRUE)
-        } else {
-          DT_within <- get_contribution(data = data, group = group, unit = unit, within = within, component = DT_within, contribution = contribution, cores = cores, iterm = FALSE)
-          DT_general_comp <- get_general_contribution(DT_contribution = DT_within, contribution = contribution, cores = cores, iterm = FALSE)
-        }
+
+        DT_within <- get_contribution(data = data, group = group, unit = unit, within = within, component = DT_within, contribution = contribution, cores = cores, iterm = TRUE)
+        DT_general_comp <- get_general_contribution(DT_contribution = DT_within, contribution = contribution, cores = cores, iterm = TRUE)
+
         DT_general <- cbind(DT_general, DT_general_comp)
       } else {
         DT_general <- cbind(DT_general, M_W = index_within)
@@ -510,13 +504,10 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
           stop("When using option 'within' alongside option 'contribution.from', there must be more than one variable left in either 'group' or 'unit'. Use only option 'within' in this case.")
         within_on_contribution <- within[within %in% contribution]
         if (length(within_on_contribution) > 0) stop(paste("Variables in option 'within' cannot be used simultaneously in option 'contribution.from'. Try using either 'group_vars' or 'unit_vars'." ))
-        if ((length(intersect(contribution, group)) == length(group)) | length(intersect(contribution, unit)) == length(unit)) {
-          DT_within <- get_contribution(data = data, group = group, unit = unit, within = within, by = by, component = DT_within, contribution = contribution, cores = cores, iterm = TRUE)
-          DT_general_comp <- get_general_contribution(DT_contribution = DT_within, contribution = contribution, by = by, cores = cores, iterm = TRUE)
-        } else {
-          DT_within <- get_contribution(data = data, group = group, unit = unit, within = within, by = by, component = DT_within, contribution = contribution, cores = cores, iterm = FALSE)
-          DT_general_comp <- get_general_contribution(DT_contribution = DT_within, contribution = contribution, by = by, cores = cores, iterm = FALSE)
-        }
+
+        DT_within <- get_contribution(data = data, group = group, unit = unit, within = within, by = by, component = DT_within, contribution = contribution, cores = cores, iterm = TRUE)
+        DT_general_comp <- get_general_contribution(DT_contribution = DT_within, contribution = contribution, by = by, cores = cores, iterm = TRUE)
+
         DT_general <- cbind(DT_general, DT_general_comp)
       } else {
         DT_general <- merge(x = DT_general, y = index_within, by = by, sort = FALSE)
@@ -589,13 +580,10 @@ M_within <- function(data, group, unit, within, by = NULL, contribution.from = N
           stop("When using option 'within' alongside option 'contribution.from', there must be more than one variable left in either 'group' or 'unit'. Use only option 'within' in this case.")
         within_on_contribution <- within[within %in% contribution]
         if (length(within_on_contribution) > 0) stop(paste("Variables in option 'within' cannot be used simultaneously in option 'contribution.from'. Try using either 'group_vars' or 'unit_vars'." ))
-        if ((length(intersect(contribution, group)) == length(group)) | length(intersect(contribution, unit)) == length(unit)) {
-          DT_within <- get_contribution(data = data, group = group, unit = unit, within = within, component = DT_within, contribution = contribution, cores = cores, iterm = TRUE)
-          DT_general_comp <- get_general_contribution(DT_contribution = DT_within, contribution = contribution, cores = cores, iterm = TRUE)
-        } else {
-          DT_within <- get_contribution(data = data, group = group, unit = unit, within = within, component = DT_within, contribution = contribution, cores = cores, iterm = FALSE)
-          DT_general_comp <- get_general_contribution(DT_contribution = DT_within, contribution = contribution, cores = cores, iterm = FALSE)
-        }
+
+        DT_within <- get_contribution(data = data, group = group, unit = unit, within = within, component = DT_within, contribution = contribution, cores = cores, iterm = TRUE)
+        DT_general_comp <- get_general_contribution(DT_contribution = DT_within, contribution = contribution, cores = cores, iterm = TRUE)
+
         DT_general <- cbind(DT_general, DT_general_comp)
       } else {
         DT_general <- cbind(DT_general, M_W = index_within)

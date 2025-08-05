@@ -130,6 +130,26 @@ mutual <- function(data, group, unit, within = NULL, by = NULL, contribution.fro
   if ((length(contribution_all) > 0) & (length(contribution_from) > 0)) stop("Do not mix 'group_vars' or 'unit_vars' with 'group' or 'unit' variables in option 'contribution.from'.")
   if (length(contribution_no_group_no_unit) > 0) stop(paste("Variable(s)", paste(contribution_no_group_no_unit, collapse = ", "), "should be (a) 'group' or 'unit' variable(s)."))
 
+  # Additional validation: prevent 'by' and 'contribution.from' from sharing variables that are also in 'group' or 'unit'
+  if (!is.null(by) & !is.null(contribution.from)) {
+    # Determine actual contribution variables, including special keywords
+    if ("group_vars" %in% contribution.from) {
+      contribution_vars <- group
+    } else if ("unit_vars" %in% contribution.from) {
+      contribution_vars <- unit
+    } else {
+      contribution_vars <- contribution.from
+    }
+
+    # Identify overlapping variables between 'by' and resolved contribution variables
+    overlap_vars <- intersect(by, contribution_vars)
+
+    if (length(overlap_vars) > 0) {
+      stop(paste("Variables in 'by' and 'contribution.from' must not overlap when the contribution variables are also present in 'group' or 'unit'. Conflict(s) found in:",
+                 paste(overlap_vars, collapse = ", ")))
+    }
+  }
+
   if (!is.null(within)) {
     M_within(data = data, group = group, unit = unit, within = within, by = by, contribution.from = contribution.from, components = components, cores = cores)
   } else {
