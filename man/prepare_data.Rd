@@ -7,52 +7,43 @@
 prepare_data(data, vars, fw = NULL, col.order = NULL)
 }
 \arguments{
-\item{data}{A tabular format object (\code{data.frame}, \code{data.table}, \code{tibble}). The data
-expected is microdata or frequency weight data for each combination of variables. The variables must be
-of "factor" class.}
+\item{data}{A tabular object: \code{data.frame}, \code{data.table} or
+\code{tibble}.}
 
-\item{vars}{A vector of variable names or vector of columns numbers contained in \code{data}. Also can be
-used "all_vars" to select all variables contained in \code{data}.}
+\item{vars}{A vector of column names or indices, or the literal
+\code{"all_vars"} to select every column except \code{fw}.}
 
-\item{fw}{Variable name or column number contained in \code{data} that contains frecuency weight for
-each combination of variables of the dataset. If this variable exists then the function will change its
-original name to \code{fw}. If this variable does not exist or is \code{NULL}, then the function will compute the
-frecuency weight given the combination of variables of \code{vars} and will create a new variable called
-\code{fw}. By default is \code{NULL}.}
+\item{fw}{(optional) Name or index of the frequency-weight column.
+Must reference exactly one column. If \code{NULL}, a new variable
+\code{fw = 1} is created.}
 
-\item{col.order}{A variable name or vector of variables names contained in \code{vars}, or a column
-number or vector of column numbers contained in \code{vars}. Selects the columns to sort the dataset. By
-default is \code{NULL}.}
+\item{col.order}{(optional) Column(s) used to sort the final table;
+must be included in \code{vars}. Accepts names or indices.}
 }
 \value{
-Returns a \code{data.table} of class "data.table" "data.frame" "mutual.data".
+A \code{data.table} with classes \code{"mutual.data"},
+  \code{"data.frame"} and \code{"data.table"}.  
+  The analytical variables are stored in the attribute \code{"vars"};
+  the key is cleared.
 }
 \description{
-Receives the data that is later used in the \code{mutual} function.
-Generates a \code{data.table} with the entry variables.
+Takes a tabular object (micro-data or a frequency table) and returns a
+\code{data.table} ready for \code{mutual}.  
+The output
+* stores every analytical variable as a \code{factor};
+* holds the weight variable under the unified name \code{fw} (numeric);
+* aggregates identical combinations (summing their weights) and drops rows
+  where \code{fw == 0}.
 }
 \examples{
 \donttest{
-# Using some variable names in 'data' with explicit 'fw'.
-my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "ethnicity", "school", "district"),
-fw = "nobs")
-
-# Using some column numbers in 'data' and explicit 'fw' as another column number.
-my_data <- prepare_data(data = DF_Seg_Chile, vars = c(4, 5, 2, 3), fw = 11)
-
-# Using all variables of 'data' with explicit 'fw'.
-my_data <- prepare_data(data = DF_Seg_Chile, vars = "all_vars", fw = "nobs")
-
-# Using some variable names in 'data' and 'fw' does not exist (in this case, the new 'fw' will
-# be equal to 1 for all variable combinations as 'data' already has a frequency weights variable)
-my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "ethnicity", "school", "district"))
-
-# Using the 'col.order' option to sort data according to the 'csep' column.
-my_data <- prepare_data(data = DF_Seg_Chile, vars = c("csep", "ethnicity", "school", "district"),
-fw = "nobs", col.order = "csep")
-
-# The class of the resulting object in all cases must be "data.table", "data.frame" and
-# "mutual.data".
-class(my_data)
+md <- prepare_data(
+  DF_Seg_Chile,
+  vars = c("csep", "ethnicity", "school", "district"),
+  fw   = "nobs"
+)
+md <- prepare_data(DF_Seg_Chile, vars = "all_vars")
+class(md)
 }
+
 }
