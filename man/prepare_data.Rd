@@ -22,13 +22,13 @@ must be included in \code{vars}. Accepts names or indices.}
 }
 \value{
 A \code{data.table} with classes \code{"mutual.data"},
-  \code{"data.frame"} and \code{"data.table"}.  
+  \code{"data.frame"} and \code{"data.table"}.
   The analytical variables are stored in the attribute \code{"vars"};
   the key is cleared.
 }
 \description{
 Takes a tabular object (micro-data or a frequency table) and returns a
-\code{data.table} ready for \code{mutual}.  
+\code{data.table} ready for \code{mutual}.
 The output
 * stores every analytical variable as a \code{factor};
 * holds the weight variable under the unified name \code{fw} (numeric);
