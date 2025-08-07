@@ -2,7 +2,7 @@
 #'
 #' @description
 #' Takes a tabular object (micro-data or a frequency table) and returns a
-#' \code{data.table} ready for \code{mutual}.  
+#' \code{data.table} ready for \code{mutual}.
 #' The output
 #' * stores every analytical variable as a \code{factor};
 #' * holds the weight variable under the unified name \code{fw} (numeric);
@@ -20,7 +20,7 @@
 #'   must be included in \code{vars}. Accepts names or indices.
 #'
 #' @return A \code{data.table} with classes \code{"mutual.data"},
-#'   \code{"data.frame"} and \code{"data.table"}.  
+#'   \code{"data.frame"} and \code{"data.table"}.
 #'   The analytical variables are stored in the attribute \code{"vars"};
 #'   the key is cleared.
 #'
@@ -59,7 +59,7 @@ prepare_data <- function(data, vars, fw = NULL, col.order = NULL) {
     if (is.character(x))   return(x)
     if (is.numeric(x)) {
       if (any(x < 1L | x > length(ref)))
-        stop("Column index out of bounds 1 … ", length(ref), ".")
+        stop("Column index out of bounds 1 ...", length(ref), ".")
       return(ref[x])
     }
     stop("Arguments 'vars', 'fw', and 'col.order' must be names or indices.")
@@ -86,7 +86,7 @@ prepare_data <- function(data, vars, fw = NULL, col.order = NULL) {
     stop("Column(s) not found in 'data': ", paste(miss, collapse = ", "))
 
   ## ---------------------------------------------------------------
-  ## 4  Handle the weight column  (★)
+  ## 4  Handle the weight column
   ## ---------------------------------------------------------------
   if (is.null(fw)) {                     # no weight supplied
     data[, fw := 1L]                     # create numeric weights
@@ -94,10 +94,10 @@ prepare_data <- function(data, vars, fw = NULL, col.order = NULL) {
     setnames(data, fw, "fw")             # normalise name
   }
 
-  ## Always drop 'fw' from analytical vars  (★)
+  ## Always drop 'fw' from analytical vars
   vars <- setdiff(vars, "fw")
 
-  ## Guarantee fw is numeric  (★)
+  ## Guarantee fw is numeric
   if (is.factor(data$fw))
     data[, fw := as.numeric(as.character(fw))]
   if (!is.numeric(data$fw))
